@@ -7,6 +7,12 @@ package airtravel; /**
  *
  */
 public final class Airport implements Comparable<Airport> {
+	
+	private Airport(
+			String code,
+			Duration connectionTimeMin) {
+		
+	}
 
 	@Override
 	public int compareTo(Airport o) {
