@@ -32,7 +32,7 @@ public final class Airport implements Comparable<Airport> {
 	public static final Airport of(String code, Duration connectionTimeMin) {
 		//Check for null inputs
 		if (code == null | connectionTimeMin == null) {
-			throw null;
+			throw new NullPointerException("Null inputs were recieved");
 		}
 		//Create Instance of Airpoirt
 		Airport retVal = new Airport(code, connectionTimeMin);
