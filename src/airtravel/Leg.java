@@ -28,4 +28,20 @@ public final class Leg {
         return new Leg(origin, destination);
     }
 
+    /**
+     * getter for the origin airport
+     * @return origin
+     */
+
+    public Airport getOrigin() {
+        return this.origin;
+    }
+
+    /**
+     * getter for the destination airport
+     * @return destination
+     */
+    public Airport getDestination() {
+        return this.destination;
+    }
 }
