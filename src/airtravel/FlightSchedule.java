@@ -17,10 +17,9 @@ public final class FlightSchedule {
 	 * @param departureTime: The departure time
 	 * @param arrivalTime: The arrival time
 	 */
-	private FlightSchedule(LocalTime departureTime,LocalTime arrivalTime) {
+	private FlightSchedule(LocalTime departureTime, LocalTime arrivalTime) {
 		this.departureTime = departureTime;
 		this.arrivalTime = arrivalTime;
-		
 	}
 	
 	/**
@@ -32,7 +31,7 @@ public final class FlightSchedule {
 	 */
 	public static final FlightSchedule of(LocalTime departureTime, LocalTime arrivalTime) {
 		//Check for null inputs
-		if (departureTime == null | arrivalTime == null) {
+		if (departureTime == null || arrivalTime == null) {
 			throw new NullPointerException("Invalid Input Values");
 		}
 		//Check if arrivalTime precedes departureTime
