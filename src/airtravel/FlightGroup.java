@@ -3,7 +3,6 @@ package airtravel;
 import java.util.NavigableMap;
 import java.util.Set;
 import java.util.TreeMap;
-import java.time.Duration;
 import java.time.LocalTime;
 
 public final class FlightGroup  {
@@ -36,23 +35,17 @@ public final class FlightGroup  {
 
 	//unfinished
 	public final boolean add(Flight flight) {
-
-
 		return false;
-
 	}
 
 	//unfinished
 	public final boolean remove(Flight flight) {
-
 		return false;
 	}
 
 	//unfinished
 	public final Set<Flight> flightsAtOrAfter(LocalTime departureTime){
-
 		return null;
-
 	}
 
 }
