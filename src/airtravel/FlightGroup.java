@@ -8,7 +8,7 @@ public final class FlightGroup  {
 	private final Airport origin;
 	private final NavigableMap<LocalTime, Set<Flight>> flights;
 
-	private FlightGroup(Airport origin, NavigableMap flights) {
+	private FlightGroup(Airport origin, NavigableMap<LocalTime, Set<Flight>> flights) {
 		this.origin = origin;
 		this.flights = flights;
 	}
@@ -105,12 +105,12 @@ public final class FlightGroup  {
 			throw new NullPointerException("Null inputs were received");
 		}
 			
-		HashSet setOfFlightSets = new HashSet<Set<Flight>>();
-		setOfFlightSets = (HashSet) flights.tailMap(departureTime, true);
-		Iterator flightSets = setOfFlightSets.iterator();
-		HashSet returnSet = new HashSet<Flight>();
+		HashSet<Set<Flight>> setOfFlightSets = new HashSet<Set<Flight>>();
+		setOfFlightSets = (HashSet<Set<Flight>>) flights.tailMap(departureTime, true);
+		Iterator<Set<Flight>> flightSets = setOfFlightSets.iterator();
+		HashSet<Flight> returnSet = new HashSet<Flight>();
 		while(flightSets.hasNext()) {
-			HashSet indFlights = (HashSet) flightSets.next();
+			HashSet<Flight> indFlights = (HashSet<Flight>) flightSets.next();
 			returnSet.addAll(indFlights);
 		}
 		return returnSet;
