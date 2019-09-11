@@ -16,7 +16,7 @@ public final class FlightGroup  {
 	/**
 	 * Builder method
 	 * @param origin is the airport of origin
-	 * @return
+	 * @return new FlightGroup object
 	 */
 	public static final FlightGroup of(Airport origin) {
 		//Check for null inputs
@@ -72,9 +72,22 @@ public final class FlightGroup  {
 		return retVal;
 	}
 
-	//unfinished
+	/**
+	 * Method returns a set of all flights departing at or after a certain departure time
+	 * @param departureTime is the time when the flight leaves the airport
+	 * @return returnSet, a HashSet of flights containing all the flights leaving after a given time
+	 */
+
 	public final Set<Flight> flightsAtOrAfter(LocalTime departureTime){
-		return null;
+		HashSet setOfFlightSets = new HashSet<Set<Flight>>();
+		setOfFlightSets = (HashSet) flights.tailMap(departureTime, true);
+		Iterator flightSets = setOfFlightSets.iterator();
+		HashSet returnSet = new HashSet<Flight>();
+		while(flightSets.hasNext()) {
+			HashSet indFlights = (HashSet) flightSets.next();
+			returnSet.addAll(indFlights);
+		}
+		return returnSet;
 	}
 
 }
