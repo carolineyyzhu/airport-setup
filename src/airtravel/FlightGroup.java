@@ -30,9 +30,11 @@ public final class FlightGroup  {
 	}
 
 	/**
-	 * Adds
+	 * Adds a flight to the flight group
+	 * If the flight time already exists, the flight is appended onto the set at that index
+	 * Otherwise, the flight is added to a new set and put into the map
 	 * @param flight
-	 * @return
+	 * @return true if flight was added, false if flight was not
 	 */
 	public final boolean add(Flight flight) {
 		boolean retVal = false;
@@ -49,9 +51,25 @@ public final class FlightGroup  {
 		return retVal;
 	}
 
-	//unfinished
+	/**
+	 * Removes flight from flight group if it exists in this flight group
+	 * If the flight does not exist, an IllegalArgumentException is thrown
+	 * @param flight is the flight to be removed
+	 * @return true if flight was removed, false if not
+	 */
 	public final boolean remove(Flight flight) {
-		return false;
+		boolean retVal = false;
+		LocalTime deptTime = flight.getFlightSchedule().getDepartureTime();
+		if(flights.containsKey(deptTime)) {
+			HashSet currentSet = (HashSet) flights.get(deptTime);
+			if(currentSet.contains(flight)) {
+				currentSet.remove(flight);
+				retVal = true;
+			}
+		} else {
+			throw new IllegalArgumentException("This flight does not exist in this flight group.");
+		}
+		return retVal;
 	}
 
 	//unfinished
