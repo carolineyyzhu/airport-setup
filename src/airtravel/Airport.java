@@ -14,15 +14,17 @@ public final class Airport implements Comparable<Airport> {
 	
 	private final String code;
 	private final Duration connectionTimeMin;
+	private final FlightGroup outFlights;
 	
 	/**
 	 * Constructor
 	 * @param code: A string representation of the airport code
 	 * @param connectionTimeMin: the min connection time of a flight
 	 */
-	private Airport(String code,Duration connectionTimeMin) {
+	private Airport(String code,Duration connectionTimeMin, FlightGroup outFlights) {
 		this.code = code;
 		this.connectionTimeMin = connectionTimeMin;
+		this.outFlights = outFlights;
 		
 	}
 	
@@ -32,14 +34,25 @@ public final class Airport implements Comparable<Airport> {
 	 * @param connectionTimeMin: the min connection time of a flight
 	 * @return the created airport
 	 */
-	public static final Airport of(String code, Duration connectionTimeMin) {
+	public static final Airport of(String code, Duration connectionTimeMin, FlightGroup outFlights) {
 		//Check for null inputs
-		if (code == null | connectionTimeMin == null) {
+		if (code == null | connectionTimeMin == null | outFlights == null) {
 			throw new NullPointerException("Null inputs were recieved");
 		}
 		//Create Instance of Airpoirt
-		Airport retVal = new Airport(code, connectionTimeMin);
+		Airport retVal = new Airport(code, connectionTimeMin, outFlights);
 		return retVal;
+	}
+	
+	//unfinished
+	public final boolean addFlight(Flight flight) {
+		
+		return true;
+	}
+	
+	//unfinished
+	public final boolean removeFlight(Flight flight) {
+		return true;
 	}
 	
 	//Getter for Code
