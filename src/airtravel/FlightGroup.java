@@ -1,8 +1,6 @@
 package airtravel;
 
-import java.util.NavigableMap;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 import java.time.LocalTime;
 
 public final class FlightGroup  {
@@ -16,11 +14,9 @@ public final class FlightGroup  {
 	}
 
 	/**
-	 * Public constructor: Catches any null values
-	 * @param departureTime: The departure time
-	 * @param arrivalTime: The arrival time
-	 * @return the created Flight Schedule
-	 * @throws IllegalArgumentException if receives null values
+	 * Builder method
+	 * @param origin is the airport of origin
+	 * @return
 	 */
 	public static final FlightGroup of(Airport origin) {
 		//Check for null inputs
@@ -33,9 +29,24 @@ public final class FlightGroup  {
 		return retVal;
 	}
 
-	//unfinished
+	/**
+	 * Adds
+	 * @param flight
+	 * @return
+	 */
 	public final boolean add(Flight flight) {
-		return false;
+		boolean retVal = false;
+		LocalTime deptTime = flight.getFlightSchedule().getDepartureTime();
+		if(flights.containsKey(deptTime)) {
+			flights.get(deptTime).add(flight);
+			retVal = true;
+		} else {
+			Set<Flight> newFlight = new HashSet<Flight>();
+			newFlight.add(flight);
+			flights.put(deptTime, newFlight);
+			retVal = true;
+		}
+		return retVal;
 	}
 
 	//unfinished
