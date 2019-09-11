@@ -28,7 +28,7 @@ public class SimpleFlight extends AbstractFlight {
      * @return new SimpleFlight object
      */
 
-    public SimpleFlight of(String code, Leg leg, FlightSchedule flightSchedule) {
+    public static SimpleFlight of(String code, Leg leg, FlightSchedule flightSchedule) {
         if(code == null || leg == null || flightSchedule == null) {
             throw new NullPointerException("Null value entered");
         }
