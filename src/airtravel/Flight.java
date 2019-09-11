@@ -10,5 +10,5 @@ public interface Flight {
     public FlightSchedule getFlightSchedule();
     public LocalTime departureTime();
     public LocalTime arrivalTime();
-    public boolean isShort();
+    public boolean isShort(Duration maxDuration);
 }
