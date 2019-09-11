@@ -10,8 +10,6 @@ import java.time.LocalTime;
  *
  */
 public final class Airport implements Comparable<Airport> {
-	
-	
 	private final String code;
 	private final Duration connectionTimeMin;
 	private final FlightGroup outFlights;

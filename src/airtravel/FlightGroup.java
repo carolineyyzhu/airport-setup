@@ -3,19 +3,18 @@ package airtravel;
 import java.util.NavigableMap;
 import java.util.Set;
 import java.util.TreeMap;
-import java.time.Duration;
 import java.time.LocalTime;
 
 public final class FlightGroup  {
-	
+
 	private final Airport origin;
 	private final NavigableMap<LocalTime, Set<Flight>> flights;
-	
+
 	private FlightGroup(Airport origin, NavigableMap flights) {
 		this.origin = origin;
 		this.flights = flights;
 	}
-	
+
 	/**
 	 * Public constructor: Catches any null values
 	 * @param departureTime: The departure time
@@ -33,26 +32,20 @@ public final class FlightGroup  {
 		FlightGroup retVal = new FlightGroup(origin, flights);
 		return retVal;
 	}
-	
+
 	//unfinished
 	public final boolean add(Flight flight) {
-		 
-		 
 		return false;
-		 
-	 }
-	 
-	//unfinished 
+	}
+
+	//unfinished
 	public final boolean remove(Flight flight) {
-		 
-		 return false;
-	 }
-	 
+		return false;
+	}
+
 	//unfinished
 	public final Set<Flight> flightsAtOrAfter(LocalTime departureTime){
-		
-		 return null;
-		 
-	 }
+		return null;
+	}
 
 }
