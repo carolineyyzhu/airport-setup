@@ -44,13 +44,12 @@ public final class Airport implements Comparable<Airport> {
 	
 	//unfinished
 	public final boolean addFlight(Flight flight) {
-		
-		return true;
+		return outFlights.add(flight);
 	}
 	
 	//unfinished
 	public final boolean removeFlight(Flight flight) {
-		return true;
+		return outFlights.remove(flight);
 	}
 	
 	//Getter for Code
