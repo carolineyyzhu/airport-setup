@@ -3,6 +3,8 @@ package airtravel;
 import java.util.NavigableMap;
 import java.util.Set;
 import java.util.TreeMap;
+import java.time.Duration;
+import java.time.LocalTime;
 
 public final class FlightGroup  {
 	
@@ -23,18 +25,31 @@ public final class FlightGroup  {
 	 */
 	public static final FlightGroup of(Airport origin) {
 		//Check for null inputs
-		NavigableMap<LocalTime, Set<Flight>> flights =  new TreeMap<LocalTime, Flight>();
-		if (departureTime == null || arrivalTime == null) {
+		NavigableMap<LocalTime, Set<Flight>> flights =  new TreeMap<LocalTime, Set<Flight>>();
+		if (origin == null) {
 			throw new NullPointerException("Invalid Input Values");
 		}
-		//Check if arrivalTime precedes departureTime
-		if (arrivalTime.precedes(departureTime)) {
-			throw new IllegalArgumentException("Arrival time precedes departure time");
-		}
 		//Create Instance of FlightSchedule
-		FlightSchedule retVal = new FlightSchedule(departureTime, arrivalTime);
+		FlightGroup retVal = new FlightGroup(origin, flights);
 		return retVal;
 	}
 	
+	 public final boolean add(Flight flight) {
+		 
+		 
+		return false;
+		 
+	 }
+	 
+	 public final boolean remove(Flight flight) {
+		 
+		 return false;
+	 }
+	 
+	 public final Set<Flight> flightsAtOrAfter(LocalTime departureTime){
+		
+		 return null;
+		 
+	 }
 
 }

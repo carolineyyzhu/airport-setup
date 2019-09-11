@@ -1,4 +1,6 @@
 package airtravel;
+import java.time.Duration;
+import java.time.LocalTime;
 
 public interface Flight {
     public String getCode();
