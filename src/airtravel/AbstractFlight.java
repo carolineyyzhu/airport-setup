@@ -1,4 +1,6 @@
 package airtravel;
+import java.time.Duration;
+import java.time.LocalTime;
 
 public abstract class AbstractFlight implements Flight {
     public Airport origin() {
@@ -19,7 +21,7 @@ public abstract class AbstractFlight implements Flight {
 
     public boolean isShort() {
         //Placeholder method; issue of duration must be solved because this duration is an empty object
-        return this.getFlightSchedule().isShort(new Duration());
+        return this.getFlightSchedule().isShort(new Duration();
     }
 
 }

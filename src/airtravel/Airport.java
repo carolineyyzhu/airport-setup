@@ -2,6 +2,9 @@ package airtravel; /**
  * 
  */
 
+import java.time.Duration;
+import java.time.LocalTime;
+
 /**
  * This class creates airport objects with codes and min connection times.
  *

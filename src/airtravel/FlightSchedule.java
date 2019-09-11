@@ -3,6 +3,9 @@
  */
 package airtravel;
 
+import java.time.Duration;
+import java.time.LocalTime;
+
 /**
  * This class creates flight schedules 
  *
@@ -35,7 +38,7 @@ public final class FlightSchedule {
 			throw new NullPointerException("Invalid Input Values");
 		}
 		//Check if arrivalTime precedes departureTime
-		if (arrivalTime.precedes(departureTime)) {
+		if (arrivalTime.isBefore(departureTime)) {
 			throw new IllegalArgumentException("Arrival time precedes departure time");
 		}
 		//Create Instance of FlightSchedule
@@ -53,11 +56,10 @@ public final class FlightSchedule {
 		Boolean isShort = false;
 		
 		//Find the flight duration of this flight
-		Duration flightDuration = new Duration();
-		flightDuration = departureTime.durationTime(arrivalTime);
+		Duration duration = Duration.between(departureTime, arrivalTime);
 		
 		//Compare max duration to this duration
-		if (flightDuration.compareTo(durationMax)) {
+		if (duration.compareTo(durationMax) < 0) {
 			isShort = true;
 		}
 		
