@@ -32,9 +32,10 @@ public class SimpleFlight extends AbstractFlight {
         if(code == null || leg == null || flightSchedule == null) {
             throw new NullPointerException("Null value entered");
         }
+        SimpleFlight flight = new SimpleFlight(code, leg, flightSchedule);
         Airport departureAirport = leg.getOrigin();
         departureAirport.addFlight(flight);
-        return new SimpleFlight(code, leg, flightSchedule);
+        return flight;
     }
 
     //getter for code
