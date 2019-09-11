@@ -52,7 +52,7 @@ public class SimpleFlight extends AbstractFlight {
         return this.flightSchedule;
     }
 
-    //UNFINISHED
+    @Override
 	public boolean isShort(Duration durationMax) {
 		return this.getFlightSchedule().isShort(durationMax);
 	}
