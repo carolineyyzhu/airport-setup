@@ -7,8 +7,6 @@ package airtravel; /**
  *
  */
 public final class Airport implements Comparable<Airport> {
-	
-	
 	private final String code;
 	private final Duration connectionTimeMin;
 	
