@@ -1,5 +1,7 @@
 package airtravel;
 
+import java.time.Duration;
+
 public class SimpleFlight extends AbstractFlight {
     private final String code;
     private final FlightSchedule flightSchedule;
@@ -30,6 +32,8 @@ public class SimpleFlight extends AbstractFlight {
         if(code == null || leg == null || flightSchedule == null) {
             throw new NullPointerException("Null value entered");
         }
+        Airport departureAirport = leg.getOrigin();
+        departureAirport.addFlight(flight);
         return new SimpleFlight(code, leg, flightSchedule);
     }
 
@@ -49,9 +53,8 @@ public class SimpleFlight extends AbstractFlight {
     }
 
     //UNFINISHED
-	public boolean isShort() {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isShort(Duration durationMax) {
+		return this.getFlightSchedule().isShort(durationMax);
 	}
 
 
