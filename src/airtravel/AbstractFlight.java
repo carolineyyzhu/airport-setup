@@ -19,9 +19,9 @@ public abstract class AbstractFlight implements Flight {
         return this.getFlightSchedule().getArrivalTime();
     }
 
-    public boolean isShort() {
+    public boolean isShort(Duration maxDuration) {
         //Placeholder method; issue of duration must be solved because this duration is an empty object
-        return this.getFlightSchedule().isShort(new Duration());
+        return this.getFlightSchedule().isShort(maxDuration);
     }
 
 }
