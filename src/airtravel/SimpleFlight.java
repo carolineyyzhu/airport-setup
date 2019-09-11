@@ -48,5 +48,11 @@ public class SimpleFlight extends AbstractFlight {
         return this.flightSchedule;
     }
 
+    //UNFINISHED
+	public boolean isShort() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 
 }
