@@ -45,21 +45,20 @@ public final class FlightGroup  {
 		if (flight == null) {
 			throw new NullPointerException("Null inputs were received");
 		}
-			
-		
-		boolean retVal = false;
+
+//		boolean retVal = false;
 		LocalTime deptTime = flight.getFlightSchedule().getDepartureTime();
-	
-		if(flights.containsKey(deptTime)) {
-			flights.get(deptTime).add(flight);
-			retVal = true;
-		} else {
-			Set<Flight> newFlight = new HashSet<Flight>();
-			newFlight.add(flight);
-			flights.put(deptTime, newFlight);
-			retVal = true;
-		}
-		return retVal;
+		flights.computeIfAbsent(deptTime, k -> new HashSet<Flight>()).add(flight);
+//		if(flights.containsKey(deptTime)) {
+//			flights.get(deptTime).add(flight);
+//			retVal = true;
+//		} else {
+//			Set<Flight> newFlight = new HashSet<Flight>();
+//			newFlight.add(flight);
+//			flights.put(deptTime, newFlight);
+//			retVal = true;
+//		}
+		return true;
 	}
 
 	/**
