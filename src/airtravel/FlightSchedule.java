@@ -51,6 +51,10 @@ public final class FlightSchedule {
 	 * @return True if the flight is short and false if it is long
 	 */
 	public final boolean isShort(Duration durationMax) {
+		//Throws exception if null inputs are recieved
+		if (durationMax == null) {
+			throw new NullPointerException("Null inputs were received");
+		}
 		
 		//Return val
 		Boolean isShort = false;

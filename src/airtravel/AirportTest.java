@@ -2,6 +2,7 @@ package airtravel;
 
 import org.junit.Test;
 
+
 import junit.framework.*;
 
 import java.time.Duration;
@@ -9,8 +10,16 @@ import java.time.LocalTime;
 
 import static junit.framework.TestCase.assertTrue;
 
+/**
+ * This class tests the current classes in the airtravel package.
+ *
+ */
 class AirportTest {
-
+	
+	
+	/**
+	 * Test for buildAirport
+	 */
     @Test
     public void buildAirport() {
         Airport airport = Airport.of("AA12", Duration.ofMinutes(30));
@@ -19,6 +28,9 @@ class AirportTest {
         assertTrue(codeAccurate && minTimeAccurate);
     }
 
+    /**
+     * Test for addFlight utilizing Airport, leg, flight, and schedule
+     */
     @Test
     public void addFlight() {
         Airport airportA = Airport.of("AA12", Duration.ofMinutes(30));
@@ -30,6 +42,9 @@ class AirportTest {
         assertTrue(airportA.addFlight(flight));
     }
 
+    /**
+     * Test for removeFlight utilizing Airport, leg, flight, and schedule
+     */
     @Test
     public void removeFlight() {
         Airport airportA = Airport.of("AA12", Duration.ofMinutes(30));

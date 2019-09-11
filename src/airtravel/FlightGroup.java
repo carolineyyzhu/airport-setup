@@ -37,8 +37,19 @@ public final class FlightGroup  {
 	 * @return true if flight was added, false if flight was not
 	 */
 	public final boolean add(Flight flight) {
+		//Throws exception if flight originated from a different airport
+		if (!flight.origin().equals(this.origin)) {
+			throw new IllegalArgumentException("This flight originate from this airport.");
+		}
+		//Throws exception if flight is null
+		if (flight == null) {
+			throw new NullPointerException("Null inputs were received");
+		}
+			
+		
 		boolean retVal = false;
 		LocalTime deptTime = flight.getFlightSchedule().getDepartureTime();
+	
 		if(flights.containsKey(deptTime)) {
 			flights.get(deptTime).add(flight);
 			retVal = true;
@@ -58,8 +69,18 @@ public final class FlightGroup  {
 	 * @return true if flight was removed, false if not
 	 */
 	public final boolean remove(Flight flight) {
+		//Throws exception if flight originated froma different airport
+		if (!flight.origin().equals(this.origin)) {
+			throw new IllegalArgumentException("This flight originate from this airport.");
+		}
+		//Throws exception if inputs are null
+		if (flight == null) {
+			throw new NullPointerException("Null inputs were received");
+		}
+		
 		boolean retVal = false;
 		LocalTime deptTime = flight.getFlightSchedule().getDepartureTime();
+		
 		if(flights.containsKey(deptTime)) {
 			HashSet currentSet = (HashSet) flights.get(deptTime);
 			if(currentSet.contains(flight)) {
@@ -79,6 +100,11 @@ public final class FlightGroup  {
 	 */
 
 	public final Set<Flight> flightsAtOrAfter(LocalTime departureTime){
+		//Throws exception if null inputs are recieved
+		if (departureTime == null) {
+			throw new NullPointerException("Null inputs were received");
+		}
+			
 		HashSet setOfFlightSets = new HashSet<Set<Flight>>();
 		setOfFlightSets = (HashSet) flights.tailMap(departureTime, true);
 		Iterator flightSets = setOfFlightSets.iterator();

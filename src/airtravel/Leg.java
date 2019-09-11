@@ -1,5 +1,8 @@
 package airtravel;
 
+/**
+ * This class represents a non-stop route between two airports
+ */
 public final class Leg {
 
     private Airport origin;

@@ -41,13 +41,19 @@ public final class Airport implements Comparable<Airport> {
 		return retVal;
 	}
 	
-	//unfinished
+	//Adds a flight: returns true if flight was added
 	public final boolean addFlight(Flight flight) {
+		if (flight == null) {
+			throw new NullPointerException("Null inputs were received");
+		}
 		return outFlights.add(flight);
 	}
 	
-	//unfinished
+	//Removes a flight: returns true if the flight was removed
 	public final boolean removeFlight(Flight flight) {
+		if (flight == null) {
+			throw new NullPointerException("Null inputs were received");
+		}
 		return outFlights.remove(flight);
 	}
 	
@@ -63,6 +69,9 @@ public final class Airport implements Comparable<Airport> {
 	
 	//Override Equals method based on code
 	public final boolean equals(Airport airport) {
+		if (airport == null) {
+			throw new NullPointerException("Null inputs were received");
+		}
 		return this.code.equals(airport.code);
 	}
 	
@@ -79,6 +88,9 @@ public final class Airport implements Comparable<Airport> {
 	//Override compare to based on code
 	@Override
 	public final int compareTo(Airport airport) {
+		if (airport == null) {
+			throw new NullPointerException("Null inputs were received");
+		}
 		return this.code.compareTo(airport.code);
 	}
 
