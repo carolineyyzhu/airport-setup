@@ -91,8 +91,6 @@ public final class FlightGroup  {
 	 * @return returnSet, a HashSet of flights containing all the flights leaving after a given time
 	 */
 
-	
-	@SuppressWarnings("unchecked")
 	public final Set<Flight> flightsAtOrAfter(LocalTime departureTime){
 		//Throws exception if null inputs are received
 		if (departureTime == null) {
