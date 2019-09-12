@@ -86,11 +86,10 @@ public final class FlightGroup  {
 		
 		LocalTime deptTime = flight.getFlightSchedule().getDepartureTime();
 		BiFunction<LocalTime, Set<Flight>, Set<Flight>> removeFlight = (depart, flightSet) -> flightSet.remove(flight) ? flightSet : null;
-		if(flights.computeIfPresent(deptTime, removeFlight) == null) {
+		if(flights.computeIfPresent(deptTime, removeFlight) == null)
 			throw new IllegalArgumentException("This flight does not exist in this flight group.");
-		} else {
+		 else
 			retVal = true;
-		}
 		
 		return retVal;
 
