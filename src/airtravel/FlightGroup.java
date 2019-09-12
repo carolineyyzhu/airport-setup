@@ -49,17 +49,6 @@ public final class FlightGroup  {
 		}
 		
 		LocalTime deptTime = flight.getFlightSchedule().getDepartureTime();
-		/*
-		if (flights.get(deptTime) == null) {
-			HashSet<Flight> newFlightSet = new HashSet<>();
-			newFlightSet.add(flight);
-			flights.put(deptTime, newFlightSet);
-			retValue = true;
-		} else {
-			flights.get(deptTime).add(flight);
-			retValue = true;
-		}
-		return retValue; */
 		flights.computeIfAbsent(deptTime, flightList -> new HashSet<Flight>()).add(flight);
 		if(flights.get(deptTime).contains(flight))
 			retVal = true;
