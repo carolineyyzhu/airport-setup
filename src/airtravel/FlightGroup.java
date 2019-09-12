@@ -2,6 +2,7 @@ package airtravel;
 
 import java.util.*;
 import java.time.LocalTime;
+import java.util.function.BiFunction;
 
 public final class FlightGroup  {
 
@@ -47,8 +48,7 @@ public final class FlightGroup  {
 		}
 
 		LocalTime deptTime = flight.getFlightSchedule().getDepartureTime();
-		boolean present = flights.computeIfAbsent(deptTime, k -> new HashSet<Flight>()).add(flight);
-		flights.computeIfPresent(deptTime, k )
+		flights.computeIfAbsent(deptTime, k -> new HashSet<Flight>()).add(flight);
 		return true;
 	}
 
@@ -70,18 +70,12 @@ public final class FlightGroup  {
 		
 		boolean retVal = false;
 		LocalTime deptTime = flight.getFlightSchedule().getDepartureTime();
+		BiFunction<LocalTime, Set<Flight>, Set<Flight>> removeFlight = (depart, flightSet) -> flightSet.remove(flight) ? flightSet : flightSet;
 
-		flights.computeIfPresent(deptTime, );
-		
-		if(flights.containsKey(deptTime)) {
-			HashSet currentSet = (HashSet) flights.get(deptTime);
-
-			if(currentSet.contains(flight)) {
-				currentSet.remove(flight);
-				retVal = true;
-			}
-		} else {
+		if(flights.computeIfPresent(deptTime, removeFlight) == null) {
 			throw new IllegalArgumentException("This flight does not exist in this flight group.");
+		} else {
+			//If the flight successfully removed the value and did not throw an error, then there is no need for an else statement
 		}
 		return retVal;
 	}
