@@ -42,7 +42,7 @@ public final class FlightSchedule {
 			throw new IllegalArgumentException("Arrival time precedes departure time");
 		}
 		//Create Instance of FlightSchedule
-		FlightSchedule retVal = new FlightSchedule(departureTime, arrivalTime);
+		FlightSchedule retVal = new FlightSchedule(departureTime, arrivalTime); //name this flight scedule for reading
 		return retVal;
 	}
 	/**
@@ -63,7 +63,7 @@ public final class FlightSchedule {
 		Duration duration = Duration.between(departureTime, arrivalTime);
 		
 		//Compare max duration to this duration
-		if (duration.compareTo(durationMax) < 0) {
+		if (duration.compareTo(durationMax) < 0) { //less or equal and return the if logic
 			isShort = true;
 		}
 		

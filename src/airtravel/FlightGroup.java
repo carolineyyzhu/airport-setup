@@ -46,7 +46,7 @@ public final class FlightGroup  {
 		//Throws exception if flight is null
 		if (flight == null) {
 			throw new NullPointerException("Null inputs were received");
-		}
+		} //check before origin
 		
 		LocalTime deptTime = flight.getFlightSchedule().getDepartureTime();
 		flights.computeIfAbsent(deptTime, flightList -> new HashSet<Flight>()).add(flight);
@@ -104,6 +104,7 @@ public final class FlightGroup  {
 
 		//retrieves all sets for departure times after the departure time inputted, inclusive
 		setOfFlightSets = (HashSet<Set<Flight>>) flights.tailMap(departureTime, true);
+		//map.values (check later)
 
 		//iterator runs through the sets within the Hashset and adds all of the entries into the returnSet
 		Iterator<Set<Flight>> flightSets = setOfFlightSets.iterator();
