@@ -40,7 +40,7 @@ public final class FlightGroup  {
 	public final boolean add(Flight flight) {
 		//Throws exception if flight originated from a different airport
 		if (!flight.origin().equals(this.origin)) {
-			throw new IllegalArgumentException("This flight originate from this airport.");
+			throw new IllegalArgumentException("This flight did not originate from this airport.");
 		}
 		//Throws exception if flight is null
 		if (flight == null) {
