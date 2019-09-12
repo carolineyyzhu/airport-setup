@@ -47,7 +47,8 @@ public final class FlightGroup  {
 		}
 
 		LocalTime deptTime = flight.getFlightSchedule().getDepartureTime();
-		flights.computeIfAbsent(deptTime, k -> new HashSet<Flight>()).add(flight);
+		boolean present = flights.computeIfAbsent(deptTime, k -> new HashSet<Flight>()).add(flight);
+		flights.computeIfPresent(deptTime, k )
 		return true;
 	}
 
@@ -60,7 +61,7 @@ public final class FlightGroup  {
 	public final boolean remove(Flight flight) {
 		//Throws exception if flight originated from a different airport
 		if (!flight.origin().equals(this.origin)) {
-			throw new IllegalArgumentException("This flight originate from this airport.");
+			throw new IllegalArgumentException("This flight does not originate from this airport.");
 		}
 		//Throws exception if inputs are null
 		if (flight == null) {
@@ -69,9 +70,12 @@ public final class FlightGroup  {
 		
 		boolean retVal = false;
 		LocalTime deptTime = flight.getFlightSchedule().getDepartureTime();
+
+		flights.computeIfPresent(deptTime, );
 		
 		if(flights.containsKey(deptTime)) {
 			HashSet currentSet = (HashSet) flights.get(deptTime);
+
 			if(currentSet.contains(flight)) {
 				currentSet.remove(flight);
 				retVal = true;
