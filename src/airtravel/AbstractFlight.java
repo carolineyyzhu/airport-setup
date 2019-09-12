@@ -8,7 +8,7 @@ import java.time.LocalTime;
  */
 public abstract class AbstractFlight implements Flight {
 	
-	//return Where the flight comes from
+    //return Where the flight comes from
     public Airport origin() {
         return this.getLeg().getOrigin();
     }
