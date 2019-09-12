@@ -46,17 +46,18 @@ public final class FlightGroup  {
 		if (flight == null) {
 			throw new NullPointerException("Null inputs were received");
 		}
-
+		
 		LocalTime deptTime = flight.getFlightSchedule().getDepartureTime();
-		flights.computeIfAbsent(deptTime, k -> new HashSet<Flight>()).add(flight);
-		return true;
+
+		return flights.computeIfAbsent(deptTime, k -> new HashSet<Flight>()).add(flight);
+		
 	}
 
 	/**
 	 * Removes flight from flight group if it exists in this flight group
 	 * If the flight does not exist, an IllegalArgumentException is thrown
 	 * @param flight is the flight to be removed
-	 * @return true if flight was removed, false if not
+	 * @return true if flight was removed, throws error if the fligth was not
 	 */
 	public final boolean remove(Flight flight) {
 		//Throws exception if flight originated from a different airport
@@ -68,16 +69,18 @@ public final class FlightGroup  {
 			throw new NullPointerException("Null inputs were received");
 		}
 		
-		boolean retVal = false;
+		
 		LocalTime deptTime = flight.getFlightSchedule().getDepartureTime();
 		BiFunction<LocalTime, Set<Flight>, Set<Flight>> removeFlight = (depart, flightSet) -> flightSet.remove(flight) ? flightSet : flightSet;
-
 		if(flights.computeIfPresent(deptTime, removeFlight) == null) {
 			throw new IllegalArgumentException("This flight does not exist in this flight group.");
 		} else {
 			//If the flight successfully removed the value and did not throw an error, then there is no need for an else statement
 		}
-		return retVal;
+		
+		return true;
+
+		
 	}
 
 	/**

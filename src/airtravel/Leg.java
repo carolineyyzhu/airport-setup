@@ -14,8 +14,8 @@ public final class Leg {
      * @param destination where the flight is headed
      */
     private Leg(Airport origin, Airport destination) {
-        origin = this.origin;
-        destination = this.destination;
+        this.origin = origin;
+        this.destination = destination;
     }
 
     /**
