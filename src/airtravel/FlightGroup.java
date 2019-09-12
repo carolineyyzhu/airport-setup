@@ -38,6 +38,7 @@ public final class FlightGroup  {
 	 * @return true if flight was added, false if flight was not
 	 */
 	public final boolean add(Flight flight) {
+		boolean retVal = false;
 		//Throws exception if flight originated from a different airport
 		if (!flight.origin().equals(this.origin)) {
 			throw new IllegalArgumentException("This flight did not originate from this airport.");
@@ -48,16 +49,28 @@ public final class FlightGroup  {
 		}
 		
 		LocalTime deptTime = flight.getFlightSchedule().getDepartureTime();
-
-		return flights.computeIfAbsent(deptTime, k -> new HashSet<Flight>()).add(flight);
-		
+		/*
+		if (flights.get(deptTime) == null) {
+			HashSet<Flight> newFlightSet = new HashSet<>();
+			newFlightSet.add(flight);
+			flights.put(deptTime, newFlightSet);
+			retValue = true;
+		} else {
+			flights.get(deptTime).add(flight);
+			retValue = true;
+		}
+		return retValue; */
+		flights.computeIfAbsent(deptTime, flightList -> new HashSet<Flight>()).add(flight);
+		if(flights.get(deptTime).contains(flight))
+			retVal = true;
+		return retVal;
 	}
 
 	/**
 	 * Removes flight from flight group if it exists in this flight group
 	 * If the flight does not exist, an IllegalArgumentException is thrown
 	 * @param flight is the flight to be removed
-	 * @return true if flight was removed, throws error if the fligth was not
+	 * @return true if flight was removed, throws error if the flight was not
 	 */
 	public final boolean remove(Flight flight) {
 		boolean retVal = false;
@@ -99,11 +112,15 @@ public final class FlightGroup  {
 		}
 			
 		HashSet<Flight> returnSet = new HashSet<Flight>();
-		
+
+		//new hashset of the flightsets
 		HashSet<Set<Flight>> setOfFlightSets = new HashSet<Set<Flight>>();
+
+		//retrieves all sets for departure times after the departure time inputted, inclusive
 		setOfFlightSets = (HashSet<Set<Flight>>) flights.tailMap(departureTime, true);
+
+		//iterator runs through the sets within the Hashset and adds all of the entries into the returnSet
 		Iterator<Set<Flight>> flightSets = setOfFlightSets.iterator();
-		
 		while(flightSets.hasNext()) {
 			HashSet<Flight> indFlights = (HashSet<Flight>) flightSets.next();
 			returnSet.addAll(indFlights);
