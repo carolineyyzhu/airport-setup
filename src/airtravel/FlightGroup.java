@@ -60,6 +60,7 @@ public final class FlightGroup  {
 	 * @return true if flight was removed, throws error if the fligth was not
 	 */
 	public final boolean remove(Flight flight) {
+		boolean retVal = false;
 		//Throws exception if flight originated from a different airport
 		if (!flight.origin().equals(this.origin)) {
 			throw new IllegalArgumentException("This flight does not originate from this airport.");
@@ -75,10 +76,10 @@ public final class FlightGroup  {
 		if(flights.computeIfPresent(deptTime, removeFlight) == null) {
 			throw new IllegalArgumentException("This flight does not exist in this flight group.");
 		} else {
-			//If the flight successfully removed the value and did not throw an error, then there is no need for an else statement
+			retVal = true;
 		}
 		
-		return true;
+		return retVal;
 
 		
 	}
