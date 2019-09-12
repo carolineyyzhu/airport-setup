@@ -41,16 +41,16 @@ public class AirportTest {
     }
 
     /**
-     * Test for addFlight utilizing Airport, leg, flight, and schedule
+     * Test for building a flight utilizing Airport, leg, flight, and schedule
      */
     @Test
-    public void addFlight() {
+    public void buildFlight() {
         Airport airportA = Airport.of("AA12", Duration.ofMinutes(30));
         Airport airportB = Airport.of("BB8", Duration.ofMinutes(30));
         Leg leg = Leg.of(airportA, airportB);
         FlightSchedule fsched = FlightSchedule.of(LocalTime.of(4, 50), LocalTime.of(6, 40));
         Flight flight = SimpleFlight.of("UA192", leg, fsched);
-        assertTrue(airportA.addFlight(flight));
+        assertTrue(flight.getCode().equals("UA192"));
     }
 
     /**
