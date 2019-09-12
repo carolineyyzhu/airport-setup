@@ -50,8 +50,7 @@ public class AirportTest {
         Leg leg = Leg.of(airportA, airportB);
         FlightSchedule fsched = FlightSchedule.of(LocalTime.of(4, 50), LocalTime.of(6, 40));
         Flight flight = SimpleFlight.of("UA192", leg, fsched);
-        boolean assertVal = airportA.addFlight(flight);
-        assertTrue(assertVal);
+        assertTrue(airportA.addFlight(flight));
     }
 
     /**
@@ -64,7 +63,7 @@ public class AirportTest {
         Leg leg = Leg.of(airportA, airportB);
         FlightSchedule fsched = FlightSchedule.of(LocalTime.of(4, 50), LocalTime.of(6, 40));
         Flight flight = SimpleFlight.of("UA197", leg, fsched);
-
+        airportA.addFlight(flight);
         assertTrue(airportA.removeFlight(flight));
     }
 }
