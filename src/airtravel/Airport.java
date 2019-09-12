@@ -1,6 +1,4 @@
-package airtravel; /**
- * 
- */
+package airtravel;
 
 import java.time.Duration;
 import java.time.LocalTime;
