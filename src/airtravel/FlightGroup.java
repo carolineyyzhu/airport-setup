@@ -38,21 +38,17 @@ public final class FlightGroup  {
 	 * @return true if flight was added, false if flight was not
 	 */
 	public final boolean add(Flight flight) {
-		boolean retVal = false;
+		//Throws exception if flight is null
+		if (flight == null) {
+			throw new NullPointerException("Null inputs were received");
+		}
 		//Throws exception if flight originated from a different airport
 		if (!flight.origin().equals(this.origin)) {
 			throw new IllegalArgumentException("This flight did not originate from this airport.");
 		}
-		//Throws exception if flight is null
-		if (flight == null) {
-			throw new NullPointerException("Null inputs were received");
-		} //check before origin
-		
 		LocalTime deptTime = flight.getFlightSchedule().getDepartureTime();
 		flights.computeIfAbsent(deptTime, flightList -> new HashSet<Flight>()).add(flight);
-		if(flights.get(deptTime).contains(flight))
-			retVal = true;
-		return retVal;
+		return flights.get(deptTime).contains(flight);
 	}
 
 	/**
@@ -62,27 +58,20 @@ public final class FlightGroup  {
 	 * @return true if flight was removed, throws error if the flight was not
 	 */
 	public final boolean remove(Flight flight) {
-		boolean retVal = false;
-		//Throws exception if flight originated from a different airport
-		if (!flight.origin().equals(this.origin)) {
-			throw new IllegalArgumentException("This flight does not originate from this airport.");
-		}
 		//Throws exception if inputs are null
 		if (flight == null) {
 			throw new NullPointerException("Null inputs were received");
 		}
-		
-		
+		//Throws exception if flight originated from a different airport
+		if (!flight.origin().equals(this.origin)) {
+			throw new IllegalArgumentException("This flight does not originate from this airport.");
+		}
+
 		LocalTime deptTime = flight.getFlightSchedule().getDepartureTime();
 		BiFunction<LocalTime, Set<Flight>, Set<Flight>> removeFlight = (depart, flightSet) -> flightSet.remove(flight) ? flightSet : null;
 		if(flights.computeIfPresent(deptTime, removeFlight) == null)
 			throw new IllegalArgumentException("This flight does not exist in this flight group.");
-		 else
-			retVal = true;
-		
-		return retVal;
-
-		
+		return !flights.get(deptTime).contains(flight);
 	}
 
 	/**
