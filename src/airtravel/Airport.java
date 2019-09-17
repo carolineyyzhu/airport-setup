@@ -35,8 +35,8 @@ public final class Airport implements Comparable<Airport> {
 			throw new NullPointerException("Null inputs were received");
 		}
 		//Create Instance of Airport
-		Airport retVal = new Airport(code, connectionTimeMin);
-		return retVal;
+		Airport newAirport = new Airport(code, connectionTimeMin);
+		return newAirport;
 	}
 	
 	//Adds a flight: returns true if flight was added
@@ -65,41 +65,19 @@ public final class Airport implements Comparable<Airport> {
 		return connectionTimeMin;
 	}
 	
-	//CHECK NOTE HERE : also override this, hashcode, and tostring
-	//Override Equals method based on code
-	public final boolean equals(Airport airport) {
-		//This is repeated code: create a helper method
-		if (airport == null) {
-			throw new NullPointerException("Null inputs were received");
-		}
-		return this.code.equals(airport.code);
-	}
-	
+	//Overrides equals method
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
+		if(obj == null || code == null || connectionTimeMin == null || outFlights == null) {
+			throw new NullPointerException("Null values processed, invalid");
+		}
+		boolean equal = false;
 		Airport other = (Airport) obj;
-		if (code == null) {
-			if (other.code != null)
-				return false;
-		} else if (!code.equals(other.code))
-			return false;
-		if (connectionTimeMin == null) {
-			if (other.connectionTimeMin != null)
-				return false;
-		} else if (!connectionTimeMin.equals(other.connectionTimeMin))
-			return false;
-		if (outFlights == null) {
-			if (other.outFlights != null)
-				return false;
-		} else if (!outFlights.equals(other.outFlights))
-			return false;
-		return true;
+		if (this == obj)
+			equal = true;
+		if(code.equals(other.code) && connectionTimeMin.equals(other.connectionTimeMin) && outFlights.equals(other.outFlights))
+			equal = true;
+		return equal;
 	}
 
 	@Override
@@ -111,19 +89,14 @@ public final class Airport implements Comparable<Airport> {
 		result = prime * result + ((outFlights == null) ? 0 : outFlights.hashCode());
 		return result;
 	}
-	
-	//Override to string based on code
-	public final String toString() {
-		return this.code.toString();
-	}
 
-	//Override compare to based on code
 	@Override
-	public final int compareTo(Airport airport) {
-		if (airport == null) {
-			throw new NullPointerException("Null inputs were received");
-		}
-		return this.code.compareTo(airport.code);
+	public String toString() {
+		return "Airport code =" + code;
 	}
 
+	@Override
+	public int compareTo(Airport airport) {
+		return code.compareTo(airport.getCode());
+	}
 }

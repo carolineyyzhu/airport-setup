@@ -55,8 +55,8 @@ public final class FlightSchedule {
 			throw new NullPointerException("Null inputs were received");
 		}
 		
-		//Return val
-		Boolean isShort = false;
+		//Return value
+		boolean isShort = false;
 		
 		//Find the flight duration of this flight
 		Duration duration = Duration.between(departureTime, arrivalTime);

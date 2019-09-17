@@ -26,8 +26,8 @@ public final class FlightGroup  {
 			throw new NullPointerException("Invalid Input Values");
 		}
 		//Create Instance of FlightSchedule
-		FlightGroup retVal = new FlightGroup(origin, flights);
-		return retVal;
+		FlightGroup flightGroup = new FlightGroup(origin, flights);
+		return flightGroup;
 	}
 
 	/**
