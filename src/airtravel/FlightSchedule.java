@@ -42,8 +42,7 @@ public final class FlightSchedule {
 			throw new IllegalArgumentException("Arrival time precedes departure time");
 		}
 		//Create Instance of FlightSchedule
-		FlightSchedule retVal = new FlightSchedule(departureTime, arrivalTime); //name this flight scedule for reading
-		return retVal;
+		return new FlightSchedule(departureTime, arrivalTime);
 	}
 	/**
 	 * Method to determine id the flight is short
