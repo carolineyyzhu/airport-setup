@@ -35,7 +35,6 @@ public final class SeatConfiguration {
 		
 	}
 	
-	
 	public final int setSeats(SeatClass seatClass, int seats) {
 		Helpers.nullCheck(seatClass, seats);
 		return this.seats.replace(seatClass, seats);

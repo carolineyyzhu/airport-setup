@@ -69,6 +69,10 @@ public class SimpleFlight extends AbstractFlight {
 		return this.getFlightSchedule().isShort(durationMax);
 	}
     
+    public SeatConfiguration seatsAvailable(FareClass fareClass) {
+    	return seatsAvailable;
+    }
+    
 
 
 
