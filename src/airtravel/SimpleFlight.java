@@ -3,7 +3,7 @@ package airtravel;
 import java.time.Duration;
 
 /**
- * This class creates a simple flight with the most basic requirements
+ * This class creates a simple flight with basic requirements
  *
  */
 public class SimpleFlight extends AbstractFlight {

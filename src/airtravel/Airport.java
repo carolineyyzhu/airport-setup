@@ -75,7 +75,7 @@ public final class Airport implements Comparable<Airport> {
 		Airport other = (Airport) obj;
 		if (this == obj)
 			equal = true;
-		if(code.equals(other.code) && connectionTimeMin.equals(other.connectionTimeMin) && outFlights.equals(other.outFlights))
+		if(code.equals(other.code))
 			equal = true;
 		return equal;
 	}
