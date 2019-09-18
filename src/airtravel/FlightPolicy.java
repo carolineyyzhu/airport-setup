@@ -8,6 +8,17 @@ public final class FlightPolicy extends AbstractFlight {
 	private final Flight flight;
 	private final BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy;
 	
+	private FlightPolicy(Flight flight, BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy) {
+		this.flight = flight;
+		this.policy = policy;
+	}
+	
+	public static final FlightPolicy of(Flight flight, BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy) {
+
+		//Create Instance of Airport
+		return new FlightPolicy(flight, policy);
+	}
+	
 	public static final Flight strict(Flight flight) {
 		
 	}
@@ -41,7 +52,7 @@ public final class FlightPolicy extends AbstractFlight {
 
 	@Override
 	public SeatConfiguration seatsAvailable(FareClass fareClass) {
-		
+		//TODO
 		return null;
 	}
 
