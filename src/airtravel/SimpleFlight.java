@@ -23,7 +23,7 @@ public class SimpleFlight extends AbstractFlight {
         this.code = code;
         this.leg = leg;
         this.flightSchedule = flightSchedule;
-        this.seatsAvailable = seatsAvailable;
+        this.seatsAvailable = seatsAvailable; 
     }
 
     /**
@@ -35,8 +35,8 @@ public class SimpleFlight extends AbstractFlight {
      */
 
     public static SimpleFlight of(String code, Leg leg, FlightSchedule flightSchedule, SeatConfiguration seatsAvailable) {
-        Helpers.nullCheck(code, leg, flightSchedule);
-        SimpleFlight flight = new SimpleFlight(code, leg, flightSchedule,SeatConfiguration.of(seatsAvailable));
+        Helpers.nullCheck(code, leg, flightSchedule, seatsAvailable);
+        SimpleFlight flight = new SimpleFlight(code, leg, flightSchedule, SeatConfiguration.of(seatsAvailable));
         Airport departureAirport = leg.getOrigin();
         departureAirport.addFlight(flight);
         return flight;
@@ -60,7 +60,6 @@ public class SimpleFlight extends AbstractFlight {
     //returns true if the flight is short
     @Override
 	public boolean isShort(Duration durationMax) {
-		//Throws exception if null inputs are received
         Helpers.nullCheck(durationMax);
 		return this.getFlightSchedule().isShort(durationMax);
 	}

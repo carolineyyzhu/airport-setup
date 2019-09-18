@@ -20,4 +20,9 @@ final class Helpers {
 		}
 	}
 
+	static <T> void nullCheck(T test1, T test2, T test3, T test4) {
+		nullCheck(test1, test2);
+		nullCheck(test3, test4);
+	}
+
 }

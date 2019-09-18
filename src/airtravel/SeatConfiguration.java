@@ -13,7 +13,7 @@ public final class SeatConfiguration {
 	
 	public static final SeatConfiguration of(SeatConfiguration seatConfiguration) {
 		Helpers.nullCheck(seatConfiguration);
-		return new SeatConfiguration(new EnumMap<SeatClass, Integer>(seatConfiguration.seats));
+		return new SeatConfiguration(seatConfiguration.seats);
 	}
 	
 	public static final SeatConfiguration of(EnumMap<SeatClass, Integer> seats) {

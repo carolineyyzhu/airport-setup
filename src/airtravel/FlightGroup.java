@@ -35,10 +35,7 @@ public final class FlightGroup  {
 	 * @return true if flight was added, false if flight was not
 	 */
 	public final boolean add(Flight flight) {
-		//Throws exception if flight is null
-		if (flight == null) {
-			throw new NullPointerException("Null inputs were received");
-		}
+		Helpers.nullCheck(flight);
 		//Throws exception if flight originated from a different airport
 		if (!flight.origin().equals(this.origin)) {
 			throw new IllegalArgumentException("This flight did not originate from this airport.");

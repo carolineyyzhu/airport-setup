@@ -29,9 +29,7 @@ public final class Airport implements Comparable<Airport> {
 	 * @return the created airport
 	 */
 	public static final Airport of(String code, Duration connectionTimeMin) {
-		//Check for null inputs
 		Helpers.nullCheck(code, connectionTimeMin);
-		//Create Instance of Airport
 		return new Airport(code, connectionTimeMin);
 	}
 	
@@ -60,7 +58,7 @@ public final class Airport implements Comparable<Airport> {
 	//Overrides equals method
 	@Override
 	public boolean equals(Object obj) {
-		Helpers.nullCheck(code, connectionTimeMin, outFlights);
+		Helpers.nullCheck(obj);
 		boolean equal = false;
 		Airport other = (Airport) obj;
 		if (this == obj || code.equals(other.code))
@@ -72,10 +70,7 @@ public final class Airport implements Comparable<Airport> {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((code == null) ? 0 : code.hashCode());
-		result = prime * result + ((connectionTimeMin == null) ? 0 : connectionTimeMin.hashCode());
-		result = prime * result + ((outFlights == null) ? 0 : outFlights.hashCode());
-		return result;
+		return prime * result + ((code == null) ? 0 : code.hashCode());
 	}
 
 	@Override
