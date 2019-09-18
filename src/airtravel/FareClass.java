@@ -32,7 +32,6 @@ public final class FareClass {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + (((Integer) identifier).hashCode());
-		result = prime * result + ((seatClass == null) ? 0 : seatClass.hashCode());
 		return result;
 	}
 	
