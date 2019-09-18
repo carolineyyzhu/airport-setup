@@ -20,9 +20,7 @@ public final class SeatConfiguration {
 		Helpers.nullCheck(seats);
 		return new SeatConfiguration(new EnumMap<SeatClass, Integer>(seats));
 	}
-	
 
-	
 	public final int seats(SeatClass seatClass) {
 		Helpers.nullCheck(seatClass);
 		if (seats.get(seatClass) == null || seats.get(seatClass) < 0) {
