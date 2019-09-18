@@ -10,6 +10,7 @@ public class SimpleFlight extends AbstractFlight {
     private final String code;
     private final FlightSchedule flightSchedule;
     private final Leg leg;
+    private final SeatConfiguration seatsAvailable;
 
     /**
      * private constructor
@@ -18,10 +19,11 @@ public class SimpleFlight extends AbstractFlight {
      * @param flightSchedule
      */
 
-    private SimpleFlight(String code, Leg leg, FlightSchedule flightSchedule) {
+    private SimpleFlight(String code, Leg leg, FlightSchedule flightSchedule, SeatConfiguration seatsAvailable) {
         this.code = code;
         this.leg = leg;
         this.flightSchedule = flightSchedule;
+        this.seatsAvailable = seatsAvailable;
     }
 
     /**
@@ -32,11 +34,11 @@ public class SimpleFlight extends AbstractFlight {
      * @return new SimpleFlight object
      */
 
-    public static SimpleFlight of(String code, Leg leg, FlightSchedule flightSchedule) {
+    public static SimpleFlight of(String code, Leg leg, FlightSchedule flightSchedule, SeatConfiguration seatsAvailable) {
         if(code == null || leg == null || flightSchedule == null) {
             throw new NullPointerException("Null value entered");
         }
-        SimpleFlight flight = new SimpleFlight(code, leg, flightSchedule);
+        SimpleFlight flight = new SimpleFlight(code, leg, flightSchedule,SeatConfiguration.of(seatsAvailable));
         Airport departureAirport = leg.getOrigin();
         departureAirport.addFlight(flight);
         return flight;
@@ -66,6 +68,12 @@ public class SimpleFlight extends AbstractFlight {
 		}
 		return this.getFlightSchedule().isShort(durationMax);
 	}
+    
+    public SeatConfiguration seatsAvailable(FareClass fareClass) {
+    	return seatsAvailable;
+    }
+    
+
 
 
 }

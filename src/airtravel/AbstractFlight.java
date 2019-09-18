@@ -32,5 +32,10 @@ public abstract class AbstractFlight implements Flight {
     public boolean isShort(Duration maxDuration) {
         return this.getFlightSchedule().isShort(maxDuration);
     }
+    
+    //return True if the flight has seats available, false if not
+    public boolean hasSeats(FareClass fareClass) {
+    	return this.hasSeats(fareClass);
+    }
 
 }

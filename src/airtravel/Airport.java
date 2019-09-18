@@ -35,8 +35,7 @@ public final class Airport implements Comparable<Airport> {
 			throw new NullPointerException("Null inputs were received");
 		}
 		//Create Instance of Airport
-		Airport newAirport = new Airport(code, connectionTimeMin);
-		return newAirport;
+		return new Airport(code, connectionTimeMin);
 	}
 	
 	//Adds a flight: returns true if flight was added
