@@ -1,5 +1,4 @@
 package airtravel;
-import static airtravel.Helpers.*;
 
 public final class FareClass {
 	
@@ -18,7 +17,7 @@ public final class FareClass {
 	//Overrides equals method
 	@Override
 	public boolean equals(Object obj) {
-		nullCheck(obj);
+		Helpers.nullCheck(obj);
 		boolean equal = false;
 		FareClass other = (FareClass) obj;
 		if (this == obj)

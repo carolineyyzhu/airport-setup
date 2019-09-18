@@ -6,8 +6,6 @@ package airtravel;
 import java.time.Duration;
 import java.time.LocalTime;
 
-import static airtravel.Helpers.nullCheck;
-
 /**
  * This class creates flight schedules 
  *
@@ -36,7 +34,7 @@ public final class FlightSchedule {
 	 */
 	public static final FlightSchedule of(LocalTime departureTime, LocalTime arrivalTime) {
 		//Check for null inputs
-		nullCheck(departureTime, arrivalTime);
+		Helpers.nullCheck(departureTime, arrivalTime);
 		//Check if arrivalTime precedes departureTime
 		if (arrivalTime.isBefore(departureTime)) {
 			throw new IllegalArgumentException("Arrival time precedes departure time");
@@ -51,7 +49,7 @@ public final class FlightSchedule {
 	 */
 	public final boolean isShort(Duration durationMax) {
 		//Throws exception if null inputs are recieved
-		nullCheck(durationMax);
+		Helpers.nullCheck(durationMax);
 		//Return value
 		boolean isShort = false;
 		

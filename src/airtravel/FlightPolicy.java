@@ -52,7 +52,7 @@ public final class FlightPolicy extends AbstractFlight {
 
 	@Override
 	public SeatConfiguration seatsAvailable(FareClass fareClass) {
-		//TODO
+		this.flight.seatsAvailable(fareClass);
 		return null;
 	}
 

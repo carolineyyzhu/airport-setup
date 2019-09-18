@@ -1,7 +1,5 @@
 package airtravel;
 
-import java.time.Duration;
-import java.util.Collection;
 import java.util.EnumMap;
 import java.util.List;
 
@@ -35,9 +33,9 @@ public final class SeatConfiguration {
 		
 	}
 	
-	public final int setSeats(SeatClass seatClass, int seats) {
-		Helpers.nullCheck(seatClass, seats);
-		return this.seats.replace(seatClass, seats);
+	public final int setSeats(SeatClass seatClass, int numSeats) {
+		Helpers.nullCheck(seatClass, numSeats);
+		return seats.replace(seatClass, numSeats);
 	}
 	
 	public final boolean hasSeats() {

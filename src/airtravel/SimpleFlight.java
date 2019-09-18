@@ -2,8 +2,6 @@ package airtravel;
 
 import java.time.Duration;
 
-import static airtravel.Helpers.*;
-
 /**
  * This class creates a simple flight with basic requirements
  *
@@ -37,7 +35,7 @@ public class SimpleFlight extends AbstractFlight {
      */
 
     public static SimpleFlight of(String code, Leg leg, FlightSchedule flightSchedule, SeatConfiguration seatsAvailable) {
-        nullCheck(code, leg, flightSchedule);
+        Helpers.nullCheck(code, leg, flightSchedule);
         SimpleFlight flight = new SimpleFlight(code, leg, flightSchedule,SeatConfiguration.of(seatsAvailable));
         Airport departureAirport = leg.getOrigin();
         departureAirport.addFlight(flight);
@@ -63,7 +61,7 @@ public class SimpleFlight extends AbstractFlight {
     @Override
 	public boolean isShort(Duration durationMax) {
 		//Throws exception if null inputs are received
-        nullCheck(durationMax);
+        Helpers.nullCheck(durationMax);
 		return this.getFlightSchedule().isShort(durationMax);
 	}
     
