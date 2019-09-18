@@ -13,15 +13,17 @@ public final class SeatConfiguration {
 		this.seats = new EnumMap<SeatClass, Integer>(seats);
 	}
 	
+	public static final SeatConfiguration of(SeatConfiguration seatConfiguration) {
+		Helpers.nullCheck(seatConfiguration);
+		return new SeatConfiguration(new EnumMap<SeatClass, Integer>(seatConfiguration.seats));
+	}
+	
 	public static final SeatConfiguration of(EnumMap<SeatClass, Integer> seats) {
 		Helpers.nullCheck(seats);
 		return new SeatConfiguration(new EnumMap<SeatClass, Integer>(seats));
 	}
 	
-	public static final SeatConfiguration of(SeatConfiguration seatConfiguration) {
-		Helpers.nullCheck(seatConfiguration);
-		return new SeatConfiguration(seatConfiguration.seats);
-	}
+
 	
 	public final int seats(SeatClass seatClass) {
 		Helpers.nullCheck(seatClass);
@@ -42,6 +44,7 @@ public final class SeatConfiguration {
 	public final boolean hasSeats() {
 		List <Integer> values = (List<Integer>) seats.values();
 		return (values.stream().mapToInt(Integer::intValue).sum() > 0);
+
 	}
 
 }
