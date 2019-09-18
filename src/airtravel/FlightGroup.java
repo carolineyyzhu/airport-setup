@@ -4,6 +4,8 @@ import java.util.*;
 import java.time.LocalTime;
 import java.util.function.BiFunction;
 
+import static airtravel.Helpers.nullCheck;
+
 public final class FlightGroup  {
 
 	private final Airport origin;
@@ -22,12 +24,9 @@ public final class FlightGroup  {
 	public static final FlightGroup of(Airport origin) {
 		//Check for null inputs
 		NavigableMap<LocalTime, Set<Flight>> flights =  new TreeMap<LocalTime, Set<Flight>>();
-		if (origin == null) {
-			throw new NullPointerException("Invalid Input Values");
-		}
+		nullCheck(origin);
 		//Create Instance of FlightSchedule
-		FlightGroup flightGroup = new FlightGroup(origin, flights);
-		return flightGroup;
+		return new FlightGroup(origin, flights);
 	}
 
 	/**
@@ -59,9 +58,7 @@ public final class FlightGroup  {
 	 */
 	public final boolean remove(Flight flight) {
 		//Throws exception if inputs are null
-		if (flight == null) {
-			throw new NullPointerException("Null inputs were received");
-		}
+		nullCheck(flight);
 		//Throws exception if flight originated from a different airport
 		if (!flight.origin().equals(this.origin)) {
 			throw new IllegalArgumentException("This flight does not originate from this airport.");
@@ -82,9 +79,7 @@ public final class FlightGroup  {
 
 	public final Set<Flight> flightsAtOrAfter(LocalTime departureTime){
 		//Throws exception if null inputs are received
-		if (departureTime == null) {
-			throw new NullPointerException("Null inputs were received");
-		}
+		nullCheck(departureTime);
 			
 		HashSet<Flight> returnSet = new HashSet<Flight>();
 

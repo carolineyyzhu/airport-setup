@@ -1,6 +1,5 @@
 package airtravel;
-
-import java.time.Duration;
+import static airtravel.Helpers.*;
 
 public final class FareClass {
 	
@@ -19,7 +18,7 @@ public final class FareClass {
 	//Overrides equals method
 	@Override
 	public boolean equals(Object obj) {
-		Helpers.nullCheck(obj);
+		nullCheck(obj);
 		boolean equal = false;
 		FareClass other = (FareClass) obj;
 		if (this == obj)
@@ -33,7 +32,7 @@ public final class FareClass {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((identifier == null) ? 0 : identifier.hashCode());
+		result = prime * result + (((Integer) identifier).hashCode());
 		result = prime * result + ((seatClass == null) ? 0 : seatClass.hashCode());
 		return result;
 	}

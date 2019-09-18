@@ -3,6 +3,8 @@ package airtravel;
 import java.time.Duration;
 import java.time.LocalTime;
 
+import static airtravel.Helpers.nullCheck;
+
 /**
  * This class creates airport objects with codes and min connection times.
  *
@@ -31,26 +33,20 @@ public final class Airport implements Comparable<Airport> {
 	 */
 	public static final Airport of(String code, Duration connectionTimeMin) {
 		//Check for null inputs
-		if (code == null || connectionTimeMin == null) {
-			throw new NullPointerException("Null inputs were received");
-		}
+		nullCheck(code, connectionTimeMin);
 		//Create Instance of Airport
 		return new Airport(code, connectionTimeMin);
 	}
 	
 	//Adds a flight: returns true if flight was added
 	public final boolean addFlight(Flight flight) {
-		if (flight == null) {
-			throw new NullPointerException("Null inputs were received");
-		}
+		nullCheck(flight);
 		return outFlights.add(flight);
 	}
 	
 	//Removes a flight: returns true if the flight was removed
 	public final boolean removeFlight(Flight flight) {
-		if (flight == null) {
-			throw new NullPointerException("Null inputs were received");
-		}
+		nullCheck(flight);
 		return outFlights.remove(flight);
 	}
 	
@@ -67,14 +63,10 @@ public final class Airport implements Comparable<Airport> {
 	//Overrides equals method
 	@Override
 	public boolean equals(Object obj) {
-		if(obj == null || code == null || connectionTimeMin == null || outFlights == null) {
-			throw new NullPointerException("Null values processed, invalid");
-		}
+		nullCheck(code, connectionTimeMin, outFlights);
 		boolean equal = false;
 		Airport other = (Airport) obj;
-		if (this == obj)
-			equal = true;
-		if(code.equals(other.code))
+		if (this == obj || code.equals(other.code))
 			equal = true;
 		return equal;
 	}
