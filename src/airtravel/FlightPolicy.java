@@ -14,24 +14,23 @@ public final class FlightPolicy extends AbstractFlight {
 	}
 	
 	public static final FlightPolicy of(Flight flight, BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy) {
-
 		//Create Instance of Airport
 		return new FlightPolicy(flight, policy);
 	}
 	
-	public static final Flight strict(Flight flight) {
+	public static final Flight strict(Flight policyFlight) {
+		policy = ;
+	}
+	
+	public static final Flight restrictedDuration(Flight policyFlight, Duration durationMax) {
 		
 	}
 	
-	public static final Flight restrictedDuration(Flight flight, Duration durationMax) {
+	public static final Flight reserve(Flight policyFlight, int reserve) {
 		
 	}
 	
-	public static final Flight reserve(Flight flight, int reserve) {
-		
-	}
-	
-	public static final Flight limited(Flight flight) {
+	public static final Flight limited(Flight policyFlight) {
 		
 	}
 
