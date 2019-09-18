@@ -23,11 +23,19 @@ public final class FlightPolicy extends AbstractFlight {
 	}
 	
 	public static final Flight strict(Flight policyFlight) {
-		SeatConfiguration newConfig = SeatConfiguration.of(new EnumMap<SeatClass, Integer>(SeatClass.class));
-		Flight newFlight = FlightPolicy.of(policyFlight, (a,b) ->)
+		//thres some more stuff to get the enum map to cooperate but you got the bulk of it holy shit
+		//dab dab I have no idea what im doing help me fix big brain
+		BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = (a,b) -> policyFlight.hasSeats(b) ? policyFlight.seatsAvailable(b) : a;
+		return FlightPolicy.of(policyFlight, policy);
 	}
 	
-	public static final Flight restrictedDuration(Flight policyFlight, Duration durationMax) {
+	public static final Flight restrictedDuration(Flight flight, Duration durationMax) {
+		if (flight.isShort(durationMax)){
+			//do strict
+		} else {
+			//return the same seat configuration as on the underlying flight
+		}
+		
 		
 	}
 	
