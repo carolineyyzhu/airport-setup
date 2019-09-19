@@ -11,9 +11,9 @@ public final class FlightPolicy extends AbstractFlight {
 	private final BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy;
 
 	//Private constructor for FlightPolicy
-	private FlightPolicy(Flight flight, ) {
+	private FlightPolicy(Flight flight, BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy, FareClass fareClass) {
 		this.policy = policy;
-		this.flight = flight;
+		this.flight = SimpleFlight.of(flight.getCode(), flight.getLeg(), flight.getFlightSchedule(), policy.apply(flight.seatsAvailable(fareClass), fareClass));
 	}
 
 	/**
@@ -23,10 +23,14 @@ public final class FlightPolicy extends AbstractFlight {
 	 * @return
 	 */
 	public static final FlightPolicy of(Flight flight, BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy, FareClass fareClass) {
+		//Create new flight policy
+		policy.apply(flight.seatsAvailable(fareClass), fareClass); //This is the desiered seat configuration
+		FlightPolicy tmp = new FlightPolicy(flight, policy, fareClass);
+		
 		//Replace flight at departure airport with this policy
 		flight.getLeg().getOrigin().removeFlight(flight);
-		flight.getLeg().getOrigin().addFlight(policy.apply(flight.seatsAvailable(), fareClass));
-		return flightPolicy;
+		flight.getLeg().getOrigin().addFlight(tmp);
+		return tmp;
 	}
 
 	//Applies the strict BiFunction to a specific flight
@@ -98,7 +102,7 @@ public final class FlightPolicy extends AbstractFlight {
 	}
 
 	//private helper method to create a new seat configuration where every enum value has a key of 0
-	private static SeatConfiguration emptySeatConfig() {
+	static SeatConfiguration emptySeatConfig() {
 		SeatConfiguration newSeatConfig = SeatConfiguration.of(new EnumMap<SeatClass, Integer>(SeatClass.class));
 		for(SeatClass section:SeatClass.values()) {
 			newSeatConfig.setSeats(section, 0);
