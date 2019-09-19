@@ -38,8 +38,7 @@ public final class FlightPolicy extends AbstractFlight {
 	public static final Flight strict(Flight flight) {
 		Helpers.nullCheck(flight);
 		BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = (a,b) ->
-				flight.hasSeats(b) ? putSeat(emptySeatConfig(), b.getSeatClass(), a.seats(b.getSeatClass())) : emptySeatConfig();
-		
+				flight.hasSeats(b) ? putSeat(emptySeatConfig(), b.getSeatClass(), a.seats(b.getSeatClass())): emptySeatConfig();
 		return FlightPolicy.of(flight, policy);
 	}
 
@@ -125,7 +124,8 @@ public final class FlightPolicy extends AbstractFlight {
 
 	@Override
 	public SeatConfiguration seatsAvailable(FareClass fareClass) {
-		return this.flight.seatsAvailable(fareClass);
+		//Apply the flight policy here
+		return this.policy.apply(this.flight.seatsAvailable(fareClass), fareClass);
 	} 
 
 }
