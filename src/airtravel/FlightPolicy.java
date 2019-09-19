@@ -32,7 +32,6 @@ public final class FlightPolicy extends AbstractFlight {
 		Helpers.nullCheck(flight);
 		BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = (a,b) ->
 				flight.hasSeats(b) ? putSeat(emptySeatConfig(), b.getSeatClass(), a.seats(b.getSeatClass())) : emptySeatConfig();
-		Flight newFlight =
 		return FlightPolicy.of(flight, policy);
 	}
 
