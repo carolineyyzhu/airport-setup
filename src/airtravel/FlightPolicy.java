@@ -27,33 +27,17 @@ public final class FlightPolicy extends AbstractFlight {
 		return new FlightPolicy(flight, policy);
 	}
 
-	//Generates the strict BiFunction
-	private static final BiFunction<SeatConfiguration, FareClass, SeatConfiguration> strictBiFunction(Flight flight) {
-		return (a,b) -> flight.hasSeats(b) ? putSeat(generateEmptySeatConfig(), b.getSeatClass(), a.seats(b.getSeatClass())) : generateEmptySeatConfig();
-	}
-
 	//Applies the strict BiFunction to a specific flight
 	public static final Flight strict(Flight flight) {
+		Helpers.nullCheck(flight);
 		BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = strictBiFunction(flight);
-		return policy.apply(flight.seatsAvailable());
+		return FlightPolicy.of(flight, policy).flight;
 	}
 
-	private static final SeatConfiguration putSeat(SeatConfiguration seatConfig, SeatClass seatClass, Integer numSeats) {
-		seatConfig.setSeats(seatClass, numSeats);
-		return seatConfig;
-	}
-
-	/**
-	 * Generates a SeatConfiguration object where every key has a value of 0
-	 * @return new empty seat configuration
-	 */
-	private static SeatConfiguration generateEmptySeatConfig() {
-		SeatConfiguration newSeatConfig = SeatConfiguration.of(new EnumMap<SeatClass, Integer>(SeatClass.class));
-		SeatClass[] seatClasses = SeatClass.values();
-		for(SeatClass section:seatClasses) {
-			newSeatConfig.setSeats(section, 0);
-		}
-		return newSeatConfig;
+	//Private helper method to generate the strict BiFunction
+	private static final BiFunction<SeatConfiguration, FareClass, SeatConfiguration> strictBiFunction(Flight flight) {
+		Helpers.nullCheck(flight);
+		return (a,b) -> flight.hasSeats(b) ? putSeat(generateEmptySeatConfig(), b.getSeatClass(), a.seats(b.getSeatClass())) : generateEmptySeatConfig();
 	}
 
 	public static final Flight restrictedDuration(Flight flight, Duration durationMax) {
@@ -79,6 +63,23 @@ public final class FlightPolicy extends AbstractFlight {
 	
 	public static final Flight limited(Flight flight) {
 		
+	}
+
+	//private helper method to add a key and a value to a given SeatConfiguration, and return the new SeatConfiguration
+	private static final SeatConfiguration putSeat(SeatConfiguration seatConfig, SeatClass seatClass, Integer numSeats) {
+		Helpers.nullCheck(seatConfig, seatClass, numSeats);
+		seatConfig.setSeats(seatClass, numSeats);
+		return seatConfig;
+	}
+
+	//private helper method to create a new seat configuration where every enum value has a key of 0
+	private static SeatConfiguration generateEmptySeatConfig() {
+		SeatConfiguration newSeatConfig = SeatConfiguration.of(new EnumMap<SeatClass, Integer>(SeatClass.class));
+		SeatClass[] seatClasses = SeatClass.values();
+		for(SeatClass section:seatClasses) {
+			newSeatConfig.setSeats(section, 0);
+		}
+		return newSeatConfig;
 	}
 
 	@Override
