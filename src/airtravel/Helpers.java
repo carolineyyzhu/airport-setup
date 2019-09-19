@@ -5,7 +5,7 @@ import java.util.Objects;
 final class Helpers {
 	
 	static <T> void nullCheck(T test) {
-		Objects.requireNonNull(test,"Null inputs were received");
+		Objects.requireNonNull(test,"Null input resived in method header");
 	}
 	
 	static <T> void nullCheck(T test1, T test2) {

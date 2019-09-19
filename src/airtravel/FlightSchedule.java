@@ -56,12 +56,8 @@ public final class FlightSchedule {
 		//Find the flight duration of this flight
 		Duration duration = Duration.between(departureTime, arrivalTime);
 		
-		//Compare max duration to this duration
-		if (duration.compareTo(durationMax) < 0) { //less or equal and return the if logic
-			isShort = true;
-		}
-		
-		return isShort;
+		//Compare max duration to this duration		
+		return (duration.compareTo(durationMax) <= 0);
 	}
 	
 	//Getter for departure time

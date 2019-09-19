@@ -35,11 +35,7 @@ public final class FlightGroup  {
 	 * @return true if flight was added, false if flight was not
 	 */
 	public final boolean add(Flight flight) {
-		Helpers.nullCheck(flight);
-		//Throws exception if flight originated from a different airport
-		if (!flight.origin().equals(this.origin)) {
-			throw new IllegalArgumentException("This flight did not originate from this airport.");
-		}
+		checkErrors(flight);
 		LocalTime deptTime = flight.getFlightSchedule().getDepartureTime();
 		flights.computeIfAbsent(deptTime, flightList -> new HashSet<Flight>()).add(flight);
 		return flights.get(deptTime).contains(flight);
@@ -52,18 +48,29 @@ public final class FlightGroup  {
 	 * @return true if flight was removed, throws error if the flight was not
 	 */
 	public final boolean remove(Flight flight) {
+		checkErrors(flight);
+		LocalTime deptTime = flight.getFlightSchedule().getDepartureTime();
+		BiFunction<LocalTime, Set<Flight>, Set<Flight>> removeFlight = (depart, flightSet) -> flightSet.remove(flight) ? flightSet : null;
+		if(flights.computeIfPresent(deptTime, removeFlight) == null) {
+			return false;
+		}else {
+			return !flights.get(deptTime).contains(flight);
+		}
+		
+	}
+	
+	/**
+	 * This method checks for errors in the add and remove flight method.
+	 * @param flight
+	 */
+	private final void checkErrors(Flight flight) {
 		//Throws exception if inputs are null
 		Helpers.nullCheck(flight);
 		//Throws exception if flight originated from a different airport
 		if (!flight.origin().equals(this.origin)) {
 			throw new IllegalArgumentException("This flight does not originate from this airport.");
 		}
-
-		LocalTime deptTime = flight.getFlightSchedule().getDepartureTime();
-		BiFunction<LocalTime, Set<Flight>, Set<Flight>> removeFlight = (depart, flightSet) -> flightSet.remove(flight) ? flightSet : null;
-		if(flights.computeIfPresent(deptTime, removeFlight) == null)
-			throw new IllegalArgumentException("This flight does not exist in this flight group.");
-		return !flights.get(deptTime).contains(flight);
+		
 	}
 
 	/**
@@ -81,8 +88,8 @@ public final class FlightGroup  {
 		//new hashset of the flightsets
 		HashSet<Set<Flight>> setOfFlightSets = new HashSet<Set<Flight>>();
 
-		//retrieves all sets for departure times after the departure time inputted, inclusive
-		setOfFlightSets = (HashSet<Set<Flight>>) flights.tailMap(departureTime, true);
+		//retrieves all sets for departure times after the departure time inputed, inclusive
+		setOfFlightSets = (HashSet<Set<Flight>>) flights.tailMap(departureTime, true).values();
 		//map.values (check later)
 
 		//iterator runs through the sets within the Hashset and adds all of the entries into the returnSet
