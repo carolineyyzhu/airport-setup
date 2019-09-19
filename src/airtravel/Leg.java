@@ -25,9 +25,7 @@ public final class Leg {
      * @return generated Leg object with a non-null origin and destination
      */
     public static final Leg of(Airport origin, Airport destination) {
-        if(origin == null || destination == null) {
-            throw new NullPointerException("Null input values");
-        }
+    	Helpers.nullCheck(origin, destination);
         return new Leg(origin, destination);
     }
 
