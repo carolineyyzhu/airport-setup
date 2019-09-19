@@ -32,7 +32,7 @@ public final class FlightPolicy extends AbstractFlight {
 		Helpers.nullCheck(flight);
 		BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = (a,b) ->
 				flight.hasSeats(b) ? putSeat(emptySeatConfig(), b.getSeatClass(), a.seats(b.getSeatClass())) : emptySeatConfig();
-		Flight newFlight =
+		Flight newFlight = SimpleFlight.of(flight.getCode(), flight.getLeg(), flight.getFlightSchedule(), policy.apply(flight.seatsAvailable));
 		return FlightPolicy.of(flight, policy);
 	}
 
@@ -103,17 +103,17 @@ public final class FlightPolicy extends AbstractFlight {
 
 	@Override
 	public String getCode() {
-		return flight.getCode();
+		return this.flight.getCode();
 	}
 
 	@Override
 	public Leg getLeg() {
-		return flight.getLeg();
+		return this.flight.getLeg();
 	}
 
 	@Override
 	public FlightSchedule getFlightSchedule() {
-		return flight.getFlightSchedule();
+		return this.flight.getFlightSchedule();
 	}
 
 	@Override
