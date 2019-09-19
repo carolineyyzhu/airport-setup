@@ -48,11 +48,9 @@ public final class FlightSchedule {
 	 * @return True if the flight is short and false if it is long
 	 */
 	public final boolean isShort(Duration durationMax) {
-		//Throws exception if null inputs are recieved
+		//Throws exception if null inputs are received
 		Helpers.nullCheck(durationMax);
-		//Return value
-		boolean isShort = false;
-		
+
 		//Find the flight duration of this flight
 		Duration duration = Duration.between(departureTime, arrivalTime);
 		

@@ -17,22 +17,17 @@ public final class FareClass {
 	//Overrides equals method
 	@Override
 	public boolean equals(Object obj) {
-		Helpers.nullCheck(obj);
-		boolean equal = false;
+		if (obj == null){
+			return false;
+		}
 		FareClass other = (FareClass) obj;
-		if (this == obj)
-			equal = true;
-		if(other.getIdentifier() == identifier)
-			equal = true;
-		return equal;
+		return (this == obj || other.getIdentifier() == identifier);
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
-		result = prime * result + (((Integer) identifier).hashCode());
-		return result;
+		return prime + (((Integer) identifier).hashCode());
 	}
 	
 	public final int getIdentifier() {
