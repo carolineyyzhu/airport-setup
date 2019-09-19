@@ -14,7 +14,6 @@ public final class FlightPolicy extends AbstractFlight {
 	private FlightPolicy(Flight flight, BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy) {
 		this.policy = policy;
 		this.flight = flight;
-		//SimpleFlight.of(flight.getCode(), flight.getLeg(), flight.getFlightSchedule(), policy.apply(flight.seatsAvailable(fareClass), fareClass));
 	}
 
 	/**
@@ -91,6 +90,10 @@ public final class FlightPolicy extends AbstractFlight {
 		return limitedSeatConfig;
 	}
 
+	public Flight flightBelowClass(Flight flight) {
+		return flight;
+	}
+
 	//private helper method to add a key and a value to a given SeatConfiguration, and return the new SeatConfiguration
 	private static final SeatConfiguration putSeat(SeatConfiguration seatConfig, SeatClass seatClass, Integer numSeats) {
 		Helpers.nullCheck(seatConfig, seatClass, numSeats);
@@ -125,6 +128,6 @@ public final class FlightPolicy extends AbstractFlight {
 	@Override
 	public SeatConfiguration seatsAvailable(FareClass fareClass) {
 		return this.flight.seatsAvailable(fareClass);
-	} 
+	}
 
 }

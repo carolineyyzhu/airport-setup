@@ -73,13 +73,13 @@ public class FlightPolicyTest {
         }
         assertTrue(seatsAccurate);
     }
-    
+
     /**
      * Passenger can enter their class or the class below them
      */
 
     @Test
-    public void economyPolicyTest() {
+    public void classBelowPolicyTest() {
         Airport airportA = Airport.of("AA12", Duration.ofMinutes(30));
         Airport airportB = Airport.of("BB8", Duration.ofMinutes(30));
         Leg leg = Leg.of(airportA, airportB);
@@ -94,39 +94,37 @@ public class FlightPolicyTest {
         airportA.addFlight(flight);
 
         FlightPolicy fp = new FlightPolicy() {
-            Flight belowClass(Flight flight) {
+            public Flight flightBelowClass(Flight flight) {
                 Helpers.nullCheck(flight);
                 BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = (a,b) ->
-                        flight.hasSeats(b) || flight.hasSeats(FareClass.of(0, SeatClass.classBelow(b.getSeatClass()))) ? this.belowSeatConfig(a) : emptySeatConfig();
+                        flight.hasSeats(b) || flight.hasSeats(FareClass.of(0, SeatClass.classBelow(b.getSeatClass()))) ? this.belowSeatConfig(a, b) : emptySeatConfig();
                 return FlightPolicy.of(flight, policy);
             }
 
             //private helper method to generate a SeatConfiguration that accounts for available seats while saving a reserve
-            SeatConfiguration belowSeatConfig(SeatConfiguration seatConfig) {
-                Helpers.nullCheck(seatConfig);
-                SeatConfiguration newSeatConfig = SeatConfiguration.of(seatConfig);
+            SeatConfiguration belowSeatConfig(SeatConfiguration seatConfig, FareClass fareClass) {
+                SeatClass seatClass = fareClass.getSeatClass();
+                SeatConfiguration belowClassConfig = SeatConfiguration.of(seatConfig);
                 for(SeatClass section:SeatClass.values()) {
-                    if(newSeatConfig.seats(section) > reserve)
-                        newSeatConfig.setSeats(section, newSeatConfig.seats(section) - reserve);
-                    else
-                        newSeatConfig.setSeats(section, 0);
+                    if(section != seatClass && section != SeatClass.classBelow(seatClass))
+                        belowClassConfig.setSeats(section, 0);
                 }
-                return newSeatConfig;
+                return belowClassConfig;
             }
         };
 
         boolean seatsAccurate = true;
-        SeatConfiguration flightClassSeats = fp.belowClass(flight);
-        int reserve = 2;
+        SeatConfiguration flightClassSeats = fp.flightBelowClass(flight).seatsAvailable(fareClass);
         for (SeatClass section : SeatClass.values()) {
             System.out.println(section + " " + flightClassSeats.seats(section));
-            if (section != fareClass.getSeatClass() && section != SeatClass.classAbove(fareClass.getSeatClass()) && !flightClassSeats.seats(section).equals(0))
+            if (section != fareClass.getSeatClass() && section != SeatClass.classBelow(fareClass.getSeatClass()) && !flightClassSeats.seats(section).equals(0))
                 seatsAccurate = false;
-            if (section == fareClass.getSeatClass() && !flightClassSeats.seats(section).equals(flight.seatsAvailable(fareClass).seats(section) - reserve))
+            if (section == fareClass.getSeatClass() && !flightClassSeats.seats(section).equals(flight.seatsAvailable(fareClass).seats(section)))
                 seatsAccurate = false;
-            if(section == SeatClass.classAbove(fareClass.getSeatClass()) && !flightClassSeats.seats(section).equals(flight.seatsAvailable(fareClass).seats(section) - reserve)
-            seatsAccurate = false;
+            if(section == SeatClass.classBelow(fareClass.getSeatClass()) && !flightClassSeats.seats(section).equals(flight.seatsAvailable(fareClass).seats(section)))
+                seatsAccurate = false;
         }
         assertTrue(seatsAccurate);
     }
+
 }
