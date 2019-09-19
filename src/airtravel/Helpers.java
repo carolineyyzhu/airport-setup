@@ -1,23 +1,22 @@
 package airtravel;
 
+import java.util.Objects;
+
 final class Helpers {
 	
 	static <T> void nullCheck(T test) {
-		if (test == null){
-			throw new NullPointerException("Null inputs were received");
-		}
+		Objects.requireNonNull(test,"Null inputs were received");
 	}
 	
 	static <T> void nullCheck(T test1, T test2) {
-		if (test1 == null || test2 == null){
-			throw new NullPointerException("Null inputs were received");
-		}
+		nullCheck(test1);
+		nullCheck(test2);
 	}
+	
 
 	static <T> void nullCheck(T test1, T test2, T test3) {
-		if (test1 == null || test2 == null || test3 == null){
-			throw new NullPointerException("Null inputs were received");
-		}
+		nullCheck(test1, test2);
+		nullCheck(test3);
 	}
 
 	static <T> void nullCheck(T test1, T test2, T test3, T test4) {
