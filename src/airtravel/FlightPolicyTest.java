@@ -67,34 +67,36 @@ public class FlightPolicyTest {
                 seatsAccurate = false;
             if (section == fareClass.getSeatClass() && !flightClassSeats.seats(section).equals(flight.seatsAvailable(fareClass).seats(section) - reserve))
                 seatsAccurate = false;
-            if(section == SeatClass.classAbove(fareClass.getSeatClass()) && !flightClassSeats.seats(section).equals(flight.seatsAvailable(fareClass).seats(section) - reserve)
+            if(section == SeatClass.classAbove(fareClass.getSeatClass()) && !flightClassSeats.seats(section).equals(flight.seatsAvailable(fareClass).seats(section) - reserve))
                 seatsAccurate = false;
         }
         assertTrue(seatsAccurate);
     }
-
-    /**
-     *
-     */
-
-    @Test
-    public void economyPolicyTest() {
-        Airport airportA = Airport.of("AA12", Duration.ofMinutes(30));
-        Airport airportB = Airport.of("BB8", Duration.ofMinutes(30));
-        Leg leg = Leg.of(airportA, airportB);
-        FlightSchedule fsched = FlightSchedule.of(LocalTime.of(4, 50), LocalTime.of(6, 40));
-        EnumMap<SeatClass, Integer> seatConfigEnumMap = new EnumMap<SeatClass, Integer>(SeatClass.class);
-        for (SeatClass section : SeatClass.values()) {
-            seatConfigEnumMap.put(section, 6);
-        }
-        SeatConfiguration seatConfiguration = SeatConfiguration.of(seatConfigEnumMap);
-        FareClass fareClass = FareClass.of(15, SeatClass.ECONOMY);
-        Flight flight = SimpleFlight.of("UA197", leg, fsched, seatConfiguration);
-        airportA.addFlight(flight);
-
-        FlightPolicy flightPolicy = new FlightPolicyTest() {
-
-        }
-    }
-
 }
+
+//    /**
+//     *
+//     */
+//
+//    @Test
+//    public void economyPolicyTest() {
+//        Airport airportA = Airport.of("AA12", Duration.ofMinutes(30));
+//        Airport airportB = Airport.of("BB8", Duration.ofMinutes(30));
+//        Leg leg = Leg.of(airportA, airportB);
+//        FlightSchedule fsched = FlightSchedule.of(LocalTime.of(4, 50), LocalTime.of(6, 40));
+//        EnumMap<SeatClass, Integer> seatConfigEnumMap = new EnumMap<SeatClass, Integer>(SeatClass.class);
+//        for (SeatClass section : SeatClass.values()) {
+//            seatConfigEnumMap.put(section, 6);
+//        }
+//        SeatConfiguration seatConfiguration = SeatConfiguration.of(seatConfigEnumMap);
+//        FareClass fareClass = FareClass.of(15, SeatClass.ECONOMY);
+//        Flight flight = SimpleFlight.of("UA197", leg, fsched, seatConfiguration);
+//        airportA.addFlight(flight);
+//
+//        FlightPolicy flightPolicy = new FlightPolicyTest() {
+//        	
+//
+//        }
+//    }
+//
+//}
