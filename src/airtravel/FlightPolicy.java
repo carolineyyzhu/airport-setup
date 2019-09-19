@@ -9,11 +9,13 @@ public final class FlightPolicy extends AbstractFlight {
 	
 	private final Flight flight;
 	private final BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy;
+	private final FareClass fareClass;
 
 	//Private constructor for FlightPolicy
-	private FlightPolicy(Flight flight, BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy) {
+	private FlightPolicy(Flight flight, BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy, FareClass fareClass) {
 		this.flight = flight;
 		this.policy = policy;
+		this.fareClass = fareClass;
 	}
 
 	/**
@@ -22,7 +24,7 @@ public final class FlightPolicy extends AbstractFlight {
 	 * @param policy BiFunction that defines the policy
 	 * @return
 	 */
-	public static final FlightPolicy of(Flight flight, BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy) {
+	public static final FlightPolicy of(Flight flight, BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy, FareClass fareClass) {
 		//Create new flight policy
 		FlightPolicy flightPolicy = new FlightPolicy(flight, policy);
 		
@@ -41,7 +43,7 @@ public final class FlightPolicy extends AbstractFlight {
 		//Step 2: Then apply the policy to the flight
 		//Step 3: return the new configuration
 		
-		return FlightPolicy.of(flight, policy);
+		return FlightPolicy.of(policy.apply(flight.seatsAvailable(), ), policy);
 	}
 
 	public static final Flight restrictedDuration(Flight flight, Duration durationMax) {

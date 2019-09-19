@@ -59,7 +59,7 @@ public class FlightPolicyTest {
         airportA.addFlight(flight);
 
         boolean seatsAccurate = true;
-        SeatConfiguration flightClassSeats = FlightPolicy.strict(flight).seatsAvailable(fareClass);
+        SeatConfiguration flightClassSeats = FlightPolicy.limited(FlightPolicy.reserve(flight, 2)).seatsAvailable(fareClass);
         for (SeatClass section : SeatClass.values()) {
             System.out.println(section + " " + flightClassSeats.seats(section));
             if (section != fareClass.getSeatClass() && section != SeatClass.classAbove(fareClass.getSeatClass()) && !flightClassSeats.seats(section).equals(0))
@@ -71,7 +71,7 @@ public class FlightPolicyTest {
     }
 
     /**
-     * 
+     *
      */
 
 }
