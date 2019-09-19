@@ -31,7 +31,7 @@ public final class FlightPolicy extends AbstractFlight {
 	public static final Flight strict(Flight flight) {
 		Helpers.nullCheck(flight);
 		BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = (a,b) ->
-				flight.hasSeats(b) ? putSeat(generateEmptySeatConfig(), b.getSeatClass(), a.seats(b.getSeatClass())) : generateEmptySeatConfig();;
+				flight.hasSeats(b) ? putSeat(emptySeatConfig(), b.getSeatClass(), a.seats(b.getSeatClass())) : emptySeatConfig();;
 		return FlightPolicy.of(flight, policy).flight;
 	}
 
@@ -40,7 +40,7 @@ public final class FlightPolicy extends AbstractFlight {
 		BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy;
 		if (flight.isShort(durationMax))
 			//returns a strict policy on short flights
-			 policy = (a,b) -> flight.hasSeats(b) ? flight.seatsAvailable(b) : generateEmptySeatConfig();
+			policy = (a,b) -> flight.hasSeats(b) ? flight.seatsAvailable(b) : emptySeatConfig();
 		else
 			//returns the same seat configuration as on the underlying flight
 			policy = (a,b) -> SeatConfiguration.of(a);
@@ -48,13 +48,21 @@ public final class FlightPolicy extends AbstractFlight {
 	}
 	
 	public static final Flight reserve(Flight flight, int reserve) {
-		BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = (a,b) -> a.seats(b.getSeatClass()) - reserve > 0 ?  : a;
+		BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = (a,b) ->
+				((a.seats(b.getSeatClass()) - reserve) > 0) ? reserveSeatConfig(a, reserve): emptySeatConfig();
 		return FlightPolicy.of(flight, policy).flight;
 	}
 
-	private static final BiFunction<SeatConfiguration, FareClass, SeatConfiguration> reserveBiFunction(Flight flight, int reserve) {
-		Helpers.nullCheck(flight);
-		return (a,b) -> ((a.seats(b.getSeatClass()) - reserve) > 0) ? : SeatConfiguration.of(a);
+	//private helper method to generate a SeatConfiguration that accounts for available seats while saving a reserve
+	private static final SeatConfiguration reserveSeatConfig(SeatConfiguration seatConfig, int reserve) {
+		SeatConfiguration newSeatConfig = SeatConfiguration.of(seatConfig);
+		for(SeatClass section:SeatClass.values()) {
+			if(newSeatConfig.seats(section) > reserve)
+				newSeatConfig.setSeats(section, newSeatConfig.seats(section) - reserve);
+			else
+				newSeatConfig.setSeats(section, 0);
+		}
+		return newSeatConfig;
 	}
 	
 	public static final Flight limited(Flight flight) {
@@ -69,10 +77,9 @@ public final class FlightPolicy extends AbstractFlight {
 	}
 
 	//private helper method to create a new seat configuration where every enum value has a key of 0
-	private static SeatConfiguration generateEmptySeatConfig() {
+	private static SeatConfiguration emptySeatConfig() {
 		SeatConfiguration newSeatConfig = SeatConfiguration.of(new EnumMap<SeatClass, Integer>(SeatClass.class));
-		SeatClass[] seatClasses = SeatClass.values();
-		for(SeatClass section:seatClasses) {
+		for(SeatClass section:SeatClass.values()) {
 			newSeatConfig.setSeats(section, 0);
 		}
 		return newSeatConfig;
