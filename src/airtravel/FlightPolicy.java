@@ -23,8 +23,13 @@ public final class FlightPolicy extends AbstractFlight {
 	 * @return
 	 */
 	public static final FlightPolicy of(Flight flight, BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy) {
-		//Create instance of Airport
-		return new FlightPolicy(flight, policy);
+		//Create new flight policy
+		FlightPolicy flightPolicy = new FlightPolicy(flight, policy);
+		
+		//Replace flight at departure airport with this policy
+		flight.getLeg().getOrigin().removeFlight(flight);
+		flight.getLeg().getOrigin().addFlight(flightPolicy);
+		return flightPolicy;
 	}
 
 	//Applies the strict BiFunction to a specific flight
@@ -32,6 +37,10 @@ public final class FlightPolicy extends AbstractFlight {
 		Helpers.nullCheck(flight);
 		BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = (a,b) ->
 				flight.hasSeats(b) ? putSeat(emptySeatConfig(), b.getSeatClass(), a.seats(b.getSeatClass())) : emptySeatConfig();
+		//Step 1: get the seats available
+		//Step 2: Then apply the policy to the flight
+		//Step 3: return the new configuration
+		
 		return FlightPolicy.of(flight, policy);
 	}
 
