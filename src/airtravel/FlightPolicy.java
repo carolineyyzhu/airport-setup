@@ -33,7 +33,6 @@ public final class FlightPolicy extends AbstractFlight {
 		BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = (a,b) ->
 				flight.hasSeats(b) ? putSeat(emptySeatConfig(), b.getSeatClass(), a.seats(b.getSeatClass())) : emptySeatConfig();
 		Flight newFlight = SimpleFlight.of(flight.getCode(), flight.getLeg(), flight.getFlightSchedule(), policy.apply(flight.seatsAvailable));
-		return FlightPolicy.of(flight, policy);
 	}
 
 	public static final Flight restrictedDuration(Flight flight, Duration durationMax) {

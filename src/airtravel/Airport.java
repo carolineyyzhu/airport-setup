@@ -58,12 +58,11 @@ public final class Airport implements Comparable<Airport> {
 	//Overrides equals method
 	@Override
 	public boolean equals(Object obj) {
-		Helpers.nullCheck(obj);
-		boolean equal = false;
+		if (obj == null) {
+			return false;
+		}
 		Airport other = (Airport) obj;
-		if (this == obj || code.equals(other.code))
-			equal = true;
-		return equal;
+		return (this == obj || code.equals(other.code));
 	}
 
 	@Override
