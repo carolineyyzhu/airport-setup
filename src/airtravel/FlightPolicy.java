@@ -29,8 +29,8 @@ public final class FlightPolicy extends AbstractFlight {
 		FlightPolicy tmp = new FlightPolicy(flight, policy);
 		
 		//Replace flight at departure airport with this policy
-		flight.getLeg().getOrigin().removeFlight(flight);
-		flight.getLeg().getOrigin().addFlight(tmp);
+		flight.origin().removeFlight(flight);
+		flight.origin().addFlight(tmp);
 		return tmp;
 	}
 
@@ -54,7 +54,7 @@ public final class FlightPolicy extends AbstractFlight {
 			policy = (a,b) -> SeatConfiguration.of(a);
 		return FlightPolicy.of(flight, policy);
 	}
-	
+	//method to calculate 
 	public static final Flight reserve(Flight flight, int reserve) {
 		Helpers.nullCheck(flight, reserve);
 		BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = (a,b) ->
