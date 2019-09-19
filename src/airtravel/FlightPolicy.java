@@ -16,15 +16,13 @@ public final class FlightPolicy extends AbstractFlight {
 	
 	public static final FlightPolicy of(Flight flight, BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy) {
 		//Create Instance of Airport
-		if() {
 
-		}
 		return new FlightPolicy(flight, policy);
 	}
 	
 	public static final Flight strict(Flight policyFlight) {
 		SeatConfiguration newConfig = SeatConfiguration.of(new EnumMap<SeatClass, Integer>(SeatClass.class));
-		Flight newFlight = FlightPolicy.of(policyFlight, (a,b) ->)
+		Flight newFlight = FlightPolicy.of(policyFlight, (a,b) ->);
 	}
 	
 	public static final Flight restrictedDuration(Flight policyFlight, Duration durationMax) {
