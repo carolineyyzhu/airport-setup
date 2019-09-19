@@ -60,11 +60,14 @@ public class FlightPolicyTest {
 
         boolean seatsAccurate = true;
         SeatConfiguration flightClassSeats = FlightPolicy.limited(FlightPolicy.reserve(flight, 2)).seatsAvailable(fareClass);
+        int reserve = 2;
         for (SeatClass section : SeatClass.values()) {
             System.out.println(section + " " + flightClassSeats.seats(section));
             if (section != fareClass.getSeatClass() && section != SeatClass.classAbove(fareClass.getSeatClass()) && !flightClassSeats.seats(section).equals(0))
                 seatsAccurate = false;
-            if ((section == fareClass.getSeatClass() || section == SeatClass.classAbove(fareClass.getSeatClass())) && !flightClassSeats.seats(section).equals(flight.seatsAvailable(fareClass).seats(section)))
+            if (section == fareClass.getSeatClass() && !flightClassSeats.seats(section).equals(flight.seatsAvailable(fareClass).seats(section) - reserve))
+                seatsAccurate = false;
+            if(section == SeatClass.classAbove(fareClass.getSeatClass()) && !flightClassSeats.seats(section).equals(flight.seatsAvailable(fareClass).seats(section) - reserve)
                 seatsAccurate = false;
         }
         assertTrue(seatsAccurate);
@@ -73,5 +76,25 @@ public class FlightPolicyTest {
     /**
      *
      */
+
+    @Test
+    public void economyPolicyTest() {
+        Airport airportA = Airport.of("AA12", Duration.ofMinutes(30));
+        Airport airportB = Airport.of("BB8", Duration.ofMinutes(30));
+        Leg leg = Leg.of(airportA, airportB);
+        FlightSchedule fsched = FlightSchedule.of(LocalTime.of(4, 50), LocalTime.of(6, 40));
+        EnumMap<SeatClass, Integer> seatConfigEnumMap = new EnumMap<SeatClass, Integer>(SeatClass.class);
+        for (SeatClass section : SeatClass.values()) {
+            seatConfigEnumMap.put(section, 6);
+        }
+        SeatConfiguration seatConfiguration = SeatConfiguration.of(seatConfigEnumMap);
+        FareClass fareClass = FareClass.of(15, SeatClass.ECONOMY);
+        Flight flight = SimpleFlight.of("UA197", leg, fsched, seatConfiguration);
+        airportA.addFlight(flight);
+
+        FlightPolicy flightPolicy = new FlightPolicyTest() {
+
+        }
+    }
 
 }
