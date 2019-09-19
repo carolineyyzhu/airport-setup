@@ -1,5 +1,9 @@
 package airtravel;
 
+/**
+ * This class defines the fare class which breaks the seat class into smaller increments
+ *
+ */
 public final class FareClass {
 	
 	private final int identifier;
