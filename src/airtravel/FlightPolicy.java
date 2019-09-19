@@ -12,7 +12,7 @@ public final class FlightPolicy extends AbstractFlight {
 
 	//Private constructor for FlightPolicy
 	private FlightPolicy(Flight flight, FareClass fareClass) {
-		this.policy = apply(flight.seatsAvailable(fareClass), fareClass);
+		this.policy = policy.apply(flight.seatsAvailable(fareClass), fareClass);
 		this.flight = flight;
 	}
 
