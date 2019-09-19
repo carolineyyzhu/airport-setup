@@ -2,6 +2,7 @@ package airtravel;
 
 import java.time.Duration;
 import java.util.EnumMap;
+import java.util.Map;
 import java.util.function.BiFunction;
 
 public final class FlightPolicy extends AbstractFlight {
@@ -20,12 +21,21 @@ public final class FlightPolicy extends AbstractFlight {
 	}
 	
 	public static final Flight strict(Flight flight) {
-		//thres some more stuff to get the enum map to cooperate but you got the bulk of it holy shit
-		//dab dab I have no idea what im doing help me fix big brain
-		BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = (a,b) -> flight.hasSeats(b) ? flight.seatsAvailable(b) : a;
+		BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = (a,b) ->
+				flight.hasSeats(b) ? SeatConfiguration.of(generateEmptySeatConfig().put(b.getSeatClass(), a.seats(b.getSeatClass()))) : a;
 		return FlightPolicy.of(flight, policy).flight;
 	}
-	
+
+
+	private static EnumMap<SeatClass, Integer> generateEmptySeatConfig() {
+		EnumMap<SeatClass, Integer> newConfigMap = new EnumMap<SeatClass, Integer>(SeatClass.class);
+		SeatClass[] seatClasses = SeatClass.values();
+		for(SeatClass section:seatClasses) {
+			newConfigMap.put(section, 0);
+		}
+		return newConfigMap;
+	}
+
 	public static final Flight restrictedDuration(Flight flight, Duration durationMax) {
 		if (flight.isShort(durationMax)){
 			//returns a strict policy on short flights,

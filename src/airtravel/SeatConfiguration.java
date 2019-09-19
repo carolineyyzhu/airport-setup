@@ -2,6 +2,7 @@ package airtravel;
 
 import java.util.EnumMap;
 import java.util.List;
+import java.util.function.Function;
 
 public final class SeatConfiguration {
 	
@@ -21,7 +22,7 @@ public final class SeatConfiguration {
 		return new SeatConfiguration(new EnumMap<SeatClass, Integer>(seats));
 	}
 
-	public final int seats(SeatClass seatClass) {
+	public final Integer seats(SeatClass seatClass) {
 		Helpers.nullCheck(seatClass);
 		if (seats.get(seatClass) == null || seats.get(seatClass) < 0) {
 			return 0;
@@ -31,9 +32,9 @@ public final class SeatConfiguration {
 		
 	}
 	
-	public final int setSeats(SeatClass seatClass, int numSeats) {
+	public final Integer setSeats(SeatClass seatClass, Integer numSeats) {
 		Helpers.nullCheck(seatClass, numSeats);
-		return seats.replace(seatClass, numSeats);
+		return seats.put(seatClass, numSeats);
 	}
 	
 	public final boolean hasSeats() {
