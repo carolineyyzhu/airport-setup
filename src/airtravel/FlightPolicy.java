@@ -24,6 +24,7 @@ public final class FlightPolicy extends AbstractFlight {
 	 * @return
 	 */
 	public static final FlightPolicy of(Flight flight, BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy) {
+		Helpers.nullCheck(flight, policy);
 		//Create new flight policy
 		//This is the desired seat configuration
 		FlightPolicy tmp = new FlightPolicy(flight, policy);
