@@ -30,35 +30,31 @@ public final class FlightPolicy extends AbstractFlight {
 	//Applies the strict BiFunction to a specific flight
 	public static final Flight strict(Flight flight) {
 		Helpers.nullCheck(flight);
-		BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = strictBiFunction(flight);
+		BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = (a,b) ->
+				flight.hasSeats(b) ? putSeat(generateEmptySeatConfig(), b.getSeatClass(), a.seats(b.getSeatClass())) : generateEmptySeatConfig();;
 		return FlightPolicy.of(flight, policy).flight;
-	}
-
-	//Private helper method to generate the strict BiFunction
-	private static final BiFunction<SeatConfiguration, FareClass, SeatConfiguration> strictBiFunction(Flight flight) {
-		Helpers.nullCheck(flight);
-		return (a,b) -> flight.hasSeats(b) ? putSeat(generateEmptySeatConfig(), b.getSeatClass(), a.seats(b.getSeatClass())) : generateEmptySeatConfig();
 	}
 
 	public static final Flight restrictedDuration(Flight flight, Duration durationMax) {
-		if (flight.isShort(durationMax)){
-			//returns a strict policy on short flights,
-			BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = (a,b) -> flight.hasSeats(b) ? flight.seatsAvailable(b) : SeatConfiguration.of(generateEmptySeatConfig());
-			return FlightPolicy.of(flight, policy).flight;
-		} else {
+		Helpers.nullCheck(flight, durationMax);
+		BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy;
+		if (flight.isShort(durationMax))
+			//returns a strict policy on short flights
+			 policy = (a,b) -> flight.hasSeats(b) ? flight.seatsAvailable(b) : generateEmptySeatConfig();
+		else
 			//returns the same seat configuration as on the underlying flight
-			BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = (a,b) -> a;
-			return FlightPolicy.of(flight, policy).flight;
-			
-		}
-		
-		
+			policy = (a,b) -> SeatConfiguration.of(a);
+		return FlightPolicy.of(flight, policy).flight;
 	}
 	
 	public static final Flight reserve(Flight flight, int reserve) {
-		BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = (a,b) -> (flight.hasSeats(b)) ? (flight.seatsAvailable(b) - reserve) : a;
+		BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = (a,b) -> a.seats(b.getSeatClass()) - reserve > 0 ?  : a;
 		return FlightPolicy.of(flight, policy).flight;
-		
+	}
+
+	private static final BiFunction<SeatConfiguration, FareClass, SeatConfiguration> reserveBiFunction(Flight flight, int reserve) {
+		Helpers.nullCheck(flight);
+		return (a,b) -> ((a.seats(b.getSeatClass()) - reserve) > 0) ? : SeatConfiguration.of(a);
 	}
 	
 	public static final Flight limited(Flight flight) {
