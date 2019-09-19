@@ -68,8 +68,4 @@ public class SimpleFlight extends AbstractFlight {
     public SeatConfiguration seatsAvailable(FareClass fareClass) {
     	return seatsAvailable;
     }
-    
-
-
-
 }
