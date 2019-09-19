@@ -45,7 +45,7 @@ public class FlightPolicyTest {
      * Test to apply the limited policy to a flight
      */
     @Test
-    public void limitedPolicyFlight() {
+    public void limitedReservePolicyFlight() {
         Airport airportA = Airport.of("AA12", Duration.ofMinutes(30));
         Airport airportB = Airport.of("BB8", Duration.ofMinutes(30));
         Leg leg = Leg.of(airportA, airportB);
@@ -73,7 +73,6 @@ public class FlightPolicyTest {
         }
         assertTrue(seatsAccurate);
     }
-
     /**
      * Passenger can go to their class or the class below them
      */
