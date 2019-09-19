@@ -16,24 +16,38 @@ public final class FlightPolicy extends AbstractFlight {
 	
 	public static final FlightPolicy of(Flight flight, BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy) {
 		//Create Instance of Airport
-
 		return new FlightPolicy(flight, policy);
 	}
 	
-	public static final Flight strict(Flight policyFlight) {
-		SeatConfiguration newConfig = SeatConfiguration.of(new EnumMap<SeatClass, Integer>(SeatClass.class));
-		Flight newFlight = FlightPolicy.of(policyFlight, (a,b) ->);
+	public static final Flight strict(Flight flight) {
+		//thres some more stuff to get the enum map to cooperate but you got the bulk of it holy shit
+		//dab dab I have no idea what im doing help me fix big brain
+		BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = (a,b) -> flight.hasSeats(b) ? flight.seatsAvailable(b) : a;
+		return FlightPolicy.of(flight, policy).flight;
 	}
 	
-	public static final Flight restrictedDuration(Flight policyFlight, Duration durationMax) {
+	public static final Flight restrictedDuration(Flight flight, Duration durationMax) {
+		if (flight.isShort(durationMax)){
+			//returns a strict policy on short flights,
+			BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = (a,b) -> flight.hasSeats(b) ? flight.seatsAvailable(b) : a;
+			return FlightPolicy.of(flight, policy).flight;
+		} else {
+			//returns the same seat configuration as on the underlying flight
+			BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = (a,b) -> a;
+			return FlightPolicy.of(flight, policy).flight;
+			
+		}
+		
 		
 	}
 	
-	public static final Flight reserve(Flight policyFlight, int reserve) {
+	public static final Flight reserve(Flight flight, int reserve) {
+		BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = (a,b) -> (flight.hasSeats(b)) ? (flight.seatsAvailable(b) - reserve) : a;
+		return FlightPolicy.of(flight, policy).flight;
 		
 	}
 	
-	public static final Flight limited(Flight policyFlight) {
+	public static final Flight limited(Flight flight) {
 		
 	}
 
