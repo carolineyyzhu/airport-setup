@@ -11,9 +11,10 @@ public final class FlightPolicy extends AbstractFlight {
 	private final BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy;
 
 	//Private constructor for FlightPolicy
-	private FlightPolicy(Flight flight, BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy, FareClass fareClass) {
+	private FlightPolicy(Flight flight, BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy) {
 		this.policy = policy;
-		this.flight = SimpleFlight.of(flight.getCode(), flight.getLeg(), flight.getFlightSchedule(), policy.apply(flight.seatsAvailable(fareClass), fareClass));
+		this.flight = flight;
+		//SimpleFlight.of(flight.getCode(), flight.getLeg(), flight.getFlightSchedule(), policy.apply(flight.seatsAvailable(fareClass), fareClass));
 	}
 
 	/**
@@ -22,14 +23,14 @@ public final class FlightPolicy extends AbstractFlight {
 	 * @param policy BiFunction that defines the policy
 	 * @return
 	 */
-	public static final FlightPolicy of(Flight flight, BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy, FareClass fareClass) {
+	public static final FlightPolicy of(Flight flight, BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy) {
 		//Create new flight policy
-		policy.apply(flight.seatsAvailable(fareClass), fareClass); //This is the desiered seat configuration
-		FlightPolicy tmp = new FlightPolicy(flight, policy, fareClass);
+		//This is the desired seat configuration
+		FlightPolicy tmp = new FlightPolicy(flight, policy);
 		
 		//Replace flight at departure airport with this policy
-		flight.getLeg().getOrigin().removeFlight(flight);
-		flight.getLeg().getOrigin().addFlight(tmp);
+		flight.origin().removeFlight(flight);
+		flight.origin().addFlight(tmp);
 		return tmp;
 	}
 
@@ -38,11 +39,7 @@ public final class FlightPolicy extends AbstractFlight {
 		Helpers.nullCheck(flight);
 		BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = (a,b) ->
 				flight.hasSeats(b) ? putSeat(emptySeatConfig(), b.getSeatClass(), a.seats(b.getSeatClass())) : emptySeatConfig();
-		//Step 1: get the seats available
-		//Step 2: Then apply the policy to the flight
-		//Step 3: return the new configuration
-		
-		return FlightPolicy.of(policy.apply(flight.seatsAvailable(), ), policy);
+		return FlightPolicy.of(flight, policy);
 	}
 
 	public static final Flight restrictedDuration(Flight flight, Duration durationMax) {
@@ -54,9 +51,9 @@ public final class FlightPolicy extends AbstractFlight {
 		else
 			//returns the same seat configuration as on the underlying flight
 			policy = (a,b) -> SeatConfiguration.of(a);
-		return FlightPolicy.of(flight, policy, fareClass);
+		return FlightPolicy.of(flight, policy);
 	}
-	
+	//method to calculate 
 	public static final Flight reserve(Flight flight, int reserve) {
 		Helpers.nullCheck(flight, reserve);
 		BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = (a,b) ->
@@ -128,6 +125,6 @@ public final class FlightPolicy extends AbstractFlight {
 	@Override
 	public SeatConfiguration seatsAvailable(FareClass fareClass) {
 		return this.flight.seatsAvailable(fareClass);
-	}
+	} 
 
 }

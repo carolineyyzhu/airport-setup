@@ -68,12 +68,12 @@ public class FlightPolicyTest {
                 seatsAccurate = false;
             if (section == fareClass.getSeatClass() && !flightClassSeats.seats(section).equals(flight.seatsAvailable(fareClass).seats(section) - reserve))
                 seatsAccurate = false;
-            if(section == SeatClass.classAbove(fareClass.getSeatClass()) && !flightClassSeats.seats(section).equals(flight.seatsAvailable(fareClass).seats(section) - reserve)
+            if(section == SeatClass.classAbove(fareClass.getSeatClass()) && !flightClassSeats.seats(section).equals(flight.seatsAvailable(fareClass).seats(section) - reserve))
                 seatsAccurate = false;
         }
         assertTrue(seatsAccurate);
     }
-
+    
     /**
      * Passenger can enter their class or the class below them
      */
@@ -129,5 +129,4 @@ public class FlightPolicyTest {
         }
         assertTrue(seatsAccurate);
     }
-
 }
