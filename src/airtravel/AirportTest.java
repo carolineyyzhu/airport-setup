@@ -7,6 +7,8 @@ import junit.framework.*;
 
 import java.time.Duration;
 import java.time.LocalTime;
+import java.util.EnumMap;
+import java.util.Set;
 
 import static junit.framework.TestCase.assertTrue;
 
@@ -15,7 +17,7 @@ import static junit.framework.TestCase.assertTrue;
  *
  */
 public class AirportTest {
-	
+
     /**
      * Test for buildAirport
      */
@@ -26,7 +28,7 @@ public class AirportTest {
         boolean minTimeAccurate = airport.getConnectionTimeMin().equals(Duration.ofMinutes(30));
         assertTrue(codeAccurate && minTimeAccurate);
     }
-    
+
     /**
      * Test for buildLeg
      */
@@ -41,20 +43,25 @@ public class AirportTest {
     }
 
     /**
-     * Test for building a flight utilizing Airport, leg, flight, and schedule
+     * Test for building a flight utilizing Airport, leg, flight, schedule, and seatConfiguration
      */
     @Test
-    public void buildFlight() {
+    public void buildSimpleFlight() {
         Airport airportA = Airport.of("AA12", Duration.ofMinutes(30));
         Airport airportB = Airport.of("BB8", Duration.ofMinutes(30));
         Leg leg = Leg.of(airportA, airportB);
         FlightSchedule fsched = FlightSchedule.of(LocalTime.of(4, 50), LocalTime.of(6, 40));
-        Flight flight = SimpleFlight.of("UA192", leg, fsched);
+        EnumMap<SeatClass, Integer> seatConfigEnumMap = new EnumMap<SeatClass, Integer>(SeatClass.class);
+        for (SeatClass section : SeatClass.values()) {
+            seatConfigEnumMap.put(section, 6);
+        }
+        SeatConfiguration seatConfiguration = SeatConfiguration.of(seatConfigEnumMap);
+        Flight flight = SimpleFlight.of("UA192", leg, fsched, seatConfiguration);
         assertTrue(flight.getCode().equals("UA192"));
     }
 
     /**
-     * Test for removeFlight utilizing Airport, leg, flight, and schedule
+     * Test for removeFlight utilizing Airport, leg, flight, schedule, and seatConfiguration
      */
     @Test
     public void removeFlight() {
@@ -62,8 +69,43 @@ public class AirportTest {
         Airport airportB = Airport.of("BB8", Duration.ofMinutes(30));
         Leg leg = Leg.of(airportA, airportB);
         FlightSchedule fsched = FlightSchedule.of(LocalTime.of(4, 50), LocalTime.of(6, 40));
-        Flight flight = SimpleFlight.of("UA197", leg, fsched);
+        EnumMap<SeatClass, Integer> seatConfigEnumMap = new EnumMap<SeatClass, Integer>(SeatClass.class);
+        for (SeatClass section : SeatClass.values()) {
+            seatConfigEnumMap.put(section, 6);
+        }
+        SeatConfiguration seatConfiguration = SeatConfiguration.of(seatConfigEnumMap);
+        Flight flight = SimpleFlight.of("UA197", leg, fsched, seatConfiguration);
         airportA.addFlight(flight);
         assertTrue(airportA.removeFlight(flight));
+    }
+
+    /**
+     * Test to apply the strict policy to a flight
+     */
+    @Test
+    public void strictPolicyFlight() {
+        Airport airportA = Airport.of("AA12", Duration.ofMinutes(30));
+        Airport airportB = Airport.of("BB8", Duration.ofMinutes(30));
+        Leg leg = Leg.of(airportA, airportB);
+        FlightSchedule fsched = FlightSchedule.of(LocalTime.of(4, 50), LocalTime.of(6, 40));
+        EnumMap<SeatClass, Integer> seatConfigEnumMap = new EnumMap<SeatClass, Integer>(SeatClass.class);
+        for (SeatClass section : SeatClass.values()) {
+            seatConfigEnumMap.put(section, 6);
+        }
+        SeatConfiguration seatConfiguration = SeatConfiguration.of(seatConfigEnumMap);
+        FareClass fareClass = FareClass.of(15, SeatClass.ECONOMY);
+        Flight flight = SimpleFlight.of("UA197", leg, fsched, seatConfiguration);
+        airportA.addFlight(flight);
+
+        boolean seatsAccurate = true;
+        SeatConfiguration flightClassSeats = FlightPolicy.strict(flight).seatsAvailable(fareClass);
+        for (SeatClass section : SeatClass.values()) {
+            System.out.println(section + " " + flightClassSeats.seats(section));
+            if (section != fareClass.getSeatClass() && !flightClassSeats.seats(section).equals(0))
+                seatsAccurate = false;
+            if (section == fareClass.getSeatClass() && !flightClassSeats.seats(section).equals(flight.seatsAvailable(fareClass).seats(section)))
+                seatsAccurate = false;
+        }
+        assertTrue(seatsAccurate);
     }
 }
