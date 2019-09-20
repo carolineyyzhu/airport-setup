@@ -65,6 +65,8 @@ public class SimpleFlight extends AbstractFlight {
 	}
 
 	//returns the SeatConfiguration
+    //TODO: return a copy of seatsAvailable
+    //return SeatConfiguration.of(seatsAvailable);
     public SeatConfiguration seatsAvailable(FareClass fareClass) {
     	return seatsAvailable;
     }

@@ -37,7 +37,7 @@ public final class FlightGroup  {
 	public final boolean add(Flight flight) {
 		checkErrors(flight);
 		LocalTime deptTime = flight.getFlightSchedule().getDepartureTime();
-		flights.computeIfAbsent(deptTime, flightList -> new HashSet<Flight>()).add(flight);
+		flights.computeIfAbsent(deptTime, flightList -> new HashSet<Flight>()).add(flight); //return this line
 		return flights.get(deptTime).contains(flight);
 	}
 
@@ -47,6 +47,7 @@ public final class FlightGroup  {
 	 * @param flight is the flight to be removed
 	 * @return true if flight was removed, throws error if the flight was not
 	 */
+	//TODO use get or default
 	public final boolean remove(Flight flight) {
 		checkErrors(flight);
 		LocalTime deptTime = flight.getFlightSchedule().getDepartureTime();
@@ -90,7 +91,7 @@ public final class FlightGroup  {
 
 		//retrieves all sets for departure times after the departure time inputed, inclusive
 		setOfFlightSets = (HashSet<Set<Flight>>) flights.tailMap(departureTime, true).values();
-		//map.values (check later)
+		//TODO: Stream this
 
 		//iterator runs through the sets within the Hashset and adds all of the entries into the returnSet
 		Iterator<Set<Flight>> flightSets = setOfFlightSets.iterator();

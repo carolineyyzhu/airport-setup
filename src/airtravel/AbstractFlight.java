@@ -34,7 +34,7 @@ public abstract class AbstractFlight implements Flight {
     }
     
     //return True if the flight has seats available, false if not
-    public boolean hasSeats(FareClass fareClass) {
+    public boolean hasSeats(FareClass fareClass) {//add null check to all vals in abstract class
     	return this.seatsAvailable(fareClass).hasSeats();
     }
 

@@ -7,6 +7,7 @@ import java.util.Objects;
  *
  */
 final class Helpers {
+	//methods that can take multiple amounts of arguments
 	
 	static <T> void nullCheck(T test) {
 		Objects.requireNonNull(test,"Null input resived in method header");

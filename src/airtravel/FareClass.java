@@ -14,7 +14,7 @@ public final class FareClass {
 		this.seatClass = seatClass;
 	}
 	
-	public static final FareClass of(int identifier, SeatClass seatClass) {
+	public static final FareClass of(int identifier, SeatClass seatClass) {//Helper null check method
 		return new FareClass(identifier, seatClass);
 	}
 	
