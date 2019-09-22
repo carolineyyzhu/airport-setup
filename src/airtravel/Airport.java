@@ -30,8 +30,7 @@ public final class Airport implements Comparable<Airport> {
 	 * @return the created airport
 	 */
 	public static final Airport of(String code, Duration connectionTimeMin) {
-		Objects.requireNonNull(code,"Null input received.");
-		Objects.requireNonNull(connectionTimeMin,"Null input received.");
+		Helpers.nullCheck(code, connectionTimeMin);
 		return new Airport(code, connectionTimeMin);
 	}
 	

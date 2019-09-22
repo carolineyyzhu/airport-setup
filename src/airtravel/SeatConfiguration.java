@@ -21,7 +21,6 @@ public final class SeatConfiguration {
 	
 	//builder method given a seat configuration
 	public static final SeatConfiguration of(SeatConfiguration seatConfiguration) {
-		Objects.requireNonNull(seatConfiguration,"Null input received.");
 		return SeatConfiguration.of(seatConfiguration.seats);
 	}
 	
