@@ -65,6 +65,7 @@ public final class Airport implements Comparable<Airport> {
 	public Set<Flight> availableFlights(LocalTime departureTime, FareClass fareClass){
 		Objects.requireNonNull(departureTime,"Departure time cannot be null");
 		Objects.requireNonNull(fareClass,"Fare class cannot be null");
+
 		return outFlights.flightsAtOrAfter(departureTime)
 				.stream()
 				.filter(n -> n.hasSeats(fareClass))
