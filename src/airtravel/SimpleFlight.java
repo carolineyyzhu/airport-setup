@@ -1,6 +1,7 @@
 package airtravel;
 
 import java.time.Duration;
+import java.util.Objects;
 
 /**
  * This class creates a simple flight with basic requirements
@@ -35,7 +36,11 @@ public class SimpleFlight extends AbstractFlight {
      */
 
     public static SimpleFlight of(String code, Leg leg, FlightSchedule flightSchedule, SeatConfiguration seatsAvailable) {
-        Helpers.nullCheck(code, leg, flightSchedule, seatsAvailable);
+        Objects.requireNonNull(code,"Null input received.");
+        Objects.requireNonNull(leg,"Null input received.");
+        Objects.requireNonNull(flightSchedule,"Null input received.");
+        Objects.requireNonNull(seatsAvailable,"Null input received.");
+
         SimpleFlight flight = new SimpleFlight(code, leg, flightSchedule, SeatConfiguration.of(seatsAvailable));
         Airport departureAirport = leg.getOrigin();
         departureAirport.addFlight(flight);
@@ -60,14 +65,14 @@ public class SimpleFlight extends AbstractFlight {
     //returns true if the flight is short
     @Override
 	public boolean isShort(Duration durationMax) {
-        Helpers.nullCheck(durationMax);
+        Objects.requireNonNull(durationMax,"Null input received.");
 		return this.getFlightSchedule().isShort(durationMax);
 	}
 
 	//returns the SeatConfiguration
-    //TODO: return a copy of seatsAvailable
-    //return SeatConfiguration.of(seatsAvailable);
     public SeatConfiguration seatsAvailable(FareClass fareClass) {
-    	return seatsAvailable;
+        Objects.requireNonNull(fareClass,"Null input received.");
+
+        return SeatConfiguration.of(seatsAvailable);
     }
 }

@@ -1,5 +1,7 @@
 package airtravel;
 
+import java.util.Objects;
+
 /**
  * Seat Class enum map
  *
@@ -12,6 +14,8 @@ public enum SeatClass {
 
 	//helper method to find the class above the class that is being looked at
 	static final SeatClass classAbove(SeatClass seatClass) {
+		Objects.requireNonNull(seatClass,"Null input received.");
+
 		SeatClass aboveClass = seatClass;
 		if(seatClass.ordinal() < SeatClass.values().length - 1 && seatClass.ordinal() != 0)
 			aboveClass = SeatClass.values()[seatClass.ordinal() - 1];
@@ -20,6 +24,8 @@ public enum SeatClass {
 
 	//helper method to find the class below the class being looked at
 	static final SeatClass classBelow(SeatClass seatClass) {
+		Objects.requireNonNull(seatClass,"Null input received.");
+
 		SeatClass belowClass = seatClass;
 		if(seatClass.ordinal() != SeatClass.values().length - 1 && seatClass.ordinal() > 0)
 			belowClass = SeatClass.values()[seatClass.ordinal() + 1];

@@ -3,6 +3,7 @@ package airtravel;
 import java.time.Duration;
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.BiFunction;
 
 public final class FlightPolicy extends AbstractFlight {
@@ -24,28 +25,32 @@ public final class FlightPolicy extends AbstractFlight {
 	 * @return
 	 */
 	public static final FlightPolicy of(Flight flight, BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy) {
-		Helpers.nullCheck(flight, policy);
+		Objects.requireNonNull(flight,"Null input received.");
+		Objects.requireNonNull(policy,"Null input received.");
+
 		//Create new flight policy
 		//This is the desired seat configuration
-		FlightPolicy tmp = new FlightPolicy(flight, policy); //variable name
+		FlightPolicy newFlightPolicy = new FlightPolicy(flight, policy); //variable name
 
 		//Replace flight at departure airport with this policy
 		flight.origin().removeFlight(flight);
-		flight.origin().addFlight(tmp);
-		return tmp;
+		flight.origin().addFlight(newFlightPolicy);
+		return newFlightPolicy;
 	}
 
 	//Applies the strict BiFunction to a specific flight
 	//TODO: store b.getSeatCLass(), use SeatConfiguration build method
 	public static final Flight strict(Flight flight) {
-		Helpers.nullCheck(flight);
+		Objects.requireNonNull(flight,"Null input received.");
 		BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = (a, b) ->
 				flight.hasSeats(b) ? putSeat(emptySeatConfig(), b.getSeatClass(), a.seats(b.getSeatClass())) : emptySeatConfig();
 		return FlightPolicy.of(flight, policy);
 	}
 
 	public static final Flight restrictedDuration(Flight flight, Duration durationMax) {
-		Helpers.nullCheck(flight, durationMax);
+		Objects.requireNonNull(flight,"Null input received.");
+		Objects.requireNonNull(durationMax,"Null input received.");
+
 		BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy;
 		if (flight.isShort(durationMax))
 			//returns a strict policy on short flights
@@ -58,7 +63,9 @@ public final class FlightPolicy extends AbstractFlight {
 
 	//method to calculate
 	public static final Flight reserve(Flight flight, int reserve) {
-		Helpers.nullCheck(flight, reserve);
+		Objects.requireNonNull(flight,"Null input received.");
+		Objects.requireNonNull(reserve,"Null input received.");
+
 		BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = (a, b) ->
 				((a.seats(b.getSeatClass()) - reserve) > 0) ? reserveSeatConfig(a, reserve) : emptySeatConfig(); //Math.MAX() remove if statement
 		return FlightPolicy.of(flight, policy);
@@ -66,7 +73,9 @@ public final class FlightPolicy extends AbstractFlight {
 
 	//private helper method to generate a SeatConfiguration that accounts for available seats while saving a reserve
 	private static final SeatConfiguration reserveSeatConfig(SeatConfiguration seatConfig, int reserve) {
-		Helpers.nullCheck(seatConfig, reserve);
+		Objects.requireNonNull(seatConfig,"Null input received.");
+		Objects.requireNonNull(reserve,"Null input received.");
+
 		SeatConfiguration newSeatConfig = SeatConfiguration.of(seatConfig);
 		for (SeatClass section : SeatClass.values()) {
 			//TODO: if statement is redundant with max value in previous function, check logic
@@ -79,7 +88,7 @@ public final class FlightPolicy extends AbstractFlight {
 	}
 
 	public static final Flight limited(Flight flight) {
-		Helpers.nullCheck(flight);
+		Objects.requireNonNull(flight,"Null input received.");
 		//return limitedSeatConfig, no need for conditional
 		BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = (a, b) ->
 				flight.hasSeats(b) || flight.hasSeats(FareClass.of(0, SeatClass.classAbove(b.getSeatClass()))) ? limitedSeatConfig(a, b) : emptySeatConfig();
@@ -87,6 +96,9 @@ public final class FlightPolicy extends AbstractFlight {
 	}
 
 	private static final SeatConfiguration limitedSeatConfig(SeatConfiguration seatConfig, FareClass fareClass) {
+		Objects.requireNonNull(seatConfig,"Null input received.");
+		Objects.requireNonNull(fareClass,"Null input received.");
+
 		SeatClass seatClass = fareClass.getSeatClass();
 		SeatConfiguration limitedSeatConfig = SeatConfiguration.of(seatConfig);
 		for (SeatClass section : SeatClass.values()) {
@@ -98,7 +110,9 @@ public final class FlightPolicy extends AbstractFlight {
 
 	//private helper method to add a key and a value to a given SeatConfiguration, and return the new SeatConfiguration
 	private static final SeatConfiguration putSeat(SeatConfiguration seatConfig, SeatClass seatClass, Integer numSeats) {
-		Helpers.nullCheck(seatConfig, seatClass, numSeats);
+		Objects.requireNonNull(seatConfig,"Null input received.");
+		Objects.requireNonNull(seatClass,"Null input received.");
+
 		seatConfig.setSeats(seatClass, numSeats);
 		return seatConfig;
 	}
@@ -130,6 +144,8 @@ public final class FlightPolicy extends AbstractFlight {
 
 	@Override
 	public SeatConfiguration seatsAvailable(FareClass fareClass) {
+		Objects.requireNonNull(fareClass,"Null input received.");
+
 		//Apply the flight policy here
 		return this.policy.apply(this.flight.seatsAvailable(fareClass), fareClass);
 	}

@@ -21,8 +21,9 @@ public final class FlightGroup  {
 	 */
 	public static final FlightGroup of(Airport origin) {
 		//Check for null inputs
+		Objects.requireNonNull(origin,"Null input received.");
+
 		NavigableMap<LocalTime, Set<Flight>> flights =  new TreeMap<LocalTime, Set<Flight>>();
-		Helpers.nullCheck(origin);
 		//Create Instance of FlightSchedule
 		return new FlightGroup(origin, flights);
 	}
@@ -66,7 +67,7 @@ public final class FlightGroup  {
 	 */
 	private final void checkErrors(Flight flight) {
 		//Throws exception if inputs are null
-		Helpers.nullCheck(flight);
+		Objects.requireNonNull(flight,"Null input received.");
 		//Throws exception if flight originated from a different airport
 		if (!flight.origin().equals(this.origin)) {
 			throw new IllegalArgumentException("This flight does not originate from this airport.");
@@ -82,23 +83,16 @@ public final class FlightGroup  {
 
 	public final Set<Flight> flightsAtOrAfter(LocalTime departureTime){
 		//Throws exception if null inputs are received
-		Helpers.nullCheck(departureTime);
-			
-		HashSet<Flight> returnSet = new HashSet<Flight>();
+		Objects.requireNonNull(departureTime,"Null input received.");
 
-		//new hashset of the flightsets
-		HashSet<Set<Flight>> setOfFlightSets = new HashSet<Set<Flight>>();
+		Set<Flight> returnSet = new HashSet<Flight>();
 
-		//retrieves all sets for departure times after the departure time inputed, inclusive
-		setOfFlightSets = (HashSet<Set<Flight>>) flights.tailMap(departureTime, true).values();
-		//TODO: Stream this
+		//retrieves all sets for departure times after the departure time inputted, inclusive
+		flights.tailMap(departureTime, true)
+				.values()
+				.stream()
+				.forEach(returnSet::addAll);
 
-		//iterator runs through the sets within the Hashset and adds all of the entries into the returnSet
-		Iterator<Set<Flight>> flightSets = setOfFlightSets.iterator();
-		while(flightSets.hasNext()) {
-			HashSet<Flight> indFlights = (HashSet<Flight>) flightSets.next();
-			returnSet.addAll(indFlights);
-		}
 		return returnSet;
 	}
 

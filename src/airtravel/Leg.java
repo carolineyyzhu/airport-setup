@@ -1,5 +1,7 @@
 package airtravel;
 
+import java.util.Objects;
+
 /**
  * This class represents a non-stop route between two airports
  */
@@ -25,7 +27,9 @@ public final class Leg {
      * @return generated Leg object with a non-null origin and destination
      */
     public static final Leg of(Airport origin, Airport destination) {
-    	Helpers.nullCheck(origin, destination);
+        Objects.requireNonNull(origin,"Null input received.");
+        Objects.requireNonNull(destination,"Null input received.");
+
         return new Leg(origin, destination);
     }
 
