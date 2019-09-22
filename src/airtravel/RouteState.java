@@ -11,7 +11,7 @@ final class RouteState {
 	private Map<Airport, RouteNode> airportNode;
 	private final NavigableSet<RouteNode> unreached;
 	
-	private RouteState(Set<Airport> airports,Airport origin, LocalTime departureTime) {
+	private RouteState(Set<Airport> airports, Airport origin, LocalTime departureTime) {
 		this.airportNode = Collections.EMPTY_MAP;
 		RouteNode originNode = RouteNode.of(origin, new RouteTime(departureTime), null);
 		this.airportNode.put(origin, originNode);
