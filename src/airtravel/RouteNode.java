@@ -1,5 +1,7 @@
 package airtravel;
 
+import java.util.Objects;
+
 public final class RouteNode implements Comparable<RouteNode>{
     private final Airport airport;
     private final RouteTime arrivalTime;
@@ -11,10 +13,28 @@ public final class RouteNode implements Comparable<RouteNode>{
         this.previous = previous;
     }
 
-    public static final of(Airport airport, RouteTime arrivalTime, RouteNode previous) {
-        
+    public static final RouteNode of(Airport airport, RouteTime arrivalTime, RouteNode previous) {
+        Objects.requireNonNull(airport,"Airport input cannot be null");
+        Objects.requireNonNull(arrivalTime,"Arrival time cannot be null");
+
+        return new RouteNode(airport, arrivalTime, previous);
     }
 
+    public static final RouteNode of(Flight flight, RouteNode previous) {
+        Objects.requireNonNull(flight,"Flight input cannot be null");
+
+        return new RouteNode(flight.destination(), new RouteTime(flight.arrivalTime()), previous);
+    }
+
+    public static final RouteNode of (Airport airport) {
+        Objects.requireNonNull(airport,"Airport input cannot be null");
+
+        return new RouteNode(airport, RouteTime.UNKNOWN(), null);
+    }
+
+    public final Boolean isArrivalTimeKnown() {
+        return !this.getArrivalTime().equals(RouteTime.UNKNOWN());
+    }
 
     public Airport getAirport() {
         return airport;
@@ -30,6 +50,8 @@ public final class RouteNode implements Comparable<RouteNode>{
 
     @Override
     public int compareTo(RouteNode o) {
-        return 0;
+        Objects.requireNonNull(airport,"Route node input cannot be null");
+
+        return o.getArrivalTime().compareTo(this.getArrivalTime());
     }
 }
