@@ -24,9 +24,10 @@ public final class FlightPolicy extends AbstractFlight {
 	 * @return
 	 */
 	public static final FlightPolicy of(Flight flight, BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy) {
+		Helpers.nullCheck(flight, policy);
 		//Create new flight policy
 		//This is the desired seat configuration
-		FlightPolicy tmp = new FlightPolicy(flight, policy);
+		FlightPolicy tmp = new FlightPolicy(flight, policy); //variable name
 
 		//Replace flight at departure airport with this policy
 		flight.origin().removeFlight(flight);
@@ -35,6 +36,7 @@ public final class FlightPolicy extends AbstractFlight {
 	}
 
 	//Applies the strict BiFunction to a specific flight
+	//TODO: store b.getSeatCLass(), use SeatConfiguration build method
 	public static final Flight strict(Flight flight) {
 		Helpers.nullCheck(flight);
 		BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = (a, b) ->
@@ -47,7 +49,7 @@ public final class FlightPolicy extends AbstractFlight {
 		BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy;
 		if (flight.isShort(durationMax))
 			//returns a strict policy on short flights
-			policy = (a, b) -> flight.hasSeats(b) ? flight.seatsAvailable(b) : emptySeatConfig();
+			policy = (a, b) -> flight.hasSeats(b) ? flight.seatsAvailable(b) : emptySeatConfig(); // return strict
 		else
 			//returns the same seat configuration as on the underlying flight
 			policy = (a, b) -> SeatConfiguration.of(a);
@@ -58,7 +60,7 @@ public final class FlightPolicy extends AbstractFlight {
 	public static final Flight reserve(Flight flight, int reserve) {
 		Helpers.nullCheck(flight, reserve);
 		BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = (a, b) ->
-				((a.seats(b.getSeatClass()) - reserve) > 0) ? reserveSeatConfig(a, reserve) : emptySeatConfig();
+				((a.seats(b.getSeatClass()) - reserve) > 0) ? reserveSeatConfig(a, reserve) : emptySeatConfig(); //Math.MAX() remove if statement
 		return FlightPolicy.of(flight, policy);
 	}
 
@@ -67,6 +69,7 @@ public final class FlightPolicy extends AbstractFlight {
 		Helpers.nullCheck(seatConfig, reserve);
 		SeatConfiguration newSeatConfig = SeatConfiguration.of(seatConfig);
 		for (SeatClass section : SeatClass.values()) {
+			//TODO: if statement is redundant with max value in previous function, check logic
 			if (newSeatConfig.seats(section) > reserve)
 				newSeatConfig.setSeats(section, newSeatConfig.seats(section) - reserve);
 			else
@@ -77,6 +80,7 @@ public final class FlightPolicy extends AbstractFlight {
 
 	public static final Flight limited(Flight flight) {
 		Helpers.nullCheck(flight);
+		//return limitedSeatConfig, no need for conditional
 		BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = (a, b) ->
 				flight.hasSeats(b) || flight.hasSeats(FareClass.of(0, SeatClass.classAbove(b.getSeatClass()))) ? limitedSeatConfig(a, b) : emptySeatConfig();
 		return FlightPolicy.of(flight, policy);
