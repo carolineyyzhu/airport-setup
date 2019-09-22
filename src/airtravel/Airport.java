@@ -1,7 +1,11 @@
 package airtravel;
 
 import java.time.Duration;
+import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * This class creates airport objects with codes and min connection times.
@@ -54,6 +58,12 @@ public final class Airport implements Comparable<Airport> {
 	//Getter for connectionTimeMin
 	public final Duration getConnectionTimeMin() {
 		return connectionTimeMin;
+	}
+	
+	public Set<Flight> availableFlights(LocalTime departureTime, FareClass fareClass){
+		Helpers.nullCheck(departureTime, fareClass);
+		return outFlights.flightsAtOrAfter(departureTime).stream().filter(n -> n.hasSeats(fareClass)).collect(Collectors.toSet());
+		
 	}
 	
 	//Overrides equals method
