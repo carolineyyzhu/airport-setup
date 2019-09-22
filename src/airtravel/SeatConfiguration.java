@@ -48,7 +48,7 @@ public final class SeatConfiguration {
 	
 	//checks if seats exist
 	public final boolean hasSeats() {
-		List <Integer> values = (List<Integer>) seats.values();
+		List<Integer> values = (List<Integer>) seats.values();
 		return (values.stream().mapToInt(Integer::intValue).sum() > 0);
 
 	}
