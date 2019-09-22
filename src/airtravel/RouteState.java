@@ -14,11 +14,11 @@ final class RouteState {
 	
 	private Map<Airport, RouteNode> airportNode = new HashMap<>();
 	private final NavigableSet<RouteNode> unreached = new TreeSet<>();
-	
-	private RouteState(Set<Airport> airports,Airport origin, LocalTime departureTime) {
-        Objects.requireNonNull(airports,"Set<Airport> input cannot be null");
-        Objects.requireNonNull(origin,"Arrival time cannot be null");
-        Objects.requireNonNull(departureTime,"LocalTime input cannot be null");
+
+	private RouteState(Set<Airport> airports, Airport origin, LocalTime departureTime) {
+        Objects.requireNonNull(airports,"Airports set input cannot be null");
+        Objects.requireNonNull(origin,"Arrival time be null");
+        Objects.requireNonNull(departureTime,"Departure time cannot be null");
 		
 		RouteNode originNode = RouteNode.of(origin, new RouteTime(departureTime), null);
 		this.airportNode.put(origin, originNode);
@@ -45,7 +45,7 @@ final class RouteState {
 	RouteNode closestUnreached() {
 		if (!allReached()) {
 			return Collections.min(unreached);
-		}else{
+		} else{
 			throw new NoSuchElementException ("All nodes have been reached");
 		}
 		
