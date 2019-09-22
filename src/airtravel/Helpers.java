@@ -7,7 +7,6 @@ import java.util.Objects;
  *
  */
 final class Helpers {
-	//methods that can take multiple amounts of arguments
 	
 	static void nullCheck(Object ... test) {
 		for (Object check: test) {

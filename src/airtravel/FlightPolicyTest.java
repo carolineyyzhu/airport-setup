@@ -32,7 +32,6 @@ public class FlightPolicyTest {
         boolean seatsAccurate = true;
         SeatConfiguration flightClassSeats = FlightPolicy.strict(flight).seatsAvailable(fareClass);
         for (SeatClass section : SeatClass.values()) {
-        	//TODO: Assert each condition
             System.out.println(section + " " + flightClassSeats.seats(section));
             if (section != fareClass.getSeatClass() && !flightClassSeats.seats(section).equals(0))
                 seatsAccurate = false;
@@ -63,7 +62,6 @@ public class FlightPolicyTest {
         boolean seatsAccurate = true;
         SeatConfiguration flightClassSeats = FlightPolicy.limited(FlightPolicy.reserve(flight, 2)).seatsAvailable(fareClass);
         int reserve = 2;
-        //TODO: Assert each condition
         for (SeatClass section : SeatClass.values()) {
             System.out.println(section + " " + flightClassSeats.seats(section));
             if (section != fareClass.getSeatClass() && section != SeatClass.classAbove(fareClass.getSeatClass()) && !flightClassSeats.seats(section).equals(0))
@@ -100,7 +98,6 @@ public class FlightPolicyTest {
         FlightPolicy fp = FlightPolicy.of(flight, policy);
         SeatConfiguration flightClassSeats = fp.seatsAvailable(fareClass);
         for (SeatClass section : SeatClass.values()) {
-        	//TODO: Assert individually
             System.out.println(section + " " + flightClassSeats.seats(section));
             if (section != fareClass.getSeatClass() && section != SeatClass.classBelow(fareClass.getSeatClass()) && !flightClassSeats.seats(section).equals(0))
                 seatsAccurate = false;
@@ -148,7 +145,6 @@ public class FlightPolicyTest {
         FlightPolicy fp = FlightPolicy.of(flight, policy);
         SeatConfiguration flightClassSeats = fp.seatsAvailable(fareClass);
         for (SeatClass section : SeatClass.values()) {
-        	//TODO: Assert individually
             System.out.println(section + " " + flightClassSeats.seats(section));
             if (section != fareClass.getSeatClass() && section != SeatClass.classBelow(fareClass.getSeatClass()) && !flightClassSeats.seats(section).equals(0))
                 seatsAccurate = false;

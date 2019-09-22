@@ -14,7 +14,6 @@ public final class SeatConfiguration {
 	private final EnumMap<SeatClass, Integer> seats;
 	
 	//private constructor
-	//TODO: shorten line
 	private SeatConfiguration(EnumMap<SeatClass, Integer> seats) {
 		this.seats = new EnumMap<SeatClass, Integer>(seats);
 	}
@@ -25,7 +24,10 @@ public final class SeatConfiguration {
 	}
 	
 	//builder method given an enum map
+<<<<<<< HEAD
 	//TODO: Copy only in the builder or in constructor
+=======
+>>>>>>> parent of fa3ea9f... Comments
 	public static final SeatConfiguration of(EnumMap<SeatClass, Integer> seats) {
 		Objects.requireNonNull(seats,"Null input received.");
 		return new SeatConfiguration(new EnumMap<SeatClass, Integer>(seats));
@@ -43,15 +45,23 @@ public final class SeatConfiguration {
 	}
 	
 	//sets the seats to the given value
+<<<<<<< HEAD
 	public final int setSeats(SeatClass seatClass, Integer numSeats) {
 		Objects.requireNonNull(seatClass,"Null input received.");
 		Objects.requireNonNull(numSeats,"Null input received.");
 
+=======
+	public final Integer setSeats(SeatClass seatClass, Integer numSeats) {
+		Helpers.nullCheck(seatClass, numSeats);
+>>>>>>> parent of fa3ea9f... Comments
 		return seats.put(seatClass, numSeats);
 	}
 	
 	//checks if seats exist
+<<<<<<< HEAD
 	//TODO: .anyMatch();  | test this
+=======
+>>>>>>> parent of fa3ea9f... Comments
 	public final boolean hasSeats() {
 		return (seats.values().stream().anyMatch(n -> n>0));
 
