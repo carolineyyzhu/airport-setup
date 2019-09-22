@@ -1,6 +1,7 @@
 package airtravel;
 
 import java.time.Duration;
+import java.util.Objects;
 
 /**
  * This class creates airport objects with codes and min connection times.
@@ -29,7 +30,7 @@ public final class Airport implements Comparable<Airport> {
 	 * @return the created airport
 	 */
 	public static final Airport of(String code, Duration connectionTimeMin) {
-		Helpers.nullCheck(code, connectionTimeMin);
+		Helpers.nullCheck(code,connectionTimeMin);
 		return new Airport(code, connectionTimeMin);
 	}
 	

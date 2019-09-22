@@ -51,10 +51,9 @@ public final class SeatConfiguration {
 	}
 	
 	//checks if seats exist
-	//TODO: .anyMatch(); 
+	//TODO: .anyMatch();  | test this
 	public final boolean hasSeats() {
-		List <Integer> values = (List<Integer>) seats.values();
-		return (values.stream().mapToInt(Integer::intValue).sum() > 0);
+		return (seats.values().stream().anyMatch(n -> n>0));
 
 	}
 
