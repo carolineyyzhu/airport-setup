@@ -4,14 +4,13 @@ import java.time.Duration;
 import java.time.LocalTime;
 import java.util.Objects;
 
-//TODO DO WE NEED NULL CHECKS FOR THIS CLASS???
+
 public final class RouteTime implements Comparable<RouteTime>{
 	
 	private final LocalTime routeTime;
 	
 	public RouteTime(LocalTime routeTime){
-		Objects.requireNonNull(routeTime, "Route time cannot be null");
-
+		//No need for null check. Methods handle nulls
 		this.routeTime = routeTime;
 	}
 	
