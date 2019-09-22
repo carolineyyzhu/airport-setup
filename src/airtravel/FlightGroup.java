@@ -47,11 +47,13 @@ public final class FlightGroup  {
 	 * @param flight is the flight to be removed
 	 * @return true if flight was removed, throws error if the flight was not
 	 */
-	//TODO use get or default
+	//TODO use get or default | im so confuesd
 	public final boolean remove(Flight flight) {
 		checkErrors(flight);
 		LocalTime deptTime = flight.getFlightSchedule().getDepartureTime();
+		
 		BiFunction<LocalTime, Set<Flight>, Set<Flight>> removeFlight = (depart, flightSet) -> flightSet.remove(flight) ? flightSet : null;
+		
 		if(flights.computeIfPresent(deptTime, removeFlight) == null) {
 			return false;
 		} else {
