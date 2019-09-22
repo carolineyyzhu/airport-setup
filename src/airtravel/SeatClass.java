@@ -14,7 +14,7 @@ public enum SeatClass {
 
 	//helper method to find the class above the class that is being looked at
 	static final SeatClass classAbove(SeatClass seatClass) {
-		Objects.requireNonNull(seatClass,"Null input received.");
+		Objects.requireNonNull(seatClass,"Seat class cannot be null");
 
 		SeatClass aboveClass = seatClass;
 		if(seatClass.ordinal() < SeatClass.values().length - 1 && seatClass.ordinal() != 0)
@@ -24,7 +24,7 @@ public enum SeatClass {
 
 	//helper method to find the class below the class being looked at
 	static final SeatClass classBelow(SeatClass seatClass) {
-		Objects.requireNonNull(seatClass,"Null input received.");
+		Objects.requireNonNull(seatClass,"Seat class cannot be null");
 
 		SeatClass belowClass = seatClass;
 		if(seatClass.ordinal() != SeatClass.values().length - 1 && seatClass.ordinal() > 0)

@@ -27,13 +27,13 @@ public final class SeatConfiguration {
 	//builder method given an enum map
 	//TODO: Copy only in the builder or in constructor
 	public static final SeatConfiguration of(EnumMap<SeatClass, Integer> seats) {
-		Objects.requireNonNull(seats,"Null input received.");
+		Objects.requireNonNull(seats,"EnumMap seats cannot be null");
 		return new SeatConfiguration(new EnumMap<SeatClass, Integer>(seats));
 	}
 
 	//returns number of seats
 	public final Integer seats(SeatClass seatClass) {
-		Objects.requireNonNull(seatClass,"Null input received.");
+		Objects.requireNonNull(seatClass,"Seat class cannot be null");
 		if (seats.get(seatClass) == null || seats.get(seatClass) < 0) {
 			return 0;
 		} else {
@@ -44,8 +44,8 @@ public final class SeatConfiguration {
 	
 	//sets the seats to the given value
 	public final int setSeats(SeatClass seatClass, Integer numSeats) {
-		Objects.requireNonNull(seatClass,"Null input received.");
-		Objects.requireNonNull(numSeats,"Null input received.");
+		Objects.requireNonNull(seatClass,"Seat class cannot be null");
+		Objects.requireNonNull(numSeats,"Number of seats cannot be null");
 
 		return seats.put(seatClass, numSeats);
 	}
