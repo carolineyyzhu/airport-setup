@@ -27,8 +27,13 @@ final class RouteState {
 		
 	}
 	
+	static RouteState of(Set<Airport> airports,Airport origin, LocalTime departureTime) {
+		return new RouteState(airports, origin, departureTime);
+	}
+	
 	void replaceNode(RouteNode routeNode) {
 		airportNode.put(routeNode.getAirport(), routeNode);
+		unreached.remove(routeNode); //TODO: Do we need to remove this from unreaced?
 		
 	}
 	
