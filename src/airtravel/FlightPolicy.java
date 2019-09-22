@@ -70,32 +70,31 @@ public final class FlightPolicy extends AbstractFlight {
 	public static final Flight restrictedDuration(Flight flight, Duration durationMax) {
 		Objects.requireNonNull(flight,"Flight input cannot be null");
 		Objects.requireNonNull(durationMax,"Duration maximum cannot be null");
-		Flight restrictedDurationFlight;
 
+		Flight restrictedDurationFlight;
+		//returns a strict policy on short flights
 		if (flight.isShort(durationMax))
-			//returns a strict policy on short flights
 			restrictedDurationFlight = strict(flight);
+		//returns the same seat configuration as on the underlying flight
 		else {
-			//returns the same seat configuration as on the underlying flight
 			BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = (a, b) -> SeatConfiguration.of(a);
 			restrictedDurationFlight = FlightPolicy.of(flight, policy);
 		}
 		return restrictedDurationFlight;
 	}
 
+	//TODO: broken
 	public static final Flight reserve(Flight flight, int reserve) {
 		Objects.requireNonNull(flight,"Flight input cannot be null");
-		Objects.requireNonNull(reserve,"Reserved seats cannot be null");
 
 		BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = (a, b) ->
-				((a.seats(b.getSeatClass()) - reserve) > 0) ? reserveSeatConfig(a, reserve) : emptySeatConfig(); //Math.MAX() remove if statement
+				Math.max(a.seats(b.getSeatClass()), reserve) != reserve ? reserveSeatConfig(a, b, reserve) : emptySeatConfig(); //Math.MAX() remove if statement
 		return FlightPolicy.of(flight, policy);
 	}
 
 	//private helper method to generate a SeatConfiguration that accounts for available seats while saving a reserve
-	private static final SeatConfiguration reserveSeatConfig(SeatConfiguration seatConfig, int reserve) {
+	private static final SeatConfiguration reserveSeatConfig(SeatConfiguration seatConfig, FareClass fareClass, int reserve) {
 		Objects.requireNonNull(seatConfig,"Null input received.");
-		Objects.requireNonNull(reserve,"Reserved seats cannot be null");
 
 		SeatConfiguration newSeatConfig = SeatConfiguration.of(seatConfig);
 		for (SeatClass section : SeatClass.values()) {
@@ -108,13 +107,19 @@ public final class FlightPolicy extends AbstractFlight {
 		return newSeatConfig;
 	}
 
+	/**
+	 * Enacts a policy such that a passenger has access to the seats in their class and in the class above them
+	 * @param flight is the flight the policy is enacted upon
+	 * @return a new FlightPolicy with a limited SeatConfiguration
+	 */
 	public static final Flight limited(Flight flight) {
 		Objects.requireNonNull(flight,"Flight input cannot be null");
 		//return limitedSeatConfig, no need for conditional
-		BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = (a, b) -> limitedSeatConfig(a, b);
+		BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = FlightPolicy::limitedSeatConfig;
 		return FlightPolicy.of(flight, policy);
 	}
 
+	//private helper method to generate a SeatConfiguration
 	private static final SeatConfiguration limitedSeatConfig(SeatConfiguration seatConfig, FareClass fareClass) {
 		Objects.requireNonNull(seatConfig,"Null input received.");
 		Objects.requireNonNull(fareClass,"Seat configuration cannot be null");
@@ -122,10 +127,20 @@ public final class FlightPolicy extends AbstractFlight {
 		SeatClass seatClass = fareClass.getSeatClass();
 		SeatConfiguration limitedSeatConfig = SeatConfiguration.of(seatConfig);
 		for (SeatClass section : SeatClass.values()) {
-			if (section != seatClass && section != SeatClass.classAbove(seatClass))
+			if (section != seatClass && section != classAbove(seatClass))
 				limitedSeatConfig.setSeats(section, 0);
 		}
 		return limitedSeatConfig;
+	}
+
+	//helper method to find the class above the class that is being looked at
+	private static final SeatClass classAbove(SeatClass seatClass) {
+		Objects.requireNonNull(seatClass,"Seat class cannot be null");
+
+		SeatClass aboveClass = seatClass;
+		if(seatClass.ordinal() < SeatClass.values().length - 1 && seatClass.ordinal() != 0)
+			aboveClass = SeatClass.values()[seatClass.ordinal() - 1];
+		return aboveClass;
 	}
 
 	//private helper method to create a new seat configuration where every enum value has a key of 0
