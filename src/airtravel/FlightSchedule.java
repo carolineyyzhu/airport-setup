@@ -35,8 +35,8 @@ public final class FlightSchedule {
 	 */
 	public static final FlightSchedule of(LocalTime departureTime, LocalTime arrivalTime) {
 		//Check for null inputs
-		Objects.requireNonNull(departureTime,"Null input received.");
-		Objects.requireNonNull(arrivalTime,"Null input received.");
+		Objects.requireNonNull(departureTime,"Departure time cannot be null");
+		Objects.requireNonNull(arrivalTime,"Arrival time cannot be null");
 
 		//Check if arrivalTime precedes departureTime
 		if (arrivalTime.isBefore(departureTime)) {
@@ -52,7 +52,7 @@ public final class FlightSchedule {
 	 */
 	public final boolean isShort(Duration durationMax) {
 		//Throws exception if null inputs are received
-		Objects.requireNonNull(durationMax,"Null input received.");
+		Objects.requireNonNull(durationMax,"Maximum duration cannot be null");
 
 		//Find the flight duration of this flight
 		Duration duration = Duration.between(departureTime, arrivalTime);

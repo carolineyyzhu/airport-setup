@@ -36,10 +36,10 @@ public class SimpleFlight extends AbstractFlight {
      */
 
     public static SimpleFlight of(String code, Leg leg, FlightSchedule flightSchedule, SeatConfiguration seatsAvailable) {
-        Objects.requireNonNull(code,"Null input received.");
-        Objects.requireNonNull(leg,"Null input received.");
-        Objects.requireNonNull(flightSchedule,"Null input received.");
-        Objects.requireNonNull(seatsAvailable,"Null input received.");
+        Objects.requireNonNull(code,"Airport code cannot be null");
+        Objects.requireNonNull(leg,"Leg cannot be null");
+        Objects.requireNonNull(flightSchedule,"Flight schedule cannot be null");
+        Objects.requireNonNull(seatsAvailable,"Seat configuration of available seats cannot be null");
 
         SimpleFlight flight = new SimpleFlight(code, leg, flightSchedule, SeatConfiguration.of(seatsAvailable));
         Airport departureAirport = leg.getOrigin();
@@ -65,13 +65,13 @@ public class SimpleFlight extends AbstractFlight {
     //returns true if the flight is short
     @Override
 	public boolean isShort(Duration durationMax) {
-        Objects.requireNonNull(durationMax,"Null input received.");
+        Objects.requireNonNull(durationMax,"Maximum duration cannot be null");
 		return this.getFlightSchedule().isShort(durationMax);
 	}
 
 	//returns the SeatConfiguration
     public SeatConfiguration seatsAvailable(FareClass fareClass) {
-        Objects.requireNonNull(fareClass,"Null input received.");
+        Objects.requireNonNull(fareClass,"Fare class cannot be null");
 
         return SeatConfiguration.of(seatsAvailable);
     }

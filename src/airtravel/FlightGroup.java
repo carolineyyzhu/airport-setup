@@ -21,7 +21,7 @@ public final class FlightGroup  {
 	 */
 	public static final FlightGroup of(Airport origin) {
 		//Check for null inputs
-		Objects.requireNonNull(origin,"Null input received.");
+		Objects.requireNonNull(origin,"Origin airport cannot be null");
 
 		NavigableMap<LocalTime, Set<Flight>> flights =  new TreeMap<LocalTime, Set<Flight>>();
 		//Create Instance of FlightSchedule
@@ -38,8 +38,7 @@ public final class FlightGroup  {
 	public final boolean add(Flight flight) {
 		checkErrors(flight);
 		LocalTime deptTime = flight.getFlightSchedule().getDepartureTime();
-		flights.computeIfAbsent(deptTime, flightList -> new HashSet<Flight>()).add(flight); //return this line
-		return flights.get(deptTime).contains(flight);
+		return flights.computeIfAbsent(deptTime, flightList -> new HashSet<Flight>()).add(flight);
 	}
 
 	/**
@@ -55,7 +54,7 @@ public final class FlightGroup  {
 		BiFunction<LocalTime, Set<Flight>, Set<Flight>> removeFlight = (depart, flightSet) -> flightSet.remove(flight) ? flightSet : null;
 		if(flights.computeIfPresent(deptTime, removeFlight) == null) {
 			return false;
-		}else {
+		} else {
 			return !flights.get(deptTime).contains(flight);
 		}
 		
@@ -67,7 +66,7 @@ public final class FlightGroup  {
 	 */
 	private final void checkErrors(Flight flight) {
 		//Throws exception if inputs are null
-		Objects.requireNonNull(flight,"Null input received.");
+		Objects.requireNonNull(flight,"Flight cannot be null");
 		//Throws exception if flight originated from a different airport
 		if (!flight.origin().equals(this.origin)) {
 			throw new IllegalArgumentException("This flight does not originate from this airport.");
@@ -83,7 +82,7 @@ public final class FlightGroup  {
 
 	public final Set<Flight> flightsAtOrAfter(LocalTime departureTime){
 		//Throws exception if null inputs are received
-		Objects.requireNonNull(departureTime,"Null input received.");
+		Objects.requireNonNull(departureTime,"Departure time cannot be null");
 
 		Set<Flight> returnSet = new HashSet<Flight>();
 

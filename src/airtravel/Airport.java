@@ -34,19 +34,21 @@ public final class Airport implements Comparable<Airport> {
 	 * @return the created airport
 	 */
 	public static final Airport of(String code, Duration connectionTimeMin) {
-		Helpers.nullCheck(code, connectionTimeMin);
+		Objects.requireNonNull(code,"Airport code cannot be null");
+		Objects.requireNonNull(connectionTimeMin,"Connection time minimum cannot be null");
+
 		return new Airport(code, connectionTimeMin);
 	}
 	
 	//Adds a flight: returns true if flight was added
 	public final boolean addFlight(Flight flight) {
-		Objects.requireNonNull(flight,"Null input received.");
+		Objects.requireNonNull(flight,"Flight cannot be null");
 		return outFlights.add(flight);
 	}
 	
 	//Removes a flight: returns true if the flight was removed
 	public final boolean removeFlight(Flight flight) {
-		Objects.requireNonNull(flight,"Null input received.");
+		Objects.requireNonNull(flight,"Flight cannot be null");
 		return outFlights.remove(flight);
 	}
 	
@@ -61,8 +63,12 @@ public final class Airport implements Comparable<Airport> {
 	}
 	
 	public Set<Flight> availableFlights(LocalTime departureTime, FareClass fareClass){
-		Helpers.nullCheck(departureTime, fareClass);
-		return outFlights.flightsAtOrAfter(departureTime).stream().filter(n -> n.hasSeats(fareClass)).collect(Collectors.toSet());
+		Objects.requireNonNull(departureTime,"Departure time cannot be null");
+		Objects.requireNonNull(fareClass,"Fare class cannot be null");
+		return outFlights.flightsAtOrAfter(departureTime)
+				.stream()
+				.filter(n -> n.hasSeats(fareClass))
+				.collect(Collectors.toSet());
 		
 	}
 	
