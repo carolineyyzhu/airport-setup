@@ -30,19 +30,20 @@ public final class Airport implements Comparable<Airport> {
 	 * @return the created airport
 	 */
 	public static final Airport of(String code, Duration connectionTimeMin) {
-		Helpers.nullCheck(code,connectionTimeMin);
+		Objects.requireNonNull(code,"Null input received.");
+		Objects.requireNonNull(connectionTimeMin,"Null input received.");
 		return new Airport(code, connectionTimeMin);
 	}
 	
 	//Adds a flight: returns true if flight was added
 	public final boolean addFlight(Flight flight) {
-		Helpers.nullCheck(flight);
+		Objects.requireNonNull(flight,"Null input received.");
 		return outFlights.add(flight);
 	}
 	
 	//Removes a flight: returns true if the flight was removed
 	public final boolean removeFlight(Flight flight) {
-		Helpers.nullCheck(flight);
+		Objects.requireNonNull(flight,"Null input received.");
 		return outFlights.remove(flight);
 	}
 	

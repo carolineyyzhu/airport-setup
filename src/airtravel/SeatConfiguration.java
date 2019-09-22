@@ -2,6 +2,7 @@ package airtravel;
 
 import java.util.EnumMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 
 /**
@@ -20,21 +21,20 @@ public final class SeatConfiguration {
 	
 	//builder method given a seat configuration
 	public static final SeatConfiguration of(SeatConfiguration seatConfiguration) {
-		Helpers.nullCheck(seatConfiguration);
-		return new SeatConfiguration(seatConfiguration.seats);
+		Objects.requireNonNull(seatConfiguration,"Null input received.");
+		return SeatConfiguration.of(seatConfiguration.seats);
 	}
 	
 	//builder method given an enum map
 	//TODO: Copy only in the builder or in constructor
-	//TODO: build methods can call each other
 	public static final SeatConfiguration of(EnumMap<SeatClass, Integer> seats) {
-		Helpers.nullCheck(seats);
+		Objects.requireNonNull(seats,"Null input received.");
 		return new SeatConfiguration(new EnumMap<SeatClass, Integer>(seats));
 	}
 
 	//returns number of seats
 	public final Integer seats(SeatClass seatClass) {
-		Helpers.nullCheck(seatClass);
+		Objects.requireNonNull(seatClass,"Null input received.");
 		if (seats.get(seatClass) == null || seats.get(seatClass) < 0) {
 			return 0;
 		} else {
@@ -44,9 +44,10 @@ public final class SeatConfiguration {
 	}
 	
 	//sets the seats to the given value
-	//change back to primitive int
-	public final Integer setSeats(SeatClass seatClass, Integer numSeats) {
-		Helpers.nullCheck(seatClass, numSeats);
+	public final int setSeats(SeatClass seatClass, Integer numSeats) {
+		Objects.requireNonNull(seatClass,"Null input received.");
+		Objects.requireNonNull(numSeats,"Null input received.");
+
 		return seats.put(seatClass, numSeats);
 	}
 	
