@@ -17,19 +17,11 @@ public final class RouteFinder {
 		return new RouteFinder(airports);
 	}
 	
-	public final RouteNode route(Airport origin,
-				 				 Airport destination,
-				 				 LocalTime departureTime,
-				 				 FareClass fareClass) {
-		
+	public final RouteNode route(Airport origin, Airport destination, LocalTime departureTime, FareClass fareClass) {
 		return routeHelper(origin, destination, departureTime, fareClass);
-		
 	}
 	
-	private final RouteNode routeHelper(Airport origin,
-			 							Airport destination,
-			 							LocalTime departureTime,
-			 							FareClass fareClass){
+	private final RouteNode routeHelper(Airport origin, Airport destination, LocalTime departureTime, FareClass fareClass){
 	RouteState currentRoutes = RouteState.of(this.airports, origin, departureTime);
 	while (!currentRoutes.allReached()) {
 		RouteNode currentNode = currentRoutes.closestUnreached();

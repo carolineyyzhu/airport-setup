@@ -46,17 +46,17 @@ public final class FlightPolicy extends AbstractFlight {
 	 */
 	public static final Flight strict(Flight flight) {
 		Objects.requireNonNull(flight,"Flight input cannot be null");
-		BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = (a, b) -> flight.hasSeats(b) ? strictSeatConfig(a, b) : emptySeatConfig();
+		BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = (a, b) -> strictSeatConfig(a, b, flight);
 		return FlightPolicy.of(flight, policy);
 	}
 
 	//helper method for strict to create a new SeatConfiguration
-	private static final SeatConfiguration strictSeatConfig(SeatConfiguration oldSeatConfig, FareClass fareClass) {
+	private static final SeatConfiguration strictSeatConfig(SeatConfiguration oldSeatConfig, FareClass fareClass, Flight flight) {
 		SeatConfiguration newSeatConfig = SeatConfiguration.of(oldSeatConfig);
-		for (SeatClass section : SeatClass.values()) {
-			if(!section.equals(fareClass.getSeatClass()))
-				newSeatConfig.setSeats(section, 0);
-		}
+			for (SeatClass section : SeatClass.values()) {
+				if (!section.equals(fareClass.getSeatClass()))
+					newSeatConfig.setSeats(section, 0);
+			}
 		return newSeatConfig;
 	}
 
@@ -83,22 +83,26 @@ public final class FlightPolicy extends AbstractFlight {
 		return restrictedDurationFlight;
 	}
 
-	//TODO: broken
+	/**
+	 * Enacts a policy so that passengers can switch to any class, so long as a certain number of seats are reserved
+	 * for other passengers
+	 * @param flight is the flight the policy is enacted upon
+	 * @param reserve is the number of seats to be reserved
+	 * @return a new FlightPolicy with a SeatConfiguration that has a certain number of seats reserved
+	 */
 	public static final Flight reserve(Flight flight, int reserve) {
 		Objects.requireNonNull(flight,"Flight input cannot be null");
 
-		BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = (a, b) ->
-				Math.max(a.seats(b.getSeatClass()), reserve) != reserve ? reserveSeatConfig(a, b, reserve) : emptySeatConfig(); //Math.MAX() remove if statement
+		BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = (a, b) -> reserveSeatConfig(a, reserve);
 		return FlightPolicy.of(flight, policy);
 	}
 
 	//private helper method to generate a SeatConfiguration that accounts for available seats while saving a reserve
-	private static final SeatConfiguration reserveSeatConfig(SeatConfiguration seatConfig, FareClass fareClass, int reserve) {
+	private static final SeatConfiguration reserveSeatConfig(SeatConfiguration seatConfig, int reserve) {
 		Objects.requireNonNull(seatConfig,"Null input received.");
 
 		SeatConfiguration newSeatConfig = SeatConfiguration.of(seatConfig);
 		for (SeatClass section : SeatClass.values()) {
-			//TODO: if statement is redundant with max value in previous function, check logic
 			if (newSeatConfig.seats(section) > reserve)
 				newSeatConfig.setSeats(section, newSeatConfig.seats(section) - reserve);
 			else
@@ -134,22 +138,13 @@ public final class FlightPolicy extends AbstractFlight {
 	}
 
 	//helper method to find the class above the class that is being looked at
-	private static final SeatClass classAbove(SeatClass seatClass) {
+	static final SeatClass classAbove(SeatClass seatClass) {
 		Objects.requireNonNull(seatClass,"Seat class cannot be null");
 
 		SeatClass aboveClass = seatClass;
 		if(seatClass.ordinal() < SeatClass.values().length - 1 && seatClass.ordinal() != 0)
 			aboveClass = SeatClass.values()[seatClass.ordinal() - 1];
 		return aboveClass;
-	}
-
-	//private helper method to create a new seat configuration where every enum value has a key of 0
-	static SeatConfiguration emptySeatConfig() {
-		SeatConfiguration newSeatConfig = SeatConfiguration.of(new EnumMap<SeatClass, Integer>(SeatClass.class));
-		for (SeatClass section : SeatClass.values()) {
-			newSeatConfig.setSeats(section, 0);
-		}
-		return newSeatConfig;
 	}
 
 

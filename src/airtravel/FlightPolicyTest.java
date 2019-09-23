@@ -66,11 +66,11 @@ public class FlightPolicyTest {
         //TODO: Assert each condition
         for (SeatClass section : SeatClass.values()) {
             System.out.println(section + " " + flightClassSeats.seats(section));
-            if (section != fareClass.getSeatClass() && section != SeatClass.classAbove(fareClass.getSeatClass()) && !flightClassSeats.seats(section).equals(0))
+            if (section != fareClass.getSeatClass() && section != FlightPolicy.classAbove(fareClass.getSeatClass()) && !flightClassSeats.seats(section).equals(0))
                 seatsAccurate = false;
             if (section == fareClass.getSeatClass() && !flightClassSeats.seats(section).equals(flight.seatsAvailable(fareClass).seats(section) - reserve))
                 seatsAccurate = false;
-            if(section == SeatClass.classAbove(fareClass.getSeatClass()) && !flightClassSeats.seats(section).equals(flight.seatsAvailable(fareClass).seats(section) - reserve))
+            if(section == FlightPolicy.classAbove(fareClass.getSeatClass()) && !flightClassSeats.seats(section).equals(flight.seatsAvailable(fareClass).seats(section) - reserve))
                 seatsAccurate = false;
         }
         assertTrue(seatsAccurate);
