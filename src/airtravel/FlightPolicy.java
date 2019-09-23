@@ -142,7 +142,7 @@ public final class FlightPolicy extends AbstractFlight {
 		Objects.requireNonNull(seatClass,"Seat class cannot be null");
 
 		SeatClass aboveClass = seatClass;
-		if(seatClass.ordinal() < SeatClass.values().length - 1 && seatClass.ordinal() != 0)
+		if(seatClass.ordinal() < SeatClass.values().length && seatClass.ordinal() != 0)
 			aboveClass = SeatClass.values()[seatClass.ordinal() - 1];
 		return aboveClass;
 	}

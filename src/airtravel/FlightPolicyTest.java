@@ -5,17 +5,21 @@ import org.junit.Test;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.EnumMap;
+import java.util.Objects;
 import java.util.function.BiFunction;
 
 import static junit.framework.TestCase.assertTrue;
+import org.assertj.core.api.JUnitSoftAssertions;
 
 public class FlightPolicyTest {
+    private final JUnitSoftAssertions softAssert = new JUnitSoftAssertions();
 
     /**
      * Test to apply the strict policy to a flight
      */
     @Test
     public void strictPolicyFlight() {
+        //airport setup
         Airport airportA = Airport.of("AA12", Duration.ofMinutes(30));
         Airport airportB = Airport.of("BB8", Duration.ofMinutes(30));
         Leg leg = Leg.of(airportA, airportB);
@@ -29,24 +33,24 @@ public class FlightPolicyTest {
         Flight flight = SimpleFlight.of("UA197", leg, fsched, seatConfiguration);
         airportA.addFlight(flight);
 
+        //
         boolean seatsAccurate = true;
         SeatConfiguration flightClassSeats = FlightPolicy.strict(flight).seatsAvailable(fareClass);
         for (SeatClass section : SeatClass.values()) {
-        	//TODO: Assert each condition
-            System.out.println(section + " " + flightClassSeats.seats(section));
-            if (section != fareClass.getSeatClass() && !flightClassSeats.seats(section).equals(0))
-                seatsAccurate = false;
-            if (section == fareClass.getSeatClass() && !flightClassSeats.seats(section).equals(flight.seatsAvailable(fareClass).seats(section)))
-                seatsAccurate = false;
+            int classSeats = flightClassSeats.seats(section);
+            System.out.println(section + " " + classSeats);
+            softAssert.assertThat(!section.equals(fareClass.getSeatClass()) && classSeats == 0);
+            softAssert.assertThat(section.equals(fareClass.getSeatClass()) && classSeats == flight.seatsAvailable(fareClass).seats(section));
         }
-        assertTrue(seatsAccurate);
     }
 
+
     /**
-     * Test to apply the limited policy to a flight
+     * Test to apply the limited and reserve policies to a flight
      */
     @Test
     public void limitedReservePolicyFlight() {
+        //airport setup
         Airport airportA = Airport.of("AA12", Duration.ofMinutes(30));
         Airport airportB = Airport.of("BB8", Duration.ofMinutes(30));
         Leg leg = Leg.of(airportA, airportB);
@@ -63,24 +67,21 @@ public class FlightPolicyTest {
         boolean seatsAccurate = true;
         SeatConfiguration flightClassSeats = FlightPolicy.limited(FlightPolicy.reserve(flight, 2)).seatsAvailable(fareClass);
         int reserve = 2;
-        //TODO: Assert each condition
+        SeatClass seatClass = fareClass.getSeatClass();
         for (SeatClass section : SeatClass.values()) {
             System.out.println(section + " " + flightClassSeats.seats(section));
-            if (section != fareClass.getSeatClass() && section != FlightPolicy.classAbove(fareClass.getSeatClass()) && !flightClassSeats.seats(section).equals(0))
-                seatsAccurate = false;
-            if (section == fareClass.getSeatClass() && !flightClassSeats.seats(section).equals(flight.seatsAvailable(fareClass).seats(section) - reserve))
-                seatsAccurate = false;
-            if(section == FlightPolicy.classAbove(fareClass.getSeatClass()) && !flightClassSeats.seats(section).equals(flight.seatsAvailable(fareClass).seats(section) - reserve))
-                seatsAccurate = false;
+            softAssert.assertThat(!section.equals(seatClass) && !section.equals(FlightPolicy.classAbove(seatClass)) && flightClassSeats.seats(section).equals(0));
+            softAssert.assertThat((section.equals(seatClass) || section.equals(FlightPolicy.classAbove(seatClass))) && flightClassSeats.seats(section).equals(flight.seatsAvailable(fareClass).seats(section) - reserve));
         }
-        assertTrue(seatsAccurate);
     }
+
     /**
      * Passenger can go to their class or the class below them
      */
 
     @Test
     public void classBelowPolicyTest() {
+        //airport setup
         Airport airportA = Airport.of("AA12", Duration.ofMinutes(30));
         Airport airportB = Airport.of("BB8", Duration.ofMinutes(30));
         Leg leg = Leg.of(airportA, airportB);
@@ -90,34 +91,41 @@ public class FlightPolicyTest {
             seatConfigEnumMap.put(section, 6);
         }
         SeatConfiguration seatConfiguration = SeatConfiguration.of(seatConfigEnumMap);
-        FareClass fareClass = FareClass.of(15, SeatClass.ECONOMY);
+        FareClass fareClass = FareClass.of(15, SeatClass.BUSINESS);
         Flight flight = SimpleFlight.of("UA197", leg, fsched, seatConfiguration);
         airportA.addFlight(flight);
 
         boolean seatsAccurate = true;
-        BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = (a,b) ->
-                    flight.hasSeats(b) || flight.hasSeats(FareClass.of(0, SeatClass.classBelow(b.getSeatClass()))) ? belowSeatConfig(a, b) : FlightPolicy.emptySeatConfig();
+        BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = FlightPolicyTest::belowSeatConfig;
         FlightPolicy fp = FlightPolicy.of(flight, policy);
         SeatConfiguration flightClassSeats = fp.seatsAvailable(fareClass);
+        SeatClass seatClass = fareClass.getSeatClass();
         for (SeatClass section : SeatClass.values()) {
-        	//TODO: Assert individually
             System.out.println(section + " " + flightClassSeats.seats(section));
-            if (section != fareClass.getSeatClass() && section != SeatClass.classBelow(fareClass.getSeatClass()) && !flightClassSeats.seats(section).equals(0))
-                seatsAccurate = false;
-            if (section == fareClass.getSeatClass() && !flightClassSeats.seats(section).equals(flight.seatsAvailable(fareClass).seats(section)))
-                seatsAccurate = false;
-            if(section == SeatClass.classBelow(fareClass.getSeatClass()) && !flightClassSeats.seats(section).equals(flight.seatsAvailable(fareClass).seats(section)))
-                seatsAccurate = false;
+            softAssert.assertThat(!section.equals(seatClass) && !section.equals(classBelow(seatClass)) && flightClassSeats.seats(section).equals(0));
+            softAssert.assertThat((section.equals(seatClass) || section.equals(classBelow(seatClass))) && flightClassSeats.seats(section).equals(flight.seatsAvailable(fareClass).seats(section)));
         }
-        assertTrue(seatsAccurate);
     }
 
-    //private helper method to generate a SeatConfiguration that accounts for available seats while saving a reserve
+    //helper method to find the seat class ranking below the seat class passed in
+    static final SeatClass classBelow(SeatClass seatClass) {
+        Objects.requireNonNull(seatClass,"Seat class cannot be null");
+
+        SeatClass belowClass = seatClass;
+        if(seatClass.ordinal() != SeatClass.values().length - 1)
+            belowClass = SeatClass.values()[seatClass.ordinal() + 1];
+        return belowClass;
+    }
+
+    //private helper method to create a seat configuration that includes the passenger's SeatClass and the SeatClass below that
     private static SeatConfiguration belowSeatConfig(SeatConfiguration seatConfig, FareClass fareClass) {
+        Objects.requireNonNull(seatConfig,"Seat configuration cannot be null");
+        Objects.requireNonNull(fareClass,"Fare class cannot be null");
+
         SeatClass seatClass = fareClass.getSeatClass();
         SeatConfiguration belowClassConfig = SeatConfiguration.of(seatConfig);
         for (SeatClass section : SeatClass.values()) {
-            if (section != seatClass && section != SeatClass.classBelow(seatClass))
+            if (section != seatClass && section != classBelow(seatClass))
                 belowClassConfig.setSeats(section, 0);
         }
         return belowClassConfig;
@@ -126,9 +134,9 @@ public class FlightPolicyTest {
     /**
      * Passengers in business class and above can go to their class and premium economy
      */
-
     @Test
     public void premiumEconomyBusiness() {
+        //airport setup
         Airport airportA = Airport.of("AA12", Duration.ofMinutes(30));
         Airport airportB = Airport.of("BB8", Duration.ofMinutes(30));
         Leg leg = Leg.of(airportA, airportB);
@@ -143,21 +151,15 @@ public class FlightPolicyTest {
         airportA.addFlight(flight);
 
         boolean seatsAccurate = true;
-        BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = (a,b) ->
-                flight.hasSeats(b) || flight.hasSeats(FareClass.of(0, SeatClass.PREMIUM_ECONOMY)) ? premEconBusConfig(a, b) : FlightPolicy.emptySeatConfig();
+        BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = FlightPolicyTest::premEconBusConfig;
         FlightPolicy fp = FlightPolicy.of(flight, policy);
         SeatConfiguration flightClassSeats = fp.seatsAvailable(fareClass);
+        SeatClass seatClass = fareClass.getSeatClass();
         for (SeatClass section : SeatClass.values()) {
-        	//TODO: Assert individually
             System.out.println(section + " " + flightClassSeats.seats(section));
-            if (section != fareClass.getSeatClass() && section != SeatClass.classBelow(fareClass.getSeatClass()) && !flightClassSeats.seats(section).equals(0))
-                seatsAccurate = false;
-            if (section == fareClass.getSeatClass() && !flightClassSeats.seats(section).equals(flight.seatsAvailable(fareClass).seats(section)))
-                seatsAccurate = false;
-            if(section == SeatClass.classBelow(fareClass.getSeatClass()) && !flightClassSeats.seats(section).equals(flight.seatsAvailable(fareClass).seats(section)))
-                seatsAccurate = false;
+            softAssert.assertThat(!section.equals(seatClass) && !section.equals(SeatClass.PREMIUM_ECONOMY) && flightClassSeats.seats(section).equals(0));
+            softAssert.assertThat(section.equals(seatClass) && flightClassSeats.seats(section).equals(flight.seatsAvailable(fareClass).seats(section)));
         }
-        assertTrue(seatsAccurate);
     }
 
     //private helper method to generate a SeatConfiguration that accounts for available seats while saving a reserve
@@ -165,10 +167,8 @@ public class FlightPolicyTest {
         SeatClass seatClass = fareClass.getSeatClass();
         SeatConfiguration newSeatConfig = SeatConfiguration.of(seatConfig);
         for (SeatClass section : SeatClass.values()) {
-            if(section.ordinal() >= SeatClass.values().length - 3) {
-                if (section != seatClass && section != SeatClass.PREMIUM_ECONOMY)
-                    newSeatConfig.setSeats(section, 0);
-            }
+            if(section.ordinal() >= SeatClass.BUSINESS.ordinal() && section != SeatClass.PREMIUM_ECONOMY)
+                newSeatConfig.setSeats(section, 0);
         }
         return newSeatConfig;
     }
