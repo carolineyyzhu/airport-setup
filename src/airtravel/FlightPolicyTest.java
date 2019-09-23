@@ -8,7 +8,6 @@ import java.util.EnumMap;
 import java.util.Objects;
 import java.util.function.BiFunction;
 
-import static junit.framework.TestCase.assertTrue;
 import org.assertj.core.api.JUnitSoftAssertions;
 
 public class FlightPolicyTest {
