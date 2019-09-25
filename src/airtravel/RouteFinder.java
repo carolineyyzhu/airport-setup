@@ -12,8 +12,8 @@ public final class RouteFinder {
 		this.airports = airports;
 	}
 	
-	public RouteFinder of(Set<Airport> airports){
-		Objects.requireNonNull(airports, "Set is required to be non null");
+	public static RouteFinder of(Set<Airport> airports){
+		Objects.requireNonNull(airports, "The set of airports cannot be a null value");
 		return new RouteFinder(airports);
 	}
 	

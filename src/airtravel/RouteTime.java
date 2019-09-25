@@ -15,7 +15,7 @@ public final class RouteTime implements Comparable<RouteTime>{
 	}
 	
 	public static final RouteTime UNKNOWN(){
-		return null;
+		return new RouteTime(null);
 	}
 	
 	public boolean isKnown() {
