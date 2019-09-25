@@ -52,8 +52,9 @@ public final class SeatConfiguration {
 	
 	//sets the seats to the given value
 	public final int setSeats(SeatClass seatClass, Integer numSeats) {
-		Objects.requireNonNull(seatClass,"Seat class cannot be null");
-		Objects.requireNonNull(numSeats,"Number of seats cannot be null");
+		if (seatClass == null || numSeats == null) {
+			return 0;
+		}
 
 		return seats.put(seatClass, numSeats);
 	}
