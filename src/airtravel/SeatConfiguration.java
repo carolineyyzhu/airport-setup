@@ -42,12 +42,11 @@ public final class SeatConfiguration {
 	//returns number of seats
 	public final Integer seats(SeatClass seatClass) {
 		Objects.requireNonNull(seatClass,"Seat class cannot be null");
-		if (seats.get(seatClass) == null || seats.get(seatClass) < 0) {
-			return 0;
-		} else {
-			return seats.get(seatClass);
+		Integer seats = this.seats.getOrDefault(seatClass, 0);
+		if (seats < 0) {
+			seats = 0;
 		}
-		
+		return seats;
 	}
 	
 	//sets the seats to the given value

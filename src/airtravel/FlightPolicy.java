@@ -32,8 +32,9 @@ public final class FlightPolicy extends AbstractFlight {
 		FlightPolicy newFlightPolicy = new FlightPolicy(flight, policy);
 
 		//Replace flight at departure airport with this policy
-		flight.origin().removeFlight(flight);
-		flight.origin().addFlight(newFlightPolicy);
+		Airport origin = flight.origin();
+		origin.removeFlight(flight);
+		origin.addFlight(newFlightPolicy);
 		return newFlightPolicy;
 	}
 
