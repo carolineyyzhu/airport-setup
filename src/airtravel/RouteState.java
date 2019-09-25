@@ -54,7 +54,7 @@ final class RouteState {
 		
 	}
 	
-	//returns the closest unreached node
+	//returns the closest un-reached node
 	RouteNode closestUnreached() {
 		if (!allReached()) {
 			return Collections.min(unreached);
