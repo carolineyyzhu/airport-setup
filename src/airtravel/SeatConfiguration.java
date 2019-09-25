@@ -18,14 +18,22 @@ public final class SeatConfiguration {
 		this.seats = seats;
 	}
 	
-	//builder method given a seat configuration
+	/**
+	 * This build method returns a new SeatConfiguration given a seatConfiguration
+	 * @param seatConfiguration: seat configuration to copy
+	 * @return new seat configuration
+	 */
 	public static final SeatConfiguration of(SeatConfiguration seatConfiguration) {
         Objects.requireNonNull(seatConfiguration,"seatConfiguration input cannot be null");
 
 		return SeatConfiguration.of(seatConfiguration.seats);
 	}
 	
-	//builder method given an enum map
+	/**
+	 * This build method creates a new seat configuration
+	 * @param seats enum map of seats to use to create the configuration
+	 * @return a new seat configuration
+	 */
 	public static final SeatConfiguration of(EnumMap<SeatClass, Integer> seats) {
 		Objects.requireNonNull(seats,"EnumMap seats cannot be null");
 		return new SeatConfiguration(new EnumMap<SeatClass, Integer>(seats));

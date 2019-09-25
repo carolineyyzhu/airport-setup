@@ -88,7 +88,7 @@ public final class FlightGroup  {
 
 		Set<Flight> returnSet = new HashSet<Flight>();
 
-		//retrieves all sets for departure times after the departure time inputted, inclusive
+		//retrieves all sets for departure times after the departure time inputed, inclusive
 		flights.tailMap(departureTime, true)
 				.values()
 				.stream()

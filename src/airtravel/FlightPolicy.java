@@ -22,7 +22,7 @@ public final class FlightPolicy extends AbstractFlight {
 	 *
 	 * @param flight flight that policy is being applied to
 	 * @param policy BiFunction that defines the policy
-	 * @return
+	 * @return a new flight policy
 	 */
 	public static final FlightPolicy of(Flight flight, BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy) {
 		Objects.requireNonNull(flight,"Flight input cannot be null");
@@ -162,7 +162,8 @@ public final class FlightPolicy extends AbstractFlight {
 	public FlightSchedule getFlightSchedule() {
 		return this.flight.getFlightSchedule();
 	}
-
+	
+	//returns the seats available for the given fare class
 	@Override
 	public SeatConfiguration seatsAvailable(FareClass fareClass) {
 		Objects.requireNonNull(fareClass,"Fare class cannot be null");
