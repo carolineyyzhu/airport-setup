@@ -1,5 +1,7 @@
 package airtravel;
 
+import java.util.Objects;
+
 /**
  * This class defines the fare class which breaks the seat class into smaller increments
  *
@@ -14,7 +16,9 @@ public final class FareClass {
 		this.seatClass = seatClass;
 	}
 	
-	public static final FareClass of(int identifier, SeatClass seatClass) {//Helper null check method
+	public static final FareClass of(int identifier, SeatClass seatClass) {
+		Objects.requireNonNull(identifier,"Identifier cannot be null");
+		Objects.requireNonNull(seatClass,"seatClass cannot be null");
 		return new FareClass(identifier, seatClass);
 	}
 	

@@ -13,32 +13,37 @@ public final class RouteFinder {
 	}
 	
 	public RouteFinder of(Set<Airport> airports){
-		Objects.requireNonNull(airports, "Set<Airport> is required to be non null");
+		Objects.requireNonNull(airports, "Set is required to be non null");
 		return new RouteFinder(airports);
 	}
 	
 	public final RouteNode route(Airport origin, Airport destination, LocalTime departureTime, FareClass fareClass) {
+		Objects.requireNonNull(origin,"origin input cannot be null");
+		Objects.requireNonNull(destination,"destination input cannot be null");
+		Objects.requireNonNull(departureTime,"departureTime input cannot be null");
+		Objects.requireNonNull(fareClass,"fareClass input cannot be null");
+		
 		return routeHelper(origin, destination, departureTime, fareClass);
 	}
 	
 	private final RouteNode routeHelper(Airport origin, Airport destination, LocalTime departureTime, FareClass fareClass){
-	RouteState currentRoutes = RouteState.of(this.airports, origin, departureTime);
-	while (!currentRoutes.allReached()) {
-		RouteNode currentNode = currentRoutes.closestUnreached();
-		if (currentNode.getAirport().equals(destination)) {
-			return currentNode;
-		}
-		for (Flight currentFlight: currentNode.availableFlights(fareClass)) {
-			Duration length = Duration.between(currentFlight.departureTime(), currentFlight.arrivalTime());
-			RouteTime arrivalTime = new RouteTime(currentFlight.arrivalTime());
-			
-			if (arrivalTime.compareTo(arrivalTime.plus(length)) < 0) {
-				RouteNode newNode = RouteNode.of(currentFlight, currentNode);
-				currentRoutes.replaceNode(newNode);	
+		RouteState currentRoutes = RouteState.of(this.airports, origin, departureTime);
+		while (!currentRoutes.allReached()) {
+			RouteNode currentNode = currentRoutes.closestUnreached();
+			if (currentNode.getAirport().equals(destination)) {
+				return currentNode;
 			}
+			for (Flight currentFlight: currentNode.availableFlights(fareClass)) {
+				Duration length = Duration.between(currentFlight.departureTime(), currentFlight.arrivalTime());
+				RouteTime arrivalTime = new RouteTime(currentFlight.arrivalTime());
+				
+				if (arrivalTime.compareTo(arrivalTime.plus(length)) < 0) {
+					RouteNode newNode = RouteNode.of(currentFlight, currentNode);
+					currentRoutes.replaceNode(newNode);	
+				}
+			}
+	
 		}
-
+		return null;
 	}
-	return null;
-}
 }

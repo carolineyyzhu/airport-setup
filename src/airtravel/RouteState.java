@@ -16,9 +16,6 @@ final class RouteState {
 	private final NavigableSet<RouteNode> unreached = new TreeSet<>();
 
 	private RouteState(Set<Airport> airports, Airport origin, LocalTime departureTime) {
-        Objects.requireNonNull(airports,"Airports set input cannot be null");
-        Objects.requireNonNull(origin,"Arrival time be null");
-        Objects.requireNonNull(departureTime,"Departure time cannot be null");
 		
 		RouteNode originNode = RouteNode.of(origin, new RouteTime(departureTime), null);
 		this.airportNode.put(origin, originNode);
@@ -28,12 +25,13 @@ final class RouteState {
 	}
 	
 	static RouteState of(Set<Airport> airports,Airport origin, LocalTime departureTime) {
+        
 		return new RouteState(airports, origin, departureTime);
 	}
 	
 	void replaceNode(RouteNode routeNode) {
 		airportNode.put(routeNode.getAirport(), routeNode);
-		unreached.remove(routeNode); //TODO: Do we need to remove this from unreaced?
+		unreached.remove(routeNode);
 		
 	}
 	

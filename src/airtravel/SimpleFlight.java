@@ -72,7 +72,6 @@ public class SimpleFlight extends AbstractFlight {
 	//returns the SeatConfiguration
     public SeatConfiguration seatsAvailable(FareClass fareClass) {
         Objects.requireNonNull(fareClass,"Fare class cannot be null");
-
         return SeatConfiguration.of(seatsAvailable);
     }
 }
