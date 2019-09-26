@@ -92,7 +92,7 @@ public final class Airport implements Comparable<Airport> {
 
 	@Override
 	public String toString() {
-		return "Airport code =" + code;
+		return "Airport code = " + code;
 	}
 
 	@Override

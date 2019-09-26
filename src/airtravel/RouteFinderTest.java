@@ -45,6 +45,8 @@ public class RouteFinderTest {
 
         RouteFinder routeFinder = RouteFinder.of(airports);
         RouteNode routeNode = routeFinder.route(airportA, airportC, flightAToB.getFlightSchedule().getDepartureTime(), fareClass);
+        System.out.println(routeNode.getAirport());
+        System.out.println("Arrival time: " + routeNode.getPrevious());
         while(routeNode.getPrevious() != null) {
             System.out.println(routeNode.getAirport() + " arriving at " + routeNode.getArrivalTime());
             routeNode = routeNode.getPrevious();

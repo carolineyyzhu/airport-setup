@@ -19,11 +19,11 @@ final class RouteState {
         Objects.requireNonNull(airports,"Airports set input cannot be null");
         Objects.requireNonNull(origin,"Arrival time be null");
         Objects.requireNonNull(departureTime,"Departure time cannot be null");
-		
+
 		RouteNode originNode = RouteNode.of(origin, new RouteTime(departureTime), null);
 		this.airportNode.put(origin, originNode);
-		airports.stream().forEach(n -> this.airportNode.put(n, RouteNode.of(n, RouteTime.UNKNOWN(), null)));
-		airports.stream().forEach(n -> this.unreached.add(RouteNode.of(n, RouteTime.UNKNOWN(), null)));
+		airports.forEach(n -> this.airportNode.put(n, RouteNode.of(n)));
+		airports.forEach(n -> this.unreached.add(RouteNode.of(n)));
 		
 	}
 	

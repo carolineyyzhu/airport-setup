@@ -43,13 +43,12 @@ public final class RouteTime implements Comparable<RouteTime>{
 
 	@Override
 	public int compareTo(RouteTime routeTime) {
-		if (isKnown() && routeTime.isKnown()) {
+		if (this.isKnown() && routeTime.isKnown())
 			return this.routeTime.compareTo(routeTime.getTime());
-		} else if (isKnown()){
+		else if (!this.isKnown())
 			return -1;
-		} else {
-			return 1;			
-		}
+		else
+			return 1;
 	}
 
 	
