@@ -28,30 +28,16 @@ public class RouteFinderTest {
         SeatConfiguration seatConfigurationAToB = SeatConfiguration.of(seatConfigEnumMapAToB);
         Flight flightAToB = SimpleFlight.of("UA192", legAToB, fschedAToB, seatConfigurationAToB);
 
-        //creates the second leg of the trip, which connects airport B and airport C, from 8:50 to 10:30, with 15 seats in every seat class
-        Leg legBToC = Leg.of(airportB, airportC);
-        FlightSchedule fschedBToC = FlightSchedule.of(LocalTime.of(8, 50), LocalTime.of(10,30));
-        EnumMap<SeatClass, Integer> seatConfigEnumMapBToC = new EnumMap<SeatClass, Integer>(SeatClass.class);
-        for (SeatClass section : SeatClass.values()) {
-            seatConfigEnumMapAToB.put(section, 15);
-        }
-        SeatConfiguration seatConfigurationBToC = SeatConfiguration.of(seatConfigEnumMapAToB);
-        Flight flightBToC = SimpleFlight.of("UA382", legBToC, fschedBToC, seatConfigurationBToC);
-
         Set<Airport> airports = new HashSet<Airport>();
         airports.add(airportA);
         airports.add(airportB);
-        airports.add(airportC);
 
         RouteFinder routeFinder = RouteFinder.of(airports);
-        RouteNode routeNode = routeFinder.route(airportA, airportC, flightAToB.getFlightSchedule().getDepartureTime(), fareClass);
+        RouteNode routeNode = routeFinder.route(airportA, airportB, flightAToB.getFlightSchedule().getDepartureTime(), fareClass);
         System.out.println(routeNode.getAirport());
-        System.out.println("Arrival time: " + routeNode.getPrevious());
         while(routeNode.getPrevious() != null) {
-            System.out.println(routeNode.getAirport() + " arriving at " + routeNode.getArrivalTime());
             routeNode = routeNode.getPrevious();
         }
-
-        assert(true);
+        assert(routeNode.getAirport().equals(flightAToB.destination()));
     }
 }

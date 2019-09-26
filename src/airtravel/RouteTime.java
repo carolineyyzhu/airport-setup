@@ -17,7 +17,7 @@ public final class RouteTime implements Comparable<RouteTime>{
 	 * @param routeTime: the time it takes for a route to occur
 	 */
 	public RouteTime(LocalTime routeTime){
-		//No need for null check. Methods handle nulls
+		//No need for null check, methods handle nulls
 		this.routeTime = routeTime;
 	}
 	
