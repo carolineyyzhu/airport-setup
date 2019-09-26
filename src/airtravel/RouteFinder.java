@@ -57,7 +57,7 @@ public final class RouteFinder {
 				Duration length = Duration.between(currentFlight.departureTime(), currentFlight.arrivalTime());
 				RouteTime arrivalTime = new RouteTime(currentFlight.arrivalTime());
 				
-				if (arrivalTime.compareTo(arrivalTime.plus(length)) < 0) {
+				if (arrivalTime.compareTo(arrivalTime.plus(length)) < 0) { //TODO: this if statement is likely wrong
 					RouteNode newNode = RouteNode.of(currentFlight, currentNode);
 					currentRoutes.replaceNode(newNode);	
 				}
