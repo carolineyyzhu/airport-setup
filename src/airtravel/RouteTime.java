@@ -4,24 +4,34 @@ import java.time.Duration;
 import java.time.LocalTime;
 import java.util.Objects;
 
-
+/**
+ * Class to compute the route time 
+ *
+ */
 public final class RouteTime implements Comparable<RouteTime>{
 	
 	private final LocalTime routeTime;
 	
+	/**
+	 * This constructor creates a new RouteTime given a localTime
+	 * @param routeTime: the time it takes for a route to occur
+	 */
 	public RouteTime(LocalTime routeTime){
 		//No need for null check. Methods handle nulls
 		this.routeTime = routeTime;
 	}
 	
+	//creates a routeTime where the time is unknown and null
 	public static final RouteTime UNKNOWN(){
 		return new RouteTime(null);
 	}
 	
+	//checks to see if the route time is known
 	public boolean isKnown() {
 		return routeTime != null;
 	}
 	
+	//returns the route time if the time is known
 	public LocalTime getTime() {
 		if (isKnown()) {
 			return routeTime;
@@ -31,6 +41,7 @@ public final class RouteTime implements Comparable<RouteTime>{
 		
 	}
 	
+	//adds the flight duration to the route time
 	public RouteTime plus(Duration duration) {
 		Objects.requireNonNull(duration, "Duration cannot be null");
 		if (isKnown()) {
@@ -41,6 +52,7 @@ public final class RouteTime implements Comparable<RouteTime>{
 		
 	}
 
+	//compare routes based on their times with unknown routes being the largest.
 	@Override
 	public int compareTo(RouteTime routeTime) {
 		if (this.isKnown() && routeTime.isKnown())

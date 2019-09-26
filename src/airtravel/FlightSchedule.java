@@ -46,7 +46,7 @@ public final class FlightSchedule {
 		return new FlightSchedule(departureTime, arrivalTime);
 	}
 	/**
-	 * Method to determine id the flight is short
+	 * Method to determine if the flight is short
 	 * @param durationMax the max duration of the flight
 	 * @return True if the flight is short and false if it is long
 	 */
