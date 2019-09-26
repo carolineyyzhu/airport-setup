@@ -55,16 +55,7 @@ public final class FlightGroup  {
 			return flights.get(deptTime).remove(flight);
 		} else {
 			return false;
-		}
-		
-//		BiFunction<LocalTime, Set<Flight>, Set<Flight>> removeFlight = (depart, flightSet) -> flightSet.remove(flight) ? flightSet : null;
-//		
-//		if(flights.computeIfPresent(deptTime, removeFlight) == null) {
-//			return false;
-//		} else {
-//			return !flights.get(deptTime).contains(flight);
-//		}
-//		
+		}		
 	}
 	
 	/**
