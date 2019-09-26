@@ -16,7 +16,6 @@ public class RouteFinderTest {
         //Creates airport
         Airport airportA = Airport.of("AA12", Duration.ofMinutes(30));
         Airport airportB = Airport.of("BB8", Duration.ofMinutes(150));
-        Airport airportC = Airport.of("K2S0", Duration.ofMinutes(270));
         FareClass fareClass = FareClass.of(1, SeatClass.PREMIUM_ECONOMY);
         //creates the first leg of the trip, which connects airport A and airport B, from 4:50 to 6:40, with six seats in every seat class
         Leg legAToB = Leg.of(airportA, airportB);
