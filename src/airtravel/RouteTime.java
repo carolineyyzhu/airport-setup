@@ -11,6 +11,7 @@ import java.util.Objects;
 public final class RouteTime implements Comparable<RouteTime>{
 	
 	private final LocalTime routeTime;
+	public  static  final  RouteTime  UNKNOWN = null;
 	
 	/**
 	 * This constructor creates a new RouteTime given a localTime
@@ -21,10 +22,6 @@ public final class RouteTime implements Comparable<RouteTime>{
 		this.routeTime = routeTime;
 	}
 	
-	//creates a routeTime where the time is unknown and null
-	public static final RouteTime UNKNOWN(){
-		return new RouteTime(null);
-	}
 	
 	//checks to see if the route time is known
 	public boolean isKnown() {
@@ -47,7 +44,7 @@ public final class RouteTime implements Comparable<RouteTime>{
 		if (isKnown()) {
 			return new RouteTime(routeTime.plus(duration));
 		} else {
-			return UNKNOWN();
+			return UNKNOWN;
 		}
 		
 	}
