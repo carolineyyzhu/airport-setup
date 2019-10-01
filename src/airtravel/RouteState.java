@@ -21,9 +21,7 @@ final class RouteState {
 
 	//private constructor
 	private RouteState(Set<Airport> airports, Airport origin, LocalTime departureTime) {
-        Objects.requireNonNull(airports,"Airports set input cannot be null");
-        Objects.requireNonNull(origin,"Arrival time be null");
-        Objects.requireNonNull(departureTime,"Departure time cannot be null");
+ 
 		
 		RouteNode originNode = RouteNode.of(origin, new RouteTime(departureTime), null);
 		this.airportNode.put(origin, originNode);
@@ -40,14 +38,18 @@ final class RouteState {
 	 * @return a new RouteState
 	 */
 	static RouteState of(Set<Airport> airports, Airport origin, LocalTime departureTime) {
+	    Objects.requireNonNull(airports,"Airports set input cannot be null");
+	    Objects.requireNonNull(origin,"Arrival time be null");
+	    Objects.requireNonNull(departureTime,"Departure time cannot be null");
         
 		return new RouteState(airports, origin, departureTime);
 	}
 	
 	//replace a node when reached: remove it from unreached and add it to the known map.
+	//assumes  that  the  corresponding  airport  is  known  to  the  RouteState and unreached.
 	void replaceNode(RouteNode routeNode) {
 		airportNode.put(routeNode.getAirport(), routeNode);
-		unreached.remove(routeNode);
+		unreached.remove(routeNode); //How Fix??
 		
 	}
 	
@@ -60,7 +62,7 @@ final class RouteState {
 	//returns the closest un-reached node
 	RouteNode closestUnreached() {
 		if (!allReached()) {
-			return Collections.min(unreached);
+			return unreached.pollFirst();
 		} else{
 			throw new NoSuchElementException ("All nodes have been reached");
 		}
