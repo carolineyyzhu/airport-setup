@@ -54,9 +54,8 @@ public final class RouteFinder {
 				return currentNode;
 			}
 			for (Flight currentFlight : currentNode.availableFlights(fareClass)) {
-				RouteTime arrivalTime = new RouteTime(currentFlight.arrivalTime());
-				if (arrivalTime.compareTo(currentNode.getArrivalTime()) < 0) {
-					RouteNode newNode = RouteNode.of(currentFlight, currentNode);
+				RouteNode newNode = RouteNode.of(currentFlight, currentNode);
+				if (currentNode.compareTo(newNode) < 0) {
 					currentRoutes.replaceNode(newNode);
 				}
 			}

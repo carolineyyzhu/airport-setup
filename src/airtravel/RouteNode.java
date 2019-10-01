@@ -51,12 +51,12 @@ public final class RouteNode implements Comparable<RouteNode>{
      * @return returns a route through this airport with an unknown arrival time and a null previous airport
      */
     public static final RouteNode of (Airport airport) {
-        return RouteNode.of(airport, RouteTime.UNKNOWN(), null);
+        return RouteNode.of(airport, RouteTime.UNKNOWN, null);
     }
 
     //checks to see if the arrival time is known. True if is known
     public final Boolean isArrivalTimeKnown() {
-        return !this.getArrivalTime().equals(RouteTime.UNKNOWN());
+        return !this.getArrivalTime().equals(RouteTime.UNKNOWN);
     }
 
     //returns the departure time
@@ -93,6 +93,10 @@ public final class RouteNode implements Comparable<RouteNode>{
     @Override
     public int compareTo(RouteNode o) {
         Objects.requireNonNull(o,"Route node input cannot be null");
-        return o.getArrivalTime().compareTo(this.getArrivalTime());
+        int compareValue = o.getArrivalTime().compareTo(this.getArrivalTime());
+        if(compareValue == 0) {
+            compareValue = this.getAirport().compareTo(o.getAirport());
+        }
+        return compareValue;
     }
 }
