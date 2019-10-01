@@ -55,7 +55,7 @@ public final class RouteFinder {
 			}
 			for (Flight currentFlight : currentNode.availableFlights(fareClass)) {
 				RouteNode newNode = RouteNode.of(currentFlight, currentNode);
-				if (currentNode.compareTo(newNode) < 0) {
+				if (newNode.compareTo(currentNode) < 0) {
 					currentRoutes.replaceNode(newNode);
 				}
 			}
