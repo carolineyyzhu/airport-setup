@@ -50,19 +50,16 @@ public final class RouteFinder {
 		RouteState currentRoutes = RouteState.of(this.airports, origin, departureTime);
 		while (!currentRoutes.allReached()) {
 			RouteNode currentNode = currentRoutes.closestUnreached();
-
-            if (currentNode.getAirport().equals(destination)) {
+			if (currentNode.getAirport().equals(destination)) {
 				return currentNode;
 			}
-			for (Flight currentFlight: currentNode.availableFlights(fareClass)) {
+			for (Flight currentFlight : currentNode.availableFlights(fareClass)) {
 				RouteTime arrivalTime = new RouteTime(currentFlight.arrivalTime());
-
-                if (arrivalTime.compareTo(currentNode.getArrivalTime()) < 0) {
+				if (arrivalTime.compareTo(currentNode.getArrivalTime()) < 0) {
 					RouteNode newNode = RouteNode.of(currentFlight, currentNode);
-					currentRoutes.replaceNode(newNode);	
+					currentRoutes.replaceNode(newNode);
 				}
 			}
-	
 		}
 		return null;
 	}

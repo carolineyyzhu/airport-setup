@@ -10,6 +10,8 @@ import java.util.function.BiFunction;
 
 import org.assertj.core.api.JUnitSoftAssertions;
 
+import static airtravel.SeatClass.classBelow;
+
 public class FlightPolicyTest {
     private final JUnitSoftAssertions softAssert = new JUnitSoftAssertions();
 
@@ -69,8 +71,8 @@ public class FlightPolicyTest {
         SeatClass seatClass = fareClass.getSeatClass();
         for (SeatClass section : SeatClass.values()) {
             System.out.println(section + " " + flightClassSeats.seats(section));
-            softAssert.assertThat(!section.equals(seatClass) && !section.equals(FlightPolicy.classAbove(seatClass)) && flightClassSeats.seats(section).equals(0));
-            softAssert.assertThat((section.equals(seatClass) || section.equals(FlightPolicy.classAbove(seatClass))) && flightClassSeats.seats(section).equals(flight.seatsAvailable(fareClass).seats(section) - reserve));
+            softAssert.assertThat(!section.equals(seatClass) && !section.equals(SeatClass.classAbove(seatClass)) && flightClassSeats.seats(section).equals(0));
+            softAssert.assertThat((section.equals(seatClass) || section.equals(SeatClass.classAbove(seatClass))) && flightClassSeats.seats(section).equals(flight.seatsAvailable(fareClass).seats(section) - reserve));
         }
     }
 
@@ -104,16 +106,6 @@ public class FlightPolicyTest {
             softAssert.assertThat(!section.equals(seatClass) && !section.equals(classBelow(seatClass)) && flightClassSeats.seats(section).equals(0));
             softAssert.assertThat((section.equals(seatClass) || section.equals(classBelow(seatClass))) && flightClassSeats.seats(section).equals(flight.seatsAvailable(fareClass).seats(section)));
         }
-    }
-
-    //helper method to find the seat class ranking below the seat class passed in
-    static final SeatClass classBelow(SeatClass seatClass) {
-        Objects.requireNonNull(seatClass,"Seat class cannot be null");
-
-        SeatClass belowClass = seatClass;
-        if(seatClass.ordinal() != SeatClass.values().length - 1)
-            belowClass = SeatClass.values()[seatClass.ordinal() + 1];
-        return belowClass;
     }
 
     //private helper method to create a seat configuration that includes the passenger's SeatClass and the SeatClass below that

@@ -1,10 +1,10 @@
 package airtravel;
 
 import java.time.Duration;
-import java.util.EnumMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiFunction;
+
+import static airtravel.SeatClass.classAbove;
 
 public final class FlightPolicy extends AbstractFlight {
 
@@ -103,12 +103,8 @@ public final class FlightPolicy extends AbstractFlight {
 		Objects.requireNonNull(seatConfig,"Null input received.");
 
 		SeatConfiguration newSeatConfig = SeatConfiguration.of(seatConfig);
-		for (SeatClass section : SeatClass.values()) {
-			if (newSeatConfig.seats(section) > reserve)
-				newSeatConfig.setSeats(section, newSeatConfig.seats(section) - reserve);
-			else
-				newSeatConfig.setSeats(section, 0);
-		}
+		for (SeatClass section : SeatClass.values())
+			newSeatConfig.setSeats(section, Math.max(newSeatConfig.seats(section) - reserve, 0));
 		return newSeatConfig;
 	}
 
@@ -137,17 +133,6 @@ public final class FlightPolicy extends AbstractFlight {
 		}
 		return limitedSeatConfig;
 	}
-
-	//helper method to find the class above the class that is being looked at
-	static final SeatClass classAbove(SeatClass seatClass) {
-		Objects.requireNonNull(seatClass,"Seat class cannot be null");
-
-		SeatClass aboveClass = seatClass;
-		if(seatClass.ordinal() < SeatClass.values().length && seatClass.ordinal() != 0)
-			aboveClass = SeatClass.values()[seatClass.ordinal() - 1];
-		return aboveClass;
-	}
-
 
 	@Override
 	public String getCode() {

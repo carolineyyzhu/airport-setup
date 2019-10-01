@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.*;
 
@@ -14,6 +16,7 @@ class GUIAirportInput extends JFrame {
 	private JButton buttonSubmit;
 	private JTextField textEntryName, textEntryConnection;
 	private JLabel labelMessageName, labelMessageConnection;
+	List<Airport> airports = new ArrayList<Airport>();
 	
 	GUIAirportInput() {
 		createView();
@@ -60,13 +63,14 @@ class GUIAirportInput extends JFrame {
 			if(airportName.isEmpty()) {
 				labelMessageName.setText("The airport name cannot be nothing.");
 			} else if(airportConnectionTime.isEmpty()) {
-				labelMessageConnection.setText("The airport name cannot be nothing.");
+				labelMessageConnection.setText("The airport connection time cannot be nothing.");
 			}	else {
 				Airport airport = Airport.of(airportName, Duration.ofMinutes(Integer.parseInt(airportConnectionTime)));
+				airports.add(airport);
 				textEntryName.setText("");
 				textEntryConnection.setText("");
-				labelMessageName.setText("Please enter another airport name or close the window.");
-				labelMessageConnection.setText("Please enter another connection time or close the window.");
+				labelMessageName.setText(airports.get(airports.size() - 1).getCode() + " has been added. Please enter another airport name, or close the window to exit.");
+				labelMessageConnection.setText("Please enter another connection time, or close the window to exit.");
 			}
 			
 		}

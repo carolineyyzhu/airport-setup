@@ -15,10 +15,10 @@ public class GUIHome extends JFrame {
 	 GUIHome(){
 		createView();
 		
-		setSize(new Dimension(1300,800));
-		setLocationRelativeTo(null);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setTitle("Airport Manager");
+		this.setSize(new Dimension(1300,800));
+		this.setLocationRelativeTo(null);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setTitle("Airport Manager");
 		
 	}
 	
