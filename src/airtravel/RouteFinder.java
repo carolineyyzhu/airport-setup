@@ -50,7 +50,7 @@ public final class RouteFinder {
 		RouteState currentRoutes = RouteState.of(this.airports, origin, departureTime);
 		while (!currentRoutes.allReached()) {
 			RouteNode currentNode = currentRoutes.closestUnreached();
-			
+
             if (currentNode.getAirport().equals(destination)) {
 				return currentNode;
 			}
