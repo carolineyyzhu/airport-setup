@@ -15,7 +15,7 @@ import javax.swing.*;
 
 public class GUIHome extends JFrame {
 	
-	static JButton buttonAirport;
+	static JButton buttonAirport, buttonAirportRemove;
 	static JLabel currAirports;
 	static JPanel panelAirports = new JPanel();
 	
@@ -40,11 +40,12 @@ public class GUIHome extends JFrame {
 		
 		
 		buttonAirport = new JButton("Add Airport");
-		
-		buttonAirport.addActionListener(
-				new ButtonAirportActionListener()
-				);
+		buttonAirport.addActionListener(new ButtonAirportActionListener());
 		main.add(buttonAirport);
+		
+		buttonAirportRemove = new JButton("Remove Airport");
+		buttonAirportRemove.addActionListener(new ButtonAirportRemoveActionListener());
+		main.add(buttonAirportRemove);
 		
 		//JPanel panelAirports = new JPanel();
 		panelAirports.setLayout(new BoxLayout(panelAirports, BoxLayout.Y_AXIS));
@@ -68,15 +69,31 @@ public class GUIHome extends JFrame {
 		panelAirports.repaint();
 	}
 	
+	static void removeAirportTextUpdate() {
+		panelAirports.removeAll();
+		panelAirports.add(new JLabel("Current Airports: "));
+		for(Airport airport: GUIDataCurrent.airports) {
+			panelAirports.add(new JLabel(airport.getCode()));
+		}
+		panelAirports.revalidate();
+		panelAirports.repaint();
+	}
+	
 	
 	private class ButtonAirportActionListener implements ActionListener {
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			GUIAirportInput airportInput = new GUIAirportInput();
 			airportInput.setVisible(true);
-		}
-		
+		}	
+	}
+	
+	private class ButtonAirportRemoveActionListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			GUIAirportRemove airportRemove = new GUIAirportRemove();
+			airportRemove.setVisible(true);
+		}	
 	}
 
 

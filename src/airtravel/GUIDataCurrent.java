@@ -11,8 +11,15 @@ public class GUIDataCurrent {
 		return airports.add(airport);
 	}
 	
+	static Boolean removeAirport(Airport airport) {
+		
+		Boolean isSuccessful = airports.remove(airport);
+		GUIHome.removeAirportTextUpdate();
+		return isSuccessful;
+	}
+	
 	static Boolean containsAirport (Airport airport) {
 		return airports.contains(airport);
 	}
-
+	
 }

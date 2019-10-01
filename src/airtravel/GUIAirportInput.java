@@ -60,12 +60,15 @@ class GUIAirportInput extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			String airportName = textEntryName.getText();
 			String airportConnectionTime = textEntryConnection.getText();
+			Airport airport = Airport.of(airportName, Duration.ofMinutes(Integer.parseInt(airportConnectionTime)));
 			if(airportName.isEmpty()) {
 				labelMessageName.setText("The airport name cannot be nothing.");
 			} else if(airportConnectionTime.isEmpty()) {
 				labelMessageConnection.setText("The airport connection time cannot be nothing.");
-			}	else {
-				Airport airport = Airport.of(airportName, Duration.ofMinutes(Integer.parseInt(airportConnectionTime)));
+			}else if (GUIDataCurrent.containsAirport(airport)){
+				labelMessageName.setText(airport.getCode() + "  already exists. Please enter another airport name, or close the window to exit.");
+				labelMessageConnection.setText("Please enter another connection time, or close the window to exit.");
+			}else {
 				GUIDataCurrent.addAirport(airport);
 				textEntryName.setText("");
 				textEntryConnection.setText("");
