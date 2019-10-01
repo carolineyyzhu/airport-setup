@@ -46,8 +46,8 @@ final class RouteState {
 	//replace a node when reached: remove it from unreached and add it to the known map.
 	//assumes  that  the  corresponding  airport  is  known  to  the  RouteState and unreached.
 	void replaceNode(RouteNode routeNode) {
-		airportNode.put(routeNode.getAirport(), routeNode);
-		unreached.remove(routeNode); //How Fix??
+		//TODO: Fix
+		unreached.remove(routeNode);
 		
 	}
 	
