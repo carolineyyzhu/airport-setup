@@ -2,6 +2,7 @@ package airtravel;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -9,11 +10,14 @@ import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.accessibility.AccessibleContext;
 import javax.swing.*;
 
 public class GUIHome extends JFrame {
 	
 	static JButton buttonAirport;
+	static JLabel currAirports;
+	static JPanel panelAirports = new JPanel();
 	
 	 GUIHome(){
 		createView();
@@ -28,6 +32,8 @@ public class GUIHome extends JFrame {
 	private void createView() {
 		JPanel placeholder = new JPanel(new FlowLayout());
 		placeholder.setBackground(Color.DARK_GRAY);
+		JPanel placeholder2 = new JPanel(new FlowLayout());
+		placeholder2.setBackground(Color.DARK_GRAY);
 		
 		JPanel main = new JPanel();
 		main.setBackground(Color.DARK_GRAY);
@@ -40,21 +46,28 @@ public class GUIHome extends JFrame {
 				);
 		main.add(buttonAirport);
 		
-		JPanel panelAirports = new JPanel();
+		//JPanel panelAirports = new JPanel();
 		panelAirports.setLayout(new BoxLayout(panelAirports, BoxLayout.Y_AXIS));
-		JLabel currAirports = new JLabel("Current Airports");
-		currAirports.setHorizontalAlignment(JLabel.CENTER);
+		JLabel currAirports = new JLabel("Current Airports: ");
 		panelAirports.add(currAirports);
 		panelAirports.setBackground(Color.LIGHT_GRAY);
 		//panel.add(panelAirports);
 		
-        this.setLayout(new GridLayout(1,2, 0, 0));
         
+		this.setLayout(new GridLayout(1,4, 0, 0));
         this.add(panelAirports);
         this.add(main);
         this.add(placeholder);
+        this.add(placeholder2);
         
 	}
+	
+	static void addAirportTextUpdate(Airport airport) {
+		panelAirports.add(new JLabel(airport.getCode()));
+		panelAirports.revalidate();
+		panelAirports.repaint();
+	}
+	
 	
 	private class ButtonAirportActionListener implements ActionListener {
 
