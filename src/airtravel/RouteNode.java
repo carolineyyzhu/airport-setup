@@ -93,6 +93,10 @@ public final class RouteNode implements Comparable<RouteNode>{
     @Override
     public int compareTo(RouteNode o) {
         Objects.requireNonNull(o,"Route node input cannot be null");
-        return o.getArrivalTime().compareTo(this.getArrivalTime());
+        int compareValue = o.getArrivalTime().compareTo(this.getArrivalTime());
+        if(compareValue == 0) {
+            compareValue = this.getAirport().compareTo(o.getAirport());
+        }
+        return compareValue;
     }
 }
