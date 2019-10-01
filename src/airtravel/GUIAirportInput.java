@@ -16,22 +16,22 @@ class GUIAirportInput extends JFrame {
 	private JButton buttonSubmit;
 	private JTextField textEntryName, textEntryConnection;
 	private JLabel labelMessageName, labelMessageConnection;
-	List<Airport> airports = new ArrayList<Airport>();
+	
 	
 	GUIAirportInput() {
 		createView();
 		
-		setSize(new Dimension(600,150));
-		setLocationRelativeTo(null);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setTitle("Airport Manager");
+		this.setSize(new Dimension(600,150));
+		this.setLocationRelativeTo(null);
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		this.setTitle("Airport Manager");
 		
 	}
 	
 	private void createView() {
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.gray);
-		getContentPane().add(panel);
+		this.getContentPane().add(panel);
 		
 		labelMessageName = new JLabel("Please enter the airport name.");
 		panel.add(labelMessageName);
@@ -66,11 +66,17 @@ class GUIAirportInput extends JFrame {
 				labelMessageConnection.setText("The airport connection time cannot be nothing.");
 			}	else {
 				Airport airport = Airport.of(airportName, Duration.ofMinutes(Integer.parseInt(airportConnectionTime)));
-				airports.add(airport);
+				GUIDataCurrent.addAirport(airport);
 				textEntryName.setText("");
 				textEntryConnection.setText("");
-				labelMessageName.setText(airports.get(airports.size() - 1).getCode() + " has been added. Please enter another airport name, or close the window to exit.");
-				labelMessageConnection.setText("Please enter another connection time, or close the window to exit.");
+				if (GUIDataCurrent.containsAirport(airport)) {
+					labelMessageName.setText(airport.getCode() + " has been added. Please enter another airport name, or close the window to exit.");
+					labelMessageConnection.setText("Please enter another connection time, or close the window to exit.");
+				} else {
+					labelMessageName.setText(airport.getCode() + " has not been added. Please try again, enter another airport name, or close the window to exit.");
+					labelMessageConnection.setText("Please enter another connection time, or close the window to exit.");
+				}
+				
 			}
 			
 		}
