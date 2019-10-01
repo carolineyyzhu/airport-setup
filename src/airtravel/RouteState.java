@@ -20,9 +20,7 @@ final class RouteState {
 	private final NavigableSet<RouteNode> unreached = new TreeSet<>();
 
 	//private constructor
-	private RouteState(Set<Airport> airports, Airport origin, LocalTime departureTime) {
- 
-		
+	private RouteState(Set<Airport> airports, Airport origin, LocalTime departureTime) {		
 		RouteNode originNode = RouteNode.of(origin, new RouteTime(departureTime), null);
 		this.airportNode.put(origin, originNode);
 		airports.forEach(n -> this.airportNode.put(n, RouteNode.of(n)));
