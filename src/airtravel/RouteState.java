@@ -25,7 +25,6 @@ final class RouteState {
 		airports.forEach(n -> this.airportNode.put(n, RouteNode.of(n)));
 		airports.forEach(n -> this.unreached.add(RouteNode.of(n)));
 		this.airportNode.put(origin, originNode);
-
 	}
 	
 	/**
@@ -46,8 +45,13 @@ final class RouteState {
 	//replace a node when reached: remove it from unreached and add it to the known map.
 	//assumes  that  the  corresponding  airport  is  known  to  the  RouteState and unreached.
 	void replaceNode(RouteNode routeNode) {
-		//TODO: Fix
-		unreached.remove(routeNode);
+		Objects.requireNonNull(routeNode, "Route Node cannot be a null value");
+		
+		Airport airport = routeNode.getAirport();
+		
+		unreached.remove(airportNode(airport));
+		unreached.add(routeNode);
+		airportNode.replace(airport, routeNode);
 		
 	}
 	
