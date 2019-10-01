@@ -61,21 +61,15 @@ public final class RouteNode implements Comparable<RouteNode>{
 
     //returns the departure time
     public final RouteTime departureTime() {
-    	checkArrivalTime(isArrivalTimeKnown());
+        if(!isArrivalTimeKnown())
+            throw new NullPointerException("Route time cannot be unknown");
         return this.getArrivalTime().plus(this.getAirport().getConnectionTimeMin());
     }
 
     //returns the available flights given a fareClass
     public Set<Flight> availableFlights(FareClass fareClass) {
     	Objects.requireNonNull(fareClass,"fareClass cannot be null");
-    	checkArrivalTime(isArrivalTimeKnown());
         return this.getAirport().availableFlights(this.departureTime().getTime(), fareClass);
-    }
-    
-    //private method to check if arrival time is known
-    private void checkArrivalTime(Boolean isArrivalTimeKnown) {
-        if(!isArrivalTimeKnown)
-            throw new NullPointerException("Route time cannot be unknown");
     }
 
     public Airport getAirport() {
