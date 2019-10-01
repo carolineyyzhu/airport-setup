@@ -18,7 +18,7 @@ class GUIAirportInput extends JFrame {
 	GUIAirportInput() {
 		createView();
 		
-		setSize(new Dimension(600,100));
+		setSize(new Dimension(600,150));
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setTitle("Airport Manager");
@@ -63,11 +63,14 @@ class GUIAirportInput extends JFrame {
 				labelMessageConnection.setText("The airport name cannot be nothing.");
 			}	else {
 				Airport airport = Airport.of(airportName, Duration.ofMinutes(Integer.parseInt(airportConnectionTime)));
+				textEntryName.setText("");
+				textEntryConnection.setText("");
 				labelMessageName.setText("Please enter another airport name or close the window.");
 				labelMessageConnection.setText("Please enter another connection time or close the window.");
 			}
 			
 		}
+		
 		
 	}
 
