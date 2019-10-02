@@ -20,10 +20,14 @@ final class RouteState {
 	private final NavigableSet<RouteNode> unreached = new TreeSet<>();
 
 	//private constructor
-	private RouteState(Set<Airport> airports, Airport origin, LocalTime departureTime) {		
+	private RouteState(Set<Airport> airports, Airport origin, LocalTime departureTime) {
+		Set<Airport> airportsNoOrigin= new TreeSet<Airport>(airports);
+		airportsNoOrigin.remove(origin);
 		RouteNode originNode = RouteNode.of(origin, new RouteTime(departureTime), null);
 		this.airportNode.put(origin, originNode);
-		airports.forEach(n -> this.unreached.add(RouteNode.of(n)));
+
+		airportsNoOrigin.forEach(n -> this.airportNode.put(n, RouteNode.of(n)));
+		airportsNoOrigin.forEach(n -> this.unreached.add(RouteNode.of(n)));
 	}
 	
 	/**
@@ -47,7 +51,7 @@ final class RouteState {
 		Objects.requireNonNull(routeNode, "Route Node cannot be a null value");
 		
 		Airport airport = routeNode.getAirport();
-		
+		//unreached.remove(routeNode);
 		unreached.remove(airportNode(airport));
 		unreached.add(routeNode);
 		airportNode.replace(airport, routeNode);
@@ -60,10 +64,11 @@ final class RouteState {
 		
 	}
 	
-	//returns the closest un-reached node
+	//returns the closes un-reached node
 	RouteNode closestUnreached() {
 		if (!allReached()) {
-			return unreached.pollFirst();
+			RouteNode temp = unreached.pollFirst();
+			return temp;
 		} else{
 			throw new NoSuchElementException ("All nodes have been reached");
 		}

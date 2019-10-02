@@ -60,6 +60,8 @@ public final class RouteNode implements Comparable<RouteNode>{
     }
 
     //returns the departure time
+    //assumes  that  the  connection  time  must  be  
+    //incurred  even   at   the   original   departure 
     public final RouteTime departureTime() {
         if(!isArrivalTimeKnown())
             throw new NullPointerException("Route time cannot be unknown");
@@ -85,11 +87,11 @@ public final class RouteNode implements Comparable<RouteNode>{
     }
 
     @Override
-    public int compareTo(RouteNode o) {
-        Objects.requireNonNull(o,"Route node input cannot be null");
-        int compareValue = o.getArrivalTime().compareTo(this.getArrivalTime());
+    public int compareTo(RouteNode routeNode) {
+        Objects.requireNonNull(routeNode,"Route node input cannot be null");
+        int compareValue = routeNode.getArrivalTime().compareTo(this.getArrivalTime());
         if(compareValue == 0) {
-            compareValue = this.getAirport().compareTo(o.getAirport());
+            compareValue = this.getAirport().compareTo(routeNode.getAirport());
         }
         return compareValue;
     }
