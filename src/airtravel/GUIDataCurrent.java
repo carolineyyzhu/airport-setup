@@ -5,6 +5,16 @@ import java.util.List;
 
 public class GUIDataCurrent {
 	static List<Airport> airports = new ArrayList<Airport>();
+	static List<Flight> flights = new ArrayList<Flight>();
+	
+	static Airport findAirportByName(String name) {
+		for (Airport airport: airports) {
+			if (airport.getCode().equals(name)){
+				return airport;
+			}
+		}
+		return null;
+	}
 	
 	static Boolean addAirport(Airport airport) {
 		GUIHome.addAirportTextUpdate(airport);
@@ -20,6 +30,11 @@ public class GUIDataCurrent {
 	
 	static Boolean containsAirport (Airport airport) {
 		return airports.contains(airport);
+	}
+	
+	static Boolean addFlight(Flight flight) {
+		//GUIHome.addAirportTextUpdate(airport);
+		return flights.add(flight);
 	}
 	
 }

@@ -15,7 +15,7 @@ import javax.swing.*;
 
 public class GUIHome extends JFrame {
 	
-	static JButton buttonAirport, buttonAirportRemove;
+	static JButton buttonAirport, buttonAirportRemove, buttonFlightCreate;
 	static JLabel currAirports;
 	static JPanel panelAirports = new JPanel();
 	
@@ -30,22 +30,26 @@ public class GUIHome extends JFrame {
 	}
 	
 	private void createView() {
-		JPanel placeholder = new JPanel(new FlowLayout());
-		placeholder.setBackground(Color.DARK_GRAY);
+		JPanel flightButtons = new JPanel(new FlowLayout());
+		flightButtons.setBackground(Color.DARK_GRAY);
 		JPanel placeholder2 = new JPanel(new FlowLayout());
-		placeholder2.setBackground(Color.DARK_GRAY);
+		placeholder2.setBackground(Color.LIGHT_GRAY);
 		
-		JPanel main = new JPanel();
-		main.setBackground(Color.DARK_GRAY);
+		JPanel airportButtons = new JPanel();
+		airportButtons.setBackground(Color.DARK_GRAY);
 		
 		
 		buttonAirport = new JButton("Add Airport");
 		buttonAirport.addActionListener(new ButtonAirportActionListener());
-		main.add(buttonAirport);
+		airportButtons.add(buttonAirport);
 		
 		buttonAirportRemove = new JButton("Remove Airport");
 		buttonAirportRemove.addActionListener(new ButtonAirportRemoveActionListener());
-		main.add(buttonAirportRemove);
+		airportButtons.add(buttonAirportRemove);
+		
+		buttonFlightCreate = new JButton("Create Flight");
+		buttonFlightCreate.addActionListener(new ButtonFlightCreateActionListener());
+		flightButtons.add(buttonFlightCreate);
 		
 		//JPanel panelAirports = new JPanel();
 		panelAirports.setLayout(new BoxLayout(panelAirports, BoxLayout.Y_AXIS));
@@ -57,8 +61,8 @@ public class GUIHome extends JFrame {
         
 		this.setLayout(new GridLayout(1,4, 0, 0));
         this.add(panelAirports);
-        this.add(main);
-        this.add(placeholder);
+        this.add(airportButtons);
+        this.add(flightButtons);
         this.add(placeholder2);
         
 	}
@@ -93,6 +97,14 @@ public class GUIHome extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			GUIAirportRemove airportRemove = new GUIAirportRemove();
 			airportRemove.setVisible(true);
+		}	
+	}
+	
+	private class ButtonFlightCreateActionListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			GUICreateFlight flight = new GUICreateFlight();
+			flight.setVisible(true);
 		}	
 	}
 
