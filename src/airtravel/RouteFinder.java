@@ -51,10 +51,13 @@ public final class RouteFinder {
 		while (!currentRoutes.allReached()) {
 			RouteNode currentNode = currentRoutes.closestUnreached();
 			if (currentNode.getAirport().equals(destination)) {
+				System.out.println("yeet");
 				return currentNode;
 			}
 			for (Flight currentFlight : currentNode.availableFlights(fareClass)) {
 				RouteNode newNode = RouteNode.of(currentFlight, currentNode);
+				System.out.println("Current Node have previous?" + currentNode.getPrevious().getAirport().getCode());
+				//We never make it here. The closest unreached is actually the destination itself!!
 				if (newNode.compareTo(currentNode) < 0) {
 					currentRoutes.replaceNode(newNode);
 				}
