@@ -33,7 +33,6 @@ public class RouteFinderTest {
 
         RouteFinder routeFinder = RouteFinder.of(airports);
         RouteNode routeNode = routeFinder.route(airportA, airportB, flightAToB.getFlightSchedule().getDepartureTime(), fareClass);
-        System.out.println(routeNode.getAirport());
         while(routeNode.getPrevious() != null) {
             routeNode = routeNode.getPrevious();
         }
