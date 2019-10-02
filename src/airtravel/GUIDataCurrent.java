@@ -33,8 +33,14 @@ public class GUIDataCurrent {
 	}
 	
 	static Boolean addFlight(Flight flight) {
-		//GUIHome.addAirportTextUpdate(airport);
+		GUIHome.addFlightTextUpdate(flight);
 		return flights.add(flight);
+	}
+	
+	static Boolean removeFlight(Flight flight) {
+		Boolean isSuccessful = flights.remove(flight);
+		GUIHome.removeFlightTextUpdate();
+		return isSuccessful;
 	}
 	
 }

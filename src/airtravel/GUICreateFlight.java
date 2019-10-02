@@ -54,11 +54,11 @@ public class GUICreateFlight extends JFrame {
 		textEntryDestination = new JTextField();
 		textEntryDestination.setPreferredSize(new Dimension(150, 30));
 		
-		LMDepartureTime = new JLabel("Please enter the departure time (hr, min).");
+		LMDepartureTime = new JLabel("Please enter the departure time (hr:min).");
 		textEntryDepartureTime = new JTextField();
 		textEntryDepartureTime.setPreferredSize(new Dimension(150, 30));
 		
-		LMArrivalTime = new JLabel("Please enter the arrival time (hr, min).");
+		LMArrivalTime = new JLabel("Please enter the arrival time (hr:min).");
 		textEntryArrivalTime = new JTextField();
 		textEntryArrivalTime.setPreferredSize(new Dimension(150, 30));
 		
@@ -119,10 +119,10 @@ public class GUICreateFlight extends JFrame {
 			Airport destinationAirport = GUIDataCurrent.findAirportByName(destinationName);
 			Leg leg = Leg.of(originAirport, destinationAirport);
 			
-			String[] departureTimeArray = departureTime.split(", ");
+			String[] departureTimeArray = departureTime.split(":");
 			LocalTime dTime = LocalTime.of(Integer.parseInt(departureTimeArray[0]), Integer.parseInt(departureTimeArray[1]));
 			
-			String[] arrivalTimeArray = arrivalTime.split(", ");
+			String[] arrivalTimeArray = arrivalTime.split(":");
 			LocalTime aTime = LocalTime.of(Integer.parseInt(arrivalTimeArray[0]), Integer.parseInt(arrivalTimeArray[1]));
 			
 			FlightSchedule schedlue = FlightSchedule.of(dTime, aTime);
