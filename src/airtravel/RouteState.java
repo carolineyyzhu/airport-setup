@@ -50,11 +50,11 @@ final class RouteState {
 	void replaceNode(RouteNode routeNode) {
 		Objects.requireNonNull(routeNode, "Route Node cannot be a null value");
 		
-		//Airport airport = routeNode.getAirport();
+		Airport airport = routeNode.getAirport();
 		//unreached.remove(airportNode(airport));
-		RouteNode closestNode = unreached.pollFirst();
+		//RouteNode closestNode = unreached.pollFirst();
 		unreached.add(routeNode);
-		airportNode.replace(closestNode.getAirport(), routeNode);
+		airportNode.replace(airport, routeNode);
 		
 	}
 	
