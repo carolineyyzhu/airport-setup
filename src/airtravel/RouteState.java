@@ -47,7 +47,7 @@ final class RouteState {
 		Airport airport = routeNode.getAirport();
 		unreached.remove(airportNode(airport));
 		unreached.add(routeNode);
-		airportNode.put(airport, routeNode);
+		airportNode.replace(airport, routeNode);
 		
 	}
 	
