@@ -29,7 +29,7 @@ public class RouteFinderTest {
         Flight flightAToB = SimpleFlight.of("UA192", legAToB, fschedAToB, seatConfigurationAToB);
 
         Leg legBToC = Leg.of(airportA, airportB);
-        FlightSchedule fSchedBToC = FlightSchedule.of(LocalTime.of(7, 00), LocalTime.of(8, 50));
+        FlightSchedule fSchedBToC = FlightSchedule.of(LocalTime.of(7, 20), LocalTime.of(8, 50));
         EnumMap<SeatClass, Integer> seatConfigEnumMapBToC = new EnumMap<SeatClass, Integer>(SeatClass.class);
         for (SeatClass section : SeatClass.values()) {
             seatConfigEnumMapAToB.put(section, 6);

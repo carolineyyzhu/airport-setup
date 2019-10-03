@@ -115,7 +115,6 @@ public final class FlightPolicy extends AbstractFlight {
 	 */
 	public static final Flight limited(Flight flight) {
 		Objects.requireNonNull(flight,"Flight input cannot be null");
-		//return limitedSeatConfig, no need for conditional
 		BiFunction<SeatConfiguration, FareClass, SeatConfiguration> policy = FlightPolicy::limitedSeatConfig;
 		return FlightPolicy.of(flight, policy);
 	}

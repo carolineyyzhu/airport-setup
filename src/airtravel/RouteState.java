@@ -1,14 +1,7 @@
 package airtravel;
 
 import java.time.LocalTime;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.NavigableSet;
-import java.util.NoSuchElementException;
-import java.util.Objects;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * Intermediate route class to assist the routeFinder
@@ -21,13 +14,14 @@ final class RouteState {
 
 	//private constructor
 	private RouteState(Set<Airport> airports, Airport origin, LocalTime departureTime) {
+		RouteNode originNode = RouteNode.of(origin, new RouteTime(departureTime), null);
+		airports.forEach(n -> this.airportNode.put(n, RouteNode.of(n)));
+		this.airportNode.replace(origin, originNode);
+
 		Set<Airport> airportsNoOrigin= new TreeSet<Airport>(airports);
 		airportsNoOrigin.remove(origin);
-		RouteNode originNode = RouteNode.of(origin, new RouteTime(departureTime), null);
-		this.airportNode.put(origin, originNode);
-
-		airportsNoOrigin.forEach(n -> this.airportNode.put(n, RouteNode.of(n)));
 		airportsNoOrigin.forEach(n -> this.unreached.add(RouteNode.of(n)));
+		this.unreached.add(originNode);
 	}
 	
 	/**
@@ -51,8 +45,7 @@ final class RouteState {
 		Objects.requireNonNull(routeNode, "Route Node cannot be a null value");
 		
 		Airport airport = routeNode.getAirport();
-		//unreached.remove(airportNode(airport));
-		//RouteNode closestNode = unreached.pollFirst();
+		unreached.remove(airportNode(airport));
 		unreached.add(routeNode);
 		airportNode.replace(airport, routeNode);
 		
@@ -67,8 +60,7 @@ final class RouteState {
 	//returns the closes un-reached node
 	RouteNode closestUnreached() {
 		if (!allReached()) {
-			RouteNode temp = unreached.pollFirst();
-			return temp;
+			return unreached.pollFirst();
 		} else{
 			throw new NoSuchElementException ("All nodes have been reached");
 		}
@@ -78,7 +70,6 @@ final class RouteState {
 	//returns an airport node for a given airport
 	RouteNode airportNode(Airport airport) {
 		return airportNode.get(airport);
-		
 	}
 
 }
