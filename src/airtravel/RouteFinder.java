@@ -53,9 +53,10 @@ public final class RouteFinder {
 			if (currentNode.getAirport().equals(destination)) {
 				return currentNode;
 			}
-			System.out.println(currentNode.getAirport() + " " + currentNode.isArrivalTimeKnown());
+			System.out.println(currentNode.getAirport() + " " + currentNode.getArrivalTime().getTime().toString() + " departure time: " + currentNode.departureTime().getTime().toString());
 			for (Flight currentFlight : currentNode.availableFlights(fareClass)) {
 				RouteNode newNode = RouteNode.of(currentFlight.getLeg().getOrigin(), new RouteTime(currentFlight.getFlightSchedule().getArrivalTime()), currentNode);
+				System.out.println("In loop" + newNode.getAirport() + " " + newNode.isArrivalTimeKnown());
 				if (newNode.compareTo(currentNode) < 0) {
 					currentRoutes.replaceNode(newNode);
 				}
