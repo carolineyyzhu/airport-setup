@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import javax.accessibility.AccessibleContext;
 import javax.swing.*;
 
+@SuppressWarnings("serial")
 public class GUIHome extends JFrame {
 	
 	static JButton buttonAirport, buttonAirportRemove, buttonFlightCreate, buttonFlightRemove;

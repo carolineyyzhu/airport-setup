@@ -42,11 +42,11 @@ public final class RouteFinder {
 		Objects.requireNonNull(departureTime,"departureTime input cannot be null");
 		Objects.requireNonNull(fareClass,"fareClass input cannot be null");
 		
-		return routeHelper(origin, destination, departureTime, fareClass);
+		return findClosestRoute(origin, destination, departureTime, fareClass);
 	}
 	
 	//This method implements the route finding algorithm
-	private final RouteNode routeHelper(Airport origin, Airport destination, LocalTime departureTime, FareClass fareClass){
+	private final RouteNode findClosestRoute(Airport origin, Airport destination, LocalTime departureTime, FareClass fareClass){
 		RouteState currentRoutes = RouteState.of(this.airports, origin, departureTime);
 		while (!currentRoutes.allReached()) {
 			RouteNode currentNode = currentRoutes.closestUnreached();
