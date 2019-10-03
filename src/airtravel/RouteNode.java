@@ -60,7 +60,7 @@ public final class RouteNode implements Comparable<RouteNode>{
     }
 
     //returns the departure time
-    //assumes that the arrival time is known
+    //assumes that the connection time must be incurred even at the original departure airport since it takes time to reach the flight from the booking counter
     public final RouteTime departureTime() {
         if(!isArrivalTimeKnown())
             throw new NullPointerException("Route time cannot be unknown");
