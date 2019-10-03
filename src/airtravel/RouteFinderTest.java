@@ -48,6 +48,6 @@ public class RouteFinderTest {
         while(routeNode.getPrevious() != null) {
             routeNode = routeNode.getPrevious();
         }
-        assert(routeNode.getAirport().equals(airportC));
+        assert(routeNode.getAirport().equals(airportA));
     }
 }

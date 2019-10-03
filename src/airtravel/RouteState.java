@@ -51,7 +51,6 @@ final class RouteState {
 		Objects.requireNonNull(routeNode, "Route Node cannot be a null value");
 		
 		Airport airport = routeNode.getAirport();
-		//unreached.remove(routeNode);
 		unreached.remove(airportNode(airport));
 		unreached.add(routeNode);
 		airportNode.replace(airport, routeNode);
