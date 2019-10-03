@@ -10,6 +10,7 @@ import java.util.Set;
 
 import static junit.framework.TestCase.assertTrue;
 
+
 public class RouteFinderTest {
     @Test
     public void routeFinderTest() {
@@ -43,10 +44,7 @@ public class RouteFinderTest {
         airports.add(airportC);
 
         RouteFinder routeFinder = RouteFinder.of(airports);
-        RouteNode routeNode = routeFinder.route(airportA, airportC, flightAToB.getFlightSchedule().getDepartureTime(), fareClass);
-        while(routeNode.getPrevious() != null) {
-            routeNode = routeNode.getPrevious();
-        }
-        assert(routeNode.getAirport().equals(airportA));
+        RouteNode routeNode = routeFinder.route(airportA, airportC, flightAToB.getFlightSchedule().getDepartureTime().minus(airportA.getConnectionTimeMin()), fareClass);
+        assertTrue(routeNode.getAirport().equals(airportC));
     }
 }
